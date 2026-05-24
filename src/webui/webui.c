@@ -558,7 +558,7 @@ http_m3u_playlist_add(htsbuf_queue_t *hq, const char *hostpath,
         break;
       }
       htsbuf_append_str(hq, "\"");
-    } else {
+    } else if (strncmp(logo, "file://", 7)) {
       htsbuf_qprintf(hq, " tvg-logo=\"%s\"", logo);
     }
   }
@@ -566,6 +566,8 @@ http_m3u_playlist_add(htsbuf_queue_t *hq, const char *hostpath,
     htsbuf_qprintf(hq, " tvg-id=\"%s\"", epgid);
   if (chnum)
     htsbuf_qprintf(hq, " tvg-chno=\"%s\"", chnum);
+  if (!strempty(svcname))
+    htsbuf_qprintf(hq, " tvg-name=\"%s\"", svcname);
   htsbuf_qprintf(hq, ",%s\n%s%s", svcname, hostpath, url_remain);
   switch (urlauth) {
   case URLAUTH_NONE:
@@ -1121,7 +1123,7 @@ page_http_playlist_
       r = HTTP_STATUS_BAD_REQUEST;
     else if(!strcmp(cmd, "tags"))
       r = http_tag_list_playlist(hc, pltype, urlauth);
-    else if(!strcmp(cmd, "channels"))
+    else if(!strcmp(cmd, "channels") || !strcmp(cmd, "grouped"))
       r = http_channel_list_playlist(hc, pltype, urlauth);
     else if(pltype != PLAYLIST_SATIP_M3U &&
             !strcmp(cmd, "recordings"))
