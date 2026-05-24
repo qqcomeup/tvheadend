@@ -1416,18 +1416,31 @@ http_process_request(http_connection_t *hc, htsbuf_queue_t *spill)
 static int
 process_request(http_connection_t *hc, htsbuf_queue_t *spill)
 {
-  char *v, *argv[2];
-  int n, rval = -1;
+  char *v, *argv[2], *xff, *e;
+  int n, rval = -1, colons = 0;
   char authbuf[150];
 
   hc->hc_url_orig = tvh_strdupa(hc->hc_url);
 
   v = (config.proxy) ? http_arg_get(&hc->hc_args, "X-Forwarded-For") : NULL;
   if (v) {
+    xff = tvh_strdupa(v);
+    while (*xff == ' ' || *xff == '\t')
+      xff++;
+    if ((e = strchr(xff, ',')) != NULL)
+      *e = '\0';
+    e = xff + strlen(xff);
+    while (e > xff && (e[-1] == ' ' || e[-1] == '\t'))
+      *--e = '\0';
+    for (e = xff; *e; e++)
+      if (*e == ':')
+        colons++;
+    if (colons == 1 && strchr(xff, '.') != NULL)
+      *strchr(xff, ':') = '\0';
     if (hc->hc_proxy_ip == NULL)
       hc->hc_proxy_ip = malloc(sizeof(*hc->hc_proxy_ip));
     *hc->hc_proxy_ip = *hc->hc_peer;
-    if (tcp_get_ip_from_str(v, hc->hc_peer) == NULL) {
+    if (tcp_get_ip_from_str(xff, hc->hc_peer) == NULL) {
       http_error(hc, HTTP_STATUS_BAD_REQUEST);
       free(hc->hc_proxy_ip);
       hc->hc_proxy_ip = NULL;
