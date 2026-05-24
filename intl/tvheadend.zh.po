@@ -1053,7 +1053,7 @@ msgstr ""
 
 #: src/config.c:2349
 msgid "Channel icon name scheme"
-msgstr ""
+msgstr "频道图标命名方案"
 
 #: src/config.c:2336
 msgid "Channel icon path"
@@ -1351,7 +1351,7 @@ msgstr ""
 
 #: src/config.c:2134
 msgid "Cookie expiration (days)"
-msgstr ""
+msgstr "Cookie 过期（天）"
 
 #: src/epg.c:2447
 msgid "Cooking"
@@ -1542,7 +1542,7 @@ msgstr ""
 
 #: src/config.c:2157
 msgid "DSCP/TOS for streaming"
-msgstr ""
+msgstr "串流 DSCP/TOS"
 
 #: src/tvhlog.c:145
 msgid "DVB"
@@ -1586,7 +1586,7 @@ msgstr ""
 
 #: src/config.c:2278
 msgid "DVB scan files path"
-msgstr ""
+msgstr "DVB 扫描文件路径"
 
 #: src/satip/server.c:710
 msgid "DVB-C"
@@ -1832,7 +1832,7 @@ msgstr ""
 
 #: src/config.c:2185
 msgid "Descrambler buffer (TS packets)"
-msgstr ""
+msgstr "解扰缓冲区（TS 包）"
 
 #: src/dvr/dvr_db.c:3129 src/dvr/dvr_db.c:3137
 msgid "Description"
@@ -2115,7 +2115,7 @@ msgstr ""
 
 #: src/config.c:2302
 msgid "Enable NTP driver"
-msgstr ""
+msgstr "启用 NTP 驱动"
 
 #: src/main.c:887
 msgid "Enable coredumps for daemon"
@@ -2952,7 +2952,7 @@ msgstr ""
 
 #: src/config.c:2144
 msgid "HTTP CORS origin"
-msgstr ""
+msgstr "HTTP CORS 来源"
 
 #: src/tvhlog.c:103
 msgid "HTTP Client"
@@ -4904,7 +4904,7 @@ msgstr ""
 
 #: src/config.c:2373
 msgid "Picon name scheme"
-msgstr ""
+msgstr "台标命名方案"
 
 #: src/config.c:2361
 msgid "Picon path"
@@ -7851,11 +7851,11 @@ msgstr ""
 
 #: src/config.c:2291
 msgid "Update time"
-msgstr ""
+msgstr "更新时间"
 
 #: src/config.c:2314
 msgid "Update tolerance (ms)"
-msgstr ""
+msgstr "更新容差（毫秒）"
 
 #: src/epggrab/channel.c:780
 msgid "Updated"
@@ -8426,3 +8426,81 @@ msgstr ""
 #: src/profile.c:1798
 msgid "veryslow: h264 / h265 / qsv(h264)"
 msgstr ""
+
+msgid "Channel name with numbers"
+msgstr "频道名称带编号"
+
+msgid "Channel name with sources"
+msgstr "频道名称带来源"
+
+msgid "Custom date Format"
+msgstr "自定义日期格式"
+
+msgid "Default tab"
+msgstr "默认标签页"
+
+msgid "Show DVR seconds"
+msgstr "显示录像秒数"
+
+msgid "Kodi label formatting support"
+msgstr "Kodi 标签格式支持"
+
+msgid "Prefer picons over channel icons"
+msgstr "优先使用台标而非频道图标"
+
+msgid "Server name"
+msgstr "服务器名称"
+
+msgid "Realm name"
+msgstr "认证域名称"
+
+msgid "Authentication type"
+msgstr "认证类型"
+
+msgid "Digest hash type"
+msgstr "摘要哈希类型"
+
+msgid "PROXY protocol & X-Forwarded-For"
+msgstr "PROXY 协议和 X-Forwarded-For"
+
+msgid "CORS origin"
+msgstr "CORS 来源"
+
+msgid "HDHomerun IP Address"
+msgstr "HDHomerun IP 地址"
+
+msgid "Local IP Address"
+msgstr "本地 IP 地址"
+
+msgid "Local Socket Port Number"
+msgstr "本地套接字端口号"
+
+msgid "Number of tuners to export for HDHomeRun Server Emulation"
+msgstr "HDHomeRun 服务器模拟导出的调谐器数量"
+
+msgid "Tvheadend model name for HDHomeRun Server Emulation"
+msgstr "HDHomeRun 服务器模拟的 Tvheadend 型号名称"
+
+msgid "Enable HDHomeRun Server Emulation"
+msgstr "启用 HDHomeRun 服务器模拟"
+
+msgid "RTSP UDP minimum port"
+msgstr "RTSP UDP 最小端口"
+
+msgid "RTSP UDP maximum port"
+msgstr "RTSP UDP 最大端口"
+
+msgid "HTTP User Agent"
+msgstr "HTTP 用户代理"
+
+msgid "IPTV threads"
+msgstr "IPTV 线程数"
+
+msgid "Packet backlog"
+msgstr "数据包积压"
+
+msgid "Automatically clear input error counters"
+msgstr "自动清除输入错误计数器"
+
+msgid "Parse HbbTV info"
+msgstr "解析 HbbTV 信息"
