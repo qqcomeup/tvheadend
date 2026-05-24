@@ -26,20 +26,20 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_mux.c:649
 msgid "# Channels"
-msgstr ""
+msgstr "频道数量"
 
 #: src/input/mpegts/mpegts_network.c:288
 msgid "# Mapped channels"
-msgstr ""
+msgstr "已映射频道数"
 
 #: src/input/mpegts/mpegts_network.c:272
 msgid "# Muxes"
-msgstr ""
+msgstr "复用器数量"
 
 #: src/bouquet.c:1100 src/input/mpegts/mpegts_network.c:280
 #: src/input/mpegts/mpegts_mux.c:641
 msgid "# Services"
-msgstr ""
+msgstr "服务数量"
 
 #: src/bouquet.c:1092
 msgid "# Services seen"
@@ -331,7 +331,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:344
 msgid "ATSC-C Network"
-msgstr ""
+msgstr "ATSC-C 网络"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:585
 msgid "ATSC-C multiplex"
@@ -343,7 +343,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:321
 msgid "ATSC-T Network"
-msgstr ""
+msgstr "ATSC-T 网络"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:544
 msgid "ATSC-T multiplex"
@@ -381,7 +381,7 @@ msgstr ""
 
 #: src/access.c:1408
 msgid "Access"
-msgstr ""
+msgstr "访问"
 
 #: src/tvhlog.c:96
 msgid "Access (ACL)"
@@ -421,19 +421,19 @@ msgstr ""
 
 #: src/access.c:1779
 msgid "Admin"
-msgstr ""
+msgstr "管理员"
 
 #: src/wizard.c:425
 msgid "Admin password"
-msgstr ""
+msgstr "管理员密码"
 
 #: src/wizard.c:414
 msgid "Admin username"
-msgstr ""
+msgstr "管理员用户名"
 
 #: src/wizard.c:391
 msgid "Administrator login"
-msgstr ""
+msgstr "管理员登录"
 
 #: src/epg.c:2288
 msgid "Adult movie"
@@ -441,7 +441,7 @@ msgstr ""
 
 #: src/access.c:1385 src/access.c:1500 src/config.c:1962
 msgid "Advanced"
-msgstr ""
+msgstr "高级"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:756
 msgid "Advanced (non-universal LNBs, rotors, etc.)"
@@ -541,11 +541,11 @@ msgstr ""
 
 #: src/wizard.c:404
 msgid "Allowed network"
-msgstr ""
+msgstr "允许的网络"
 
 #: src/access.c:1633
 msgid "Allowed networks"
-msgstr ""
+msgstr "允许的网络"
 
 #: src/main.c:823
 msgid "Alternate PID path"
@@ -617,7 +617,7 @@ msgstr ""
 
 #: src/wizard.c:933
 msgid "Assign predefined muxes to networks"
-msgstr ""
+msgstr "为网络分配预定义复用器"
 
 #: src/input/mpegts/mpegts_input.c:316
 msgid "Associate this device with one or more networks."
@@ -727,11 +727,11 @@ msgstr ""
 
 #: src/channels.c:440
 msgid "Automatically map EPG source"
-msgstr ""
+msgstr "自动映射节目指南来源"
 
 #: src/wizard.c:1079
 msgid "Automatically map all available services to channels."
-msgstr ""
+msgstr "自动将所有可用服务映射为频道。"
 
 #: src/bouquet.c:992
 msgid "Automatically map channels defined within the bouquet."
@@ -819,7 +819,7 @@ msgstr ""
 
 #: src/access.c:1384 src/access.c:1495 src/access.c:1538 src/config.c:1961
 msgid "Basic"
-msgstr ""
+msgstr "基本"
 
 #: src/input/mpegts/satip/satip.c:326
 msgid "Bind to specific local IP address."
@@ -843,7 +843,7 @@ msgstr ""
 
 #: src/tvhlog.c:131
 msgid "Bouquet"
-msgstr ""
+msgstr "频道包"
 
 #: src/channels.c:524
 msgid "Bouquet (auto)"
@@ -855,7 +855,7 @@ msgstr ""
 
 #: src/bouquet.c:971
 msgid "Bouquets"
-msgstr ""
+msgstr "频道包"
 
 #: src/dvr/dvr_autorec.c:1248
 msgid "Brand"
@@ -1022,16 +1022,16 @@ msgstr ""
 
 #: src/access.c:1643
 msgid "Change parameters"
-msgstr ""
+msgstr "更改参数"
 
 #: src/tvhlog.c:128 src/service.c:200 src/dvr/dvr_db.c:3066
 #: src/dvr/dvr_autorec.c:1050 src/dvr/dvr_timerec.c:574
 msgid "Channel"
-msgstr ""
+msgstr "频道"
 
 #: src/channels.c:1429
 msgid "Channel Tags"
-msgstr ""
+msgstr "频道标签"
 
 #: src/htsp_server.c:1547 src/htsp_server.c:1589 src/htsp_server.c:1674
 #: src/htsp_server.c:1844 src/htsp_server.c:2385 src/htsp_server.c:2388
@@ -1056,7 +1056,7 @@ msgstr ""
 
 #: src/config.c:2336
 msgid "Channel icon path"
-msgstr ""
+msgstr "频道图标路径"
 
 #: src/bouquet.c:1001
 msgid "Channel mapping options"
@@ -1124,7 +1124,7 @@ msgstr ""
 
 #: src/channels.c:369 src/profile.c:1877 src/epggrab/channel.c:833
 msgid "Channels"
-msgstr ""
+msgstr "频道"
 
 #: src/epggrab/channel.c:834
 msgid "Channels EPG data is used by."
@@ -1219,7 +1219,7 @@ msgstr ""
 #: src/dvr/dvr_autorec.c:1293 src/dvr/dvr_timerec.c:678
 #: src/dvr/dvr_config.c:870 src/descrambler/caclient.c:288
 msgid "Comment"
-msgstr ""
+msgstr "备注"
 
 #: src/dvr/dvr_db.c:609
 msgid "Commercial break"
@@ -1242,11 +1242,11 @@ msgstr ""
 
 #: src/config.c:2222
 msgid "Compress EPG database"
-msgstr ""
+msgstr "压缩节目指南数据库"
 
 #: src/config.c:2223
 msgid "Compress the EPG database to reduce disk I/O and space."
-msgstr ""
+msgstr "压缩节目指南数据库以减少磁盘 I/O 和空间占用。"
 
 #: src/input/mpegts/satip/satip_satconf.c:379
 msgid ""
@@ -1269,19 +1269,19 @@ msgstr ""
 #: src/tvhlog.c:95 src/profile.c:288 src/profile.c:1084 src/profile.c:1216
 #: src/profile.c:1498 src/profile.c:1842 src/epggrab/channel.c:735
 msgid "Configuration"
-msgstr ""
+msgstr "配置"
 
 #: src/config.c:2026
 msgid "Configuration - Base"
-msgstr ""
+msgstr "配置 - 基本"
 
 #: src/imagecache.c:79
 msgid "Configuration - Image Cache"
-msgstr ""
+msgstr "配置 - 图像缓存"
 
 #: src/satip/server.c:576
 msgid "Configuration - SAT>IP Server"
-msgstr ""
+msgstr "配置 - SAT>IP 服务器"
 
 #: src/input/mpegts/satip/satip.c:447
 msgid "Configuration ID"
@@ -1293,15 +1293,15 @@ msgstr ""
 
 #: src/config.c:2062
 msgid "Configuration version"
-msgstr ""
+msgstr "配置版本"
 
 #: src/access.c:1786
 msgid "Connection limit type"
-msgstr ""
+msgstr "连接限制类型"
 
 #: src/access.c:1441
 msgid "Connection limits"
-msgstr ""
+msgstr "连接限制"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:235 src/input/mpegts/mpegts_mux_dvb.c:329
 #: src/input/mpegts/mpegts_mux_dvb.c:607 src/input/mpegts/mpegts_mux_dvb.c:799
@@ -1403,11 +1403,11 @@ msgstr ""
 
 #: src/wizard.c:1097
 msgid "Create and associate a network tag to created channels."
-msgstr ""
+msgstr "为创建的频道创建并关联网络标签。"
 
 #: src/wizard.c:1088
 msgid "Create and associate a provider tag to created channels."
-msgstr ""
+msgstr "为创建的频道创建并关联提供商标签。"
 
 #: src/bouquet.c:1016
 msgid "Create and link these tags to channels when mapping."
@@ -1439,7 +1439,7 @@ msgstr ""
 
 #: src/wizard.c:1096
 msgid "Create network tags"
-msgstr ""
+msgstr "创建网络标签"
 
 #: src/service_mapper.c:539 src/bouquet.c:804
 msgid "Create provider name tags"
@@ -1447,7 +1447,7 @@ msgstr ""
 
 #: src/wizard.c:1087
 msgid "Create provider tags"
-msgstr ""
+msgstr "创建提供商标签"
 
 #: src/bouquet.c:1015
 msgid "Create tags"
@@ -1465,11 +1465,11 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_service.c:240
 msgid "Created"
-msgstr ""
+msgstr "已创建"
 
 #: src/dvr/dvr_db.c:3215 src/dvr/dvr_autorec.c:1283 src/dvr/dvr_timerec.c:668
 msgid "Creator"
-msgstr ""
+msgstr "创建者"
 
 #: src/tvhlog.c:97 src/input/mpegts/mpegts_mux_sched.c:153
 msgid "Cron"
@@ -1565,7 +1565,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:149
 msgid "DVB Inputs - Networks"
-msgstr ""
+msgstr "DVB 输入 - 网络"
 
 #: src/tvhlog.c:109
 msgid "DVB SI Tables"
@@ -1593,7 +1593,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:265
 msgid "DVB-C Network"
-msgstr ""
+msgstr "DVB-C 网络"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:307
 msgid "DVB-C multiplex"
@@ -1609,7 +1609,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:288
 msgid "DVB-S Network"
-msgstr ""
+msgstr "DVB-S 网络"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:217
 msgid "DVB-S Satellite Configuration"
@@ -1629,7 +1629,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:242
 msgid "DVB-T Network"
-msgstr ""
+msgstr "DVB-T 网络"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:211
 msgid "DVB-T multiplex"
@@ -1641,7 +1641,7 @@ msgstr ""
 
 #: src/access.c:1346
 msgid "DVR"
-msgstr ""
+msgstr "录像机"
 
 #: src/dvr/dvr_autorec.c:994
 msgid "DVR - Auto-recording (Autorecs)"
@@ -1791,11 +1791,11 @@ msgstr ""
 
 #: src/config.c:2207
 msgid "Default language(s)"
-msgstr ""
+msgstr "默认语言"
 
 #: src/access.c:1678
 msgid "Default language."
-msgstr ""
+msgstr "默认语言。"
 
 #: src/profile.c:345
 msgid "Default priority"
@@ -1835,7 +1835,7 @@ msgstr ""
 
 #: src/dvr/dvr_db.c:3129 src/dvr/dvr_db.c:3137
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #: src/epg.c:2281
 msgid "Detective"
@@ -1872,11 +1872,11 @@ msgstr ""
 
 #: src/tvhlog.c:140 src/dvr/dvr_db.c:2983
 msgid "Digital Video Recorder"
-msgstr ""
+msgstr "数字录像机"
 
 #: src/dvr/dvr_db.c:3234 src/dvr/dvr_autorec.c:1021 src/dvr/dvr_timerec.c:563
 msgid "Directory"
-msgstr ""
+msgstr "目录"
 
 #: src/dvr/dvr_timerec.c:564
 msgid ""
@@ -2005,7 +2005,7 @@ msgstr ""
 
 #: src/dvr/dvr_autorec.c:1188
 msgid "Duplicate handling"
-msgstr ""
+msgstr "重复处理"
 
 #: src/dvr/dvr_autorec.c:1189
 msgid "Duplicate recording handling."
@@ -2029,7 +2029,7 @@ msgstr ""
 
 #: src/tvhlog.c:143 src/epggrab/module.c:111
 msgid "EPG Grabber"
-msgstr ""
+msgstr "节目指南抓取器"
 
 #: src/epggrab/channel.c:726
 msgid "EPG Grabber Channel"
@@ -2041,7 +2041,7 @@ msgstr ""
 
 #: src/wizard.c:188
 msgid "EPG Language (priority order)"
-msgstr ""
+msgstr "节目指南语言（优先顺序）"
 
 #: src/epggrab/channel.c:791
 msgid "EPG data ID."
@@ -2049,27 +2049,27 @@ msgstr ""
 
 #: src/input/mpegts/iptv/iptv_mux.c:187
 msgid "EPG name"
-msgstr ""
+msgstr "节目指南名称"
 
 #: src/config.c:2234
 msgid "EPG overlap cut"
-msgstr ""
+msgstr "节目指南重叠裁剪"
 
 #: src/input/mpegts/mpegts_mux.c:541
 msgid "EPG scan"
-msgstr ""
+msgstr "节目指南扫描"
 
 #: src/epggrab.c:364
 msgid "EPG scan timeout in seconds (30-7200)"
-msgstr ""
+msgstr "节目指南扫描超时时间（秒，30-7200）"
 
 #: src/channels.c:454
 msgid "EPG source"
-msgstr ""
+msgstr "节目指南来源"
 
 #: src/dvr/dvr_config.c:989
 msgid "EPG update window"
-msgstr ""
+msgstr "节目指南更新窗口"
 
 #: src/epg.c:2406 src/epg.c:2408
 msgid "Economics"
@@ -2240,7 +2240,7 @@ msgstr ""
 
 #: src/epggrab/channel.c:745
 msgid "Enable/disable EPG data for the entry."
-msgstr ""
+msgstr "启用/禁用此条目的节目指南数据。"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_frontend.c:191
 msgid "Enable/disable LNA."
@@ -2301,7 +2301,7 @@ msgstr ""
 #: src/access.c:2032 src/access.c:2185 src/dvr/dvr_db.c:2996
 #: src/dvr/dvr_timerec.c:539 src/input/mpegts/mpegts_mux_sched.c:138
 msgid "Enable/disable the entry."
-msgstr ""
+msgstr "启用/禁用此条目。"
 
 #: src/epggrab/module.c:148
 msgid "Enable/disable the grabber."
@@ -2335,7 +2335,7 @@ msgstr ""
 #: src/input/mpegts/satip/satip_satconf.c:337 src/timeshift.c:193
 #: src/input/mpegts/linuxdvb/linuxdvb_ca.c:190
 msgid "Enabled"
-msgstr ""
+msgstr "已启用"
 
 #: src/service.c:221
 msgid "Encrypted"
@@ -2351,11 +2351,11 @@ msgstr ""
 
 #: src/wizard.c:444
 msgid "Enter a non-admin user password."
-msgstr ""
+msgstr "输入非管理员用户的密码。"
 
 #: src/wizard.c:435
 msgid "Enter a non-admin user username."
-msgstr ""
+msgstr "输入非管理员用户的用户名。"
 
 #: src/wizard.c:405
 msgid ""
@@ -2365,13 +2365,13 @@ msgstr ""
 
 #: src/wizard.c:426
 msgid "Enter an administrator password."
-msgstr ""
+msgstr "输入管理员密码。"
 
 #: src/wizard.c:415
 msgid ""
 "Enter an administrator username. Note: do not use the same username as the "
 "superuser backdoor account."
-msgstr ""
+msgstr "输入管理员用户名。注意：不要与超级用户后门账户使用相同用户名。"
 
 #: src/tvhlog.c:755
 msgid ""
@@ -2387,7 +2387,7 @@ msgstr ""
 
 #: src/satip/server.c:669
 msgid "Enter external IP if behind Network address translation (NAT)."
-msgstr ""
+msgstr "如果位于网络地址转换（NAT）之后，请输入外部 IP。"
 
 #: src/epg.c:2355
 msgid "Entertainment programs for 10 to 16"
@@ -2407,7 +2407,7 @@ msgstr ""
 
 #: src/dvr/dvr_db.c:3369
 msgid "Episode"
-msgstr ""
+msgstr "集数"
 
 #: src/dvr/dvr_db.c:781
 #, c-format
@@ -2432,7 +2432,7 @@ msgstr ""
 
 #: src/dvr/dvr_db.c:3250
 msgid "Errors"
-msgstr ""
+msgstr "错误"
 
 #: src/descrambler/constcw.c:326 src/descrambler/constcw.c:392
 msgid "Even key"
@@ -2464,7 +2464,7 @@ msgstr ""
 
 #: src/access.c:1386 src/config.c:1963
 msgid "Expert"
-msgstr ""
+msgstr "专家"
 
 #: src/satip/server.c:587
 msgid "Exported tuners"
@@ -2614,7 +2614,7 @@ msgstr ""
 
 #: src/wizard.c:1161 src/dvr/dvr_db.c:615
 msgid "Finished"
-msgstr ""
+msgstr "已完成"
 
 #: src/epggrab/module/xmltv.c:761
 msgid "First word"
@@ -2724,11 +2724,11 @@ msgstr ""
 
 #: src/wizard.c:994
 msgid "Found muxes"
-msgstr ""
+msgstr "发现的复用器"
 
 #: src/wizard.c:1003
 msgid "Found services"
-msgstr ""
+msgstr "发现的服务"
 
 #: src/input/mpegts/mpegts_input.c:301
 msgid "Free subscription weight"
@@ -2916,7 +2916,7 @@ msgstr ""
 
 #: src/access.c:1505 src/access.c:1543
 msgid "HTSP"
-msgstr ""
+msgstr "HTSP"
 
 #: src/tvhlog.c:107
 msgid "HTSP Answer"
@@ -3021,7 +3021,7 @@ msgstr ""
 
 #: src/wizard.c:802
 msgid "ID of the network."
-msgstr ""
+msgstr "网络 ID。"
 
 #: src/input/mpegts/mpegts_mux.c:392
 msgid "IDLE"
@@ -3046,7 +3046,7 @@ msgstr ""
 
 #: src/input/mpegts/iptv/iptv.c:840
 msgid "IPTV Automatic Network"
-msgstr ""
+msgstr "IPTV 自动网络"
 
 #: src/input/mpegts/iptv/iptv_mux.c:118
 msgid "IPTV Multiplex"
@@ -3054,7 +3054,7 @@ msgstr ""
 
 #: src/input/mpegts/iptv/iptv.c:710
 msgid "IPTV Network"
-msgstr ""
+msgstr "IPTV 网络"
 
 #: src/tvhlog.c:151
 msgid "IPTV PCR"
@@ -3066,7 +3066,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:390
 msgid "ISDB-C Network"
-msgstr ""
+msgstr "ISDB-C 网络"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:777
 msgid "ISDB-C multiplex"
@@ -3074,7 +3074,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:413
 msgid "ISDB-S Network"
-msgstr ""
+msgstr "ISDB-S 网络"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:830
 msgid "ISDB-S multiplex"
@@ -3082,7 +3082,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network_dvb.c:367
 msgid "ISDB-T Network"
-msgstr ""
+msgstr "ISDB-T 网络"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:670
 msgid "ISDB-T multiplex"
@@ -3233,7 +3233,7 @@ msgstr ""
 
 #: src/tvhlog.c:108
 msgid "Image Cache"
-msgstr ""
+msgstr "图像缓存"
 
 #: src/main.c:886
 msgid "Immediately abort"
@@ -3245,15 +3245,15 @@ msgstr ""
 
 #: src/dvr/dvr_config.c:1198
 msgid "Include channel name in filename"
-msgstr ""
+msgstr "文件名包含频道名称"
 
 #: src/dvr/dvr_config.c:1209
 msgid "Include date in filename"
-msgstr ""
+msgstr "文件名包含日期"
 
 #: src/dvr/dvr_config.c:1231
 msgid "Include episode in filename"
-msgstr ""
+msgstr "文件名包含集数"
 
 #: src/dvr/dvr_config.c:1241
 msgid "Include subtitle in filename"
@@ -3287,7 +3287,7 @@ msgstr ""
 
 #: src/dvr/dvr_config.c:1220
 msgid "Include time in filename"
-msgstr ""
+msgstr "文件名包含时间"
 
 #: src/access.c:1611 src/esfilter.c:611 src/descrambler/caclient.c:266
 msgid "Index"
@@ -3295,7 +3295,7 @@ msgstr ""
 
 #: src/config.c:2244
 msgid "Information area"
-msgstr ""
+msgstr "信息区域"
 
 #: src/epg.c:2356
 msgid "Informational"
@@ -3448,23 +3448,23 @@ msgstr ""
 #: src/esfilter.c:835 src/esfilter.c:930 src/esfilter.c:1130
 #: src/profile.c:1888 src/wizard.c:197
 msgid "Language"
-msgstr ""
+msgstr "语言"
 
 #: src/wizard.c:209
 msgid "Language 1"
-msgstr ""
+msgstr "语言 1"
 
 #: src/wizard.c:219
 msgid "Language 2"
-msgstr ""
+msgstr "语言 2"
 
 #: src/wizard.c:229
 msgid "Language 3"
-msgstr ""
+msgstr "语言 3"
 
 #: src/config.c:2037
 msgid "Language settings"
-msgstr ""
+msgstr "语言设置"
 
 #: src/epg.c:2431
 msgid "Languages"
@@ -3488,7 +3488,7 @@ msgstr ""
 
 #: src/config.c:2071
 msgid "Last updated from"
-msgstr ""
+msgstr "最后更新来源"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:702
 msgid "Layer A: Constellation"
@@ -3670,7 +3670,7 @@ msgstr ""
 
 #: src/config.c:1921
 msgid "Login/Logout"
-msgstr ""
+msgstr "登录/退出"
 
 #: src/profile.c:251 src/dvr/dvr_db.c:2516
 msgid "Low"
@@ -3810,7 +3810,7 @@ msgstr ""
 
 #: src/wizard.c:1078
 msgid "Map all services"
-msgstr ""
+msgstr "映射所有服务"
 
 #: src/service_mapper.c:516 src/bouquet.c:731
 msgid "Map encrypted services"
@@ -4001,7 +4001,7 @@ msgstr ""
 
 #: src/epggrab/channel.c:753
 msgid "Module ID used to grab EPG data."
-msgstr ""
+msgstr "用于抓取节目指南数据的模块 ID。"
 
 #: src/dvr/dvr_autorec.c:772
 msgid "Mon"
@@ -4074,27 +4074,27 @@ msgstr ""
 #: src/input/mpegts/mpegts_service.c:104
 #: src/input/mpegts/mpegts_mux_sched.c:145
 msgid "Mux"
-msgstr ""
+msgstr "复用器"
 
 #: src/tvhlog.c:147 src/input/mpegts/mpegts_mux_sched.c:127
 msgid "Mux Scheduler"
-msgstr ""
+msgstr "复用器计划"
 
 #: src/input/mpegts/mpegts_service.c:112
 msgid "Mux UUID"
-msgstr ""
+msgstr "复用器 UUID"
 
 #: src/satip/server.c:656
 msgid "Mux handling"
-msgstr ""
+msgstr "复用器处理"
 
 #: src/input/mpegts/iptv/iptv_mux.c:168
 msgid "Mux name"
-msgstr ""
+msgstr "复用器名称"
 
 #: src/streaming.c:457
 msgid "Mux not enabled"
-msgstr ""
+msgstr "复用器未启用"
 
 #: src/tvhlog.c:123
 msgid "Muxer"
@@ -4115,7 +4115,7 @@ msgstr ""
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:1438
 #: src/input/mpegts/satip/satip_satconf.c:344
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 #: src/dvr/dvr_db.c:3411
 msgid "Name (or date) of program the entry is a rerun of."
@@ -4143,7 +4143,7 @@ msgstr ""
 
 #: src/epggrab/channel.c:763
 msgid "Name of the module used to grab EPG data."
-msgstr ""
+msgstr "用于抓取节目指南数据的模块名称。"
 
 #: src/channels.c:455
 msgid ""
@@ -4153,7 +4153,7 @@ msgstr ""
 
 #: src/wizard.c:794 src/input/mpegts/mpegts_network.c:160
 msgid "Name of the network."
-msgstr ""
+msgstr "网络名称。"
 
 #: src/dvr/dvr_config.c:860
 msgid "Name of the profile."
@@ -4165,7 +4165,7 @@ msgstr ""
 
 #: src/wizard.c:559 src/wizard.c:567
 msgid "Name of the tuner."
-msgstr ""
+msgstr "调谐器名称。"
 
 #: src/input/mpegts/mpegts_input.c:265
 msgid "Name of the tuner/adapter."
@@ -4187,11 +4187,11 @@ msgstr ""
 #: src/input/mpegts/mpegts_service.c:96
 #: src/input/mpegts/tvhdhomerun/tvhdhomerun.c:172
 msgid "Network"
-msgstr ""
+msgstr "网络"
 
 #: src/wizard.c:551
 msgid "Network "
-msgstr ""
+msgstr "网络 "
 
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:501
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:565
@@ -4221,7 +4221,7 @@ msgstr ""
 
 #: src/wizard.c:387
 msgid "Network access"
-msgstr ""
+msgstr "网络访问"
 
 #: src/input/mpegts/mpegts_network.c:183
 msgid "Network discovery"
@@ -4273,28 +4273,28 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:159
 msgid "Network name"
-msgstr ""
+msgstr "网络名称"
 
 #: src/access.c:2191
 msgid "Network prefix"
-msgstr ""
+msgstr "网络前缀"
 
 #: src/wizard.c:660
 msgid "Network settings"
-msgstr ""
+msgstr "网络设置"
 
 #: src/wizard.c:574 src/input/mpegts/satip/satip_frontend.c:233
 #: src/input/mpegts/satip/satip_frontend.c:398
 #: src/input/mpegts/tvhdhomerun/tvhdhomerun.c:207
 msgid "Network type"
-msgstr ""
+msgstr "网络类型"
 
 #: src/input/mpegts/mpegts_input.c:315
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:289
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:1453
 #: src/input/mpegts/satip/satip_satconf.c:397
 msgid "Networks"
-msgstr ""
+msgstr "网络"
 
 #: src/dvr/dvr_autorec.c:971
 msgid "New / premiere / unknown"
@@ -4332,7 +4332,7 @@ msgstr ""
 
 #: src/access.c:1396
 msgid "No"
-msgstr ""
+msgstr "否"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_en50494.c:124
 msgid "No PIN"
@@ -4391,7 +4391,7 @@ msgstr ""
 #: src/input/mpegts/linuxdvb/linuxdvb_rotor.c:486
 #: src/input/mpegts/linuxdvb/linuxdvb_en50494.c:403
 msgid "None"
-msgstr ""
+msgstr "无"
 
 #: src/profile.c:250 src/dvr/dvr_db.c:2515
 msgid "Normal"
@@ -4425,7 +4425,7 @@ msgstr ""
 
 #: src/channels.c:409 src/epggrab/channel.c:652 src/epggrab/channel.c:816
 msgid "Number"
-msgstr ""
+msgstr "编号"
 
 #: src/dvr/dvr_db.c:3167
 msgid "Number of days to keep the file."
@@ -4463,7 +4463,7 @@ msgstr ""
 
 #: src/wizard.c:995
 msgid "Number of muxes found."
-msgstr ""
+msgstr "发现的复用器数量。"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:238
 msgid ""
@@ -4725,7 +4725,7 @@ msgstr ""
 
 #: src/dvr/dvr_db.c:3205 src/dvr/dvr_autorec.c:1275 src/dvr/dvr_timerec.c:660
 msgid "Owner"
-msgstr ""
+msgstr "所有者"
 
 #: src/dvr/dvr_db.c:3206 src/dvr/dvr_timerec.c:661
 msgid "Owner of the entry."
@@ -4813,7 +4813,7 @@ msgstr ""
 
 #: src/access.c:2047 src/wizard.c:443 src/descrambler/cwc.c:1841
 msgid "Password"
-msgstr ""
+msgstr "密码"
 
 #: src/access.c:2048
 msgid "Password for the entry."
@@ -4825,7 +4825,7 @@ msgstr ""
 
 #: src/epggrab/module.c:176 src/epggrab/module.c:203 src/epggrab/channel.c:771
 msgid "Path"
-msgstr ""
+msgstr "路径"
 
 #: src/config.c:2362
 msgid ""
@@ -4907,7 +4907,7 @@ msgstr ""
 
 #: src/config.c:2361
 msgid "Picon path"
-msgstr ""
+msgstr "台标路径"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:479
 msgid "Pilot"
@@ -4961,7 +4961,7 @@ msgstr ""
 
 #: src/channels.c:481 src/dvr/dvr_db.c:3039 src/dvr/dvr_config.c:978
 msgid "Post-recording padding"
-msgstr ""
+msgstr "录像后预留时间"
 
 #: src/dvr/dvr_config.c:1053
 msgid "Post-remove command"
@@ -4986,7 +4986,7 @@ msgstr ""
 #: src/input/mpegts/mpegts_network_dvb.c:418
 #: src/input/mpegts/mpegts_network_dvb.c:441
 msgid "Pre-defined muxes"
-msgstr ""
+msgstr "预定义复用器"
 
 #: src/dvr/dvr_config.c:1032
 msgid "Pre-processor command"
@@ -4994,7 +4994,7 @@ msgstr ""
 
 #: src/channels.c:466 src/dvr/dvr_db.c:3011 src/dvr/dvr_config.c:961
 msgid "Pre-recording padding"
-msgstr ""
+msgstr "录像前预留时间"
 
 #: src/epg.c:2353
 msgid "Pre-school children's programs"
@@ -5046,7 +5046,7 @@ msgstr ""
 #: src/input/mpegts/satip/satip_satconf.c:352 src/input/mpegts/iptv/iptv.c:734
 #: src/input/mpegts/iptv/iptv_mux.c:123
 msgid "Priority"
-msgstr ""
+msgstr "优先级"
 
 #: src/service.c:211
 msgid "Priority (-10..10)"
@@ -5070,7 +5070,7 @@ msgstr ""
 
 #: src/profile.c:326
 msgid "Profile name"
-msgstr ""
+msgstr "配置文件名称"
 
 #: src/esfilter.c:680 src/esfilter.c:775 src/esfilter.c:870 src/esfilter.c:965
 #: src/esfilter.c:1070 src/esfilter.c:1152
@@ -5090,7 +5090,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_service.c:168
 msgid "Provider"
-msgstr ""
+msgstr "提供商"
 
 #: src/descrambler/constcw.c:299 src/descrambler/constcw.c:365
 msgid "Provider ID"
@@ -5205,7 +5205,7 @@ msgstr ""
 
 #: src/dvr/dvr_config.c:1063
 msgid "Recording system path"
-msgstr ""
+msgstr "录像系统路径"
 
 #: src/satip/server.c:564
 msgid "Reject"
@@ -5362,7 +5362,7 @@ msgstr ""
 
 #: src/access.c:1416
 msgid "Rights"
-msgstr ""
+msgstr "权限"
 
 #: src/epg.c:2371
 msgid "Rock"
@@ -5448,7 +5448,7 @@ msgstr ""
 
 #: src/tvhlog.c:157
 msgid "SAT>IP Server"
-msgstr ""
+msgstr "SAT>IP 服务器"
 
 #: src/tvhlog.c:116
 msgid "SAT>IP Server SI Tables"
@@ -5550,7 +5550,7 @@ msgstr ""
 
 #: src/wizard.c:762
 msgid "Scan progress"
-msgstr ""
+msgstr "扫描进度"
 
 #: src/input/mpegts/mpegts_network.c:296
 msgid "Scan queue length"
@@ -5562,7 +5562,7 @@ msgstr ""
 
 #: src/wizard.c:1016 src/input/mpegts/mpegts_mux.c:609
 msgid "Scan status"
-msgstr ""
+msgstr "扫描状态"
 
 #: src/tvhlog.c:165
 msgid "Scanfile"
@@ -5651,11 +5651,11 @@ msgstr ""
 
 #: src/wizard.c:575
 msgid "Select an available network type for this tuner."
-msgstr ""
+msgstr "为此调谐器选择可用的网络类型。"
 
 #: src/wizard.c:210
 msgid "Select high priority (default) EPG language."
-msgstr ""
+msgstr "选择高优先级（默认）的节目指南语言。"
 
 #: src/satip/server.c:657
 msgid "Select how Tvheadend should handle muxes. See Help for details."
@@ -5663,11 +5663,11 @@ msgstr ""
 
 #: src/wizard.c:230
 msgid "Select low priority EPG language."
-msgstr ""
+msgstr "选择低优先级的节目指南语言。"
 
 #: src/wizard.c:220
 msgid "Select medium priority EPG language."
-msgstr ""
+msgstr "选择中优先级的节目指南语言。"
 
 #: src/config.c:2374
 msgid ""
@@ -5683,7 +5683,7 @@ msgstr ""
 msgid ""
 "Select the default user interface language. This can be overridden later in "
 "\"Access Entries\" on a per-user basis."
-msgstr ""
+msgstr "选择默认用户界面语言。之后可在“访问条目”中按用户覆盖。"
 
 #: src/config.c:2208
 msgid ""
@@ -5798,7 +5798,7 @@ msgstr ""
 #: src/esfilter.c:845 src/esfilter.c:940 src/esfilter.c:1045
 #: src/esfilter.c:1140
 msgid "Service"
-msgstr ""
+msgstr "服务"
 
 #: src/input/mpegts/mpegts_service.c:120 src/input/mpegts/iptv/iptv.c:725
 #: src/descrambler/constcw.c:317 src/descrambler/constcw.c:383
@@ -5807,7 +5807,7 @@ msgstr ""
 
 #: src/tvhlog.c:130
 msgid "Service Mapper"
-msgstr ""
+msgstr "服务映射器"
 
 #: src/service_mapper.c:487
 msgid "Service Mapping (Map services to channels)"
@@ -5824,11 +5824,11 @@ msgstr ""
 
 #: src/wizard.c:1108
 msgid "Service mapping"
-msgstr ""
+msgstr "服务映射"
 
 #: src/input/mpegts/mpegts_service.c:160 src/input/mpegts/iptv/iptv_mux.c:181
 msgid "Service name"
-msgstr ""
+msgstr "服务名称"
 
 #: src/epggrab/channel.c:799
 msgid "Service name found in EPG data."
@@ -5850,7 +5850,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_service.c:184
 msgid "Service type"
-msgstr ""
+msgstr "服务类型"
 
 #: src/service.c:238
 msgid ""
@@ -5860,7 +5860,7 @@ msgstr ""
 
 #: src/channels.c:503 src/service_mapper.c:497 src/bouquet.c:1082
 msgid "Services"
-msgstr ""
+msgstr "服务"
 
 #: src/channels.c:504
 msgid "Services associated with the channel."
@@ -6119,7 +6119,7 @@ msgstr ""
 
 #: src/dvr/dvr_timerec.c:584
 msgid "Start"
-msgstr ""
+msgstr "开始"
 
 #: src/dvr/dvr_autorec.c:1095
 msgid "Start after"
@@ -6158,11 +6158,11 @@ msgstr ""
 
 #: src/dvr/dvr_db.c:3002
 msgid "Start time"
-msgstr ""
+msgstr "开始时间"
 
 #: src/dvr/dvr_db.c:3393 src/descrambler/caclient.c:295
 msgid "Status"
-msgstr ""
+msgstr "状态"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_frontend.c:153
 msgid "Status period (ms)"
@@ -6178,7 +6178,7 @@ msgstr ""
 
 #: src/dvr/dvr_db.c:3031
 msgid "Stop time"
-msgstr ""
+msgstr "结束时间"
 
 #: src/timeshift.c:214
 msgid "Storage path"
@@ -6186,7 +6186,7 @@ msgstr ""
 
 #: src/config.c:1922
 msgid "Storage space"
-msgstr ""
+msgstr "存储空间"
 
 #: src/input/mpegts/mpegts_mux_dvb.c:847
 msgid "Stream ID"
@@ -6194,7 +6194,7 @@ msgstr ""
 
 #: src/profile.c:279
 msgid "Stream Profile"
-msgstr ""
+msgstr "串流配置文件"
 
 #: src/esfilter.c:666 src/esfilter.c:761 src/esfilter.c:856 src/esfilter.c:951
 #: src/esfilter.c:1056 src/profile.c:1341
@@ -6220,11 +6220,11 @@ msgstr ""
 
 #: src/access.c:1345 src/access.c:1706
 msgid "Streaming"
-msgstr ""
+msgstr "串流"
 
 #: src/tvhlog.c:133
 msgid "Streaming Profile"
-msgstr ""
+msgstr "串流配置文件"
 
 #: src/access.c:1707
 msgid ""
@@ -6252,7 +6252,7 @@ msgstr ""
 
 #: src/tvhlog.c:129
 msgid "Subscription"
-msgstr ""
+msgstr "订阅"
 
 #: src/htsp_server.c:2531 src/htsp_server.c:2558 src/htsp_server.c:2602
 #: src/htsp_server.c:2629 src/htsp_server.c:2657
@@ -7312,7 +7312,7 @@ msgstr ""
 
 #: src/access.c:1456 src/config.c:2266
 msgid "Theme"
-msgstr ""
+msgstr "主题"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_frontend.c:246
 #: src/input/mpegts/satip/satip_frontend.c:302
@@ -7340,7 +7340,7 @@ msgstr ""
 
 #: src/tvhlog.c:84 src/config.c:1923
 msgid "Time"
-msgstr ""
+msgstr "时间"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_rotor.c:110
 msgid "Time (in milliseconds) for a command to complete."
@@ -7405,11 +7405,11 @@ msgstr ""
 
 #: src/tvhlog.c:164 src/timeshift.c:183
 msgid "Timeshift"
-msgstr ""
+msgstr "时移"
 
 #: src/dvr/dvr_db.c:3095 src/dvr/dvr_db.c:3103 src/dvr/dvr_timerec.c:553
 msgid "Title"
-msgstr ""
+msgstr "标题"
 
 #: src/dvr/dvr_autorec.c:1033
 msgid "Title (regexp)"
@@ -7453,7 +7453,7 @@ msgstr ""
 
 #: src/wizard.c:1004
 msgid "Total number of services found."
-msgstr ""
+msgstr "发现的服务总数。"
 
 #: src/bouquet.c:1093
 msgid "Total number of services seen."
@@ -7523,7 +7523,7 @@ msgstr ""
 
 #: src/wizard.c:558
 msgid "Tuner"
-msgstr ""
+msgstr "调谐器"
 
 #: src/input/mpegts/satip/satip_frontend.c:211
 msgid "Tuner bind IP address"
@@ -7547,11 +7547,11 @@ msgstr ""
 
 #: src/config.c:2081
 msgid "Tvheadend server name"
-msgstr ""
+msgstr "Tvheadend 服务器名称"
 
 #: src/epggrab/module.c:137
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #: src/service.c:237
 msgid "Type override"
@@ -7576,11 +7576,11 @@ msgstr ""
 #: src/tvhlog.c:90 src/wizard.c:809 src/dvr/dvr_db.c:3377
 #: src/input/mpegts/iptv/iptv.c:845 src/input/mpegts/iptv/iptv_mux.c:139
 msgid "URL"
-msgstr ""
+msgstr "URL"
 
 #: src/wizard.c:810
 msgid "URL of the M3U playlist."
-msgstr ""
+msgstr "M3U 播放列表的 URL。"
 
 #: src/main.c:850
 msgid "URL with the SAT>IP server XML location"
@@ -7801,7 +7801,7 @@ msgstr ""
 
 #: src/epggrab/module.c:60 src/dvr/dvr_timerec.c:95 src/dvr/dvr_config.c:711
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 #: src/htsp_server.c:2718
 msgid "Unknown file"
@@ -7834,15 +7834,15 @@ msgstr ""
 
 #: src/epggrab.c:303
 msgid "Update channel icon"
-msgstr ""
+msgstr "更新频道图标"
 
 #: src/epggrab.c:279
 msgid "Update channel name"
-msgstr ""
+msgstr "更新频道名称"
 
 #: src/epggrab.c:291
 msgid "Update channel number"
-msgstr ""
+msgstr "更新频道编号"
 
 #: src/dvr/dvr_config.c:778
 msgid "Update disabled"
@@ -7900,7 +7900,7 @@ msgstr ""
 
 #: src/dvr/dvr_config.c:1280
 msgid "Use Windows-compatible filenames"
-msgstr ""
+msgstr "使用 Windows 兼容文件名"
 
 #: src/main.c:866
 msgid "Use XSPF playlist instead of M3U"
@@ -8011,7 +8011,7 @@ msgstr ""
 
 #: src/access.c:1461 src/access.c:1655 src/config.c:2090
 msgid "User interface level"
-msgstr ""
+msgstr "用户界面级别"
 
 #: src/config.c:2113
 msgid "User interface quick tips (tooltips)"
@@ -8027,7 +8027,7 @@ msgstr ""
 
 #: src/wizard.c:395
 msgid "User login"
-msgstr ""
+msgstr "用户登录"
 
 #: src/streaming.c:452
 msgid "User request"
@@ -8036,7 +8036,7 @@ msgstr ""
 #: src/access.c:1626 src/access.c:2039 src/wizard.c:434
 #: src/descrambler/cwc.c:1833
 msgid "Username"
-msgstr ""
+msgstr "用户名"
 
 #: src/access.c:1627
 msgid "Username for the entry (login username)."
@@ -8111,7 +8111,7 @@ msgstr ""
 
 #: src/access.c:1734
 msgid "Video recorder"
-msgstr ""
+msgstr "录像机"
 
 #: src/access.c:1735
 msgid ""
@@ -8199,15 +8199,15 @@ msgstr ""
 
 #: src/access.c:1771 src/wizard.c:184
 msgid "Web interface"
-msgstr ""
+msgstr "网页界面"
 
 #: src/access.c:1451 src/access.c:1686
 msgid "Web interface language"
-msgstr ""
+msgstr "网页界面语言"
 
 #: src/access.c:1687
 msgid "Web interface language."
-msgstr ""
+msgstr "网页界面语言。"
 
 #: src/access.c:1696
 msgid "Web interface theme."
@@ -8227,7 +8227,7 @@ msgstr ""
 
 #: src/wizard.c:243 src/wizard.c:457
 msgid "Welcome - Tvheadend - your TV streaming server and video recorder"
-msgstr ""
+msgstr "欢迎使用 Tvheadend - 你的电视串流服务器和录像机"
 
 #: src/epg.c:2282
 msgid "Western"
@@ -8310,7 +8310,7 @@ msgstr ""
 
 #: src/access.c:1397
 msgid "Yes"
-msgstr ""
+msgstr "是"
 
 #: src/input/mpegts/satip/satip.c:288
 msgid "addpids/delpids supported"
@@ -8425,3 +8425,225 @@ msgstr ""
 #: src/profile.c:1798
 msgid "veryslow: h264 / h265 / qsv(h264)"
 msgstr ""
+
+msgid "Server Settings"
+msgstr "服务器设置"
+
+msgid "Web Interface Settings"
+msgstr "网页界面设置"
+
+msgid "HTTP Server Settings"
+msgstr "HTTP 服务器设置"
+
+msgid "Default language"
+msgstr "默认语言"
+
+msgid "Items per page"
+msgstr "每页项目数"
+
+msgid "Tooltips"
+msgstr "工具提示"
+
+msgid "Default view level"
+msgstr "默认视图级别"
+
+msgid "Persistent view level"
+msgstr "保持视图级别"
+
+msgid "Conditional Access (for advanced view level)"
+msgstr "条件接收（高级视图级别）"
+
+msgid "HTTP server name"
+msgstr "HTTP 服务器名称"
+
+msgid "HTTP realm name"
+msgstr "HTTP 认证域名称"
+
+msgid "Use PROXY protocol & X-Forwarded-For"
+msgstr "使用 PROXY 协议和 X-Forwarded-For"
+
+msgid "Muxes"
+msgstr "复用器"
+
+msgid "Adapter"
+msgstr "适配器"
+
+msgid "Device"
+msgstr "设备"
+
+msgid "Input"
+msgstr "输入"
+
+msgid "Output"
+msgstr "输出"
+
+msgid "Duration"
+msgstr "时长"
+
+msgid "Error"
+msgstr "错误"
+
+msgid "Active"
+msgstr "活动"
+
+msgid "EPG Grabber Channels"
+msgstr "节目指南抓取器频道"
+
+msgid "EPG Grabber Modules"
+msgstr "节目指南抓取器模块"
+
+msgid "DVR Configuration"
+msgstr "录像机配置"
+
+msgid "DVR Configurations"
+msgstr "录像机配置"
+
+msgid "Recording"
+msgstr "录像"
+
+msgid "Recordings"
+msgstr "录像"
+
+msgid "Stream Profiles"
+msgstr "串流配置文件"
+
+msgid "Access Entries"
+msgstr "访问条目"
+
+msgid "Access Entry"
+msgstr "访问条目"
+
+msgid "Image cache"
+msgstr "图像缓存"
+
+msgid "File permissions"
+msgstr "文件权限"
+
+msgid "Retention period"
+msgstr "保留期限"
+
+msgid "Autorec maximum count"
+msgstr "自动录像最大数量"
+
+msgid "All"
+msgstr "全部"
+
+msgid "Actions"
+msgstr "操作"
+
+msgid "Start Time"
+msgstr "开始时间"
+
+msgid "End Time"
+msgstr "结束时间"
+
+msgid "Stars"
+msgstr "星级"
+
+msgid "Rating"
+msgstr "评级"
+
+msgid "Rating Label"
+msgstr "评级标签"
+
+msgid "Age"
+msgstr "年龄"
+
+msgid "Age Rating"
+msgstr "年龄评级"
+
+msgid "Content Type"
+msgstr "内容类型"
+
+msgid "End"
+msgstr "结束"
+
+msgid "Login"
+msgstr "登录"
+
+msgid "Logout"
+msgstr "退出"
+
+msgid "Change"
+msgstr "更改"
+
+msgid "Stream Profile Name"
+msgstr "串流配置文件名称"
+
+msgid "TV adapters"
+msgstr "电视适配器"
+
+msgid "TV Adapters"
+msgstr "电视适配器"
+
+msgid "Client Address"
+msgstr "客户端地址"
+
+msgid "Client Port"
+msgstr "客户端端口"
+
+msgid "Server Address"
+msgstr "服务器地址"
+
+msgid "Server Port"
+msgstr "服务器端口"
+
+msgid "Passwords"
+msgstr "密码"
+
+msgid "Profile Name"
+msgstr "配置文件名称"
+
+msgid "Connection"
+msgstr "连接"
+
+msgid "Connections"
+msgstr "连接"
+
+msgid "Subscriptions"
+msgstr "订阅"
+
+msgid "DVB Inputs"
+msgstr "DVB 输入"
+
+msgid "TV adapter"
+msgstr "电视适配器"
+
+msgid "TV Adapter"
+msgstr "电视适配器"
+
+msgid "Welcome"
+msgstr "欢迎"
+
+msgid "Access Control"
+msgstr "访问控制"
+
+msgid "Tuner and Network"
+msgstr "调谐器和网络"
+
+msgid "Map all discovered services to channels."
+msgstr "将所有发现的服务映射为频道。"
+
+msgid "Enter allowed network prefix(es). You can enter a comma-separated list of prefixes here."
+msgstr "输入允许的网络前缀。可以输入用逗号分隔的多个前缀。"
+
+msgid "User interface level."
+msgstr "用户界面级别。"
+
+msgid "Channel name scheme"
+msgstr "频道名称方案"
+
+msgid "Directory permissions"
+msgstr "目录权限"
+
+msgid "Removal grace period"
+msgstr "删除宽限期"
+
+msgid "Create directories per channel"
+msgstr "按频道创建目录"
+
+msgid "Mux Schedulers"
+msgstr "复用器计划"
+
+msgid "Provider name"
+msgstr "提供商名称"

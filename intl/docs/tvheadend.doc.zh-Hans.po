@@ -1116,7 +1116,7 @@ msgid ""
 "Assign predefined muxes to networks. To save you from manually entering "
 "muxes, Tvheadend includes predefined mux lists. Please select a list for "
 "each network below."
-msgstr ""
+msgstr "为网络分配预定义复用器。为避免手动输入复用器，Tvheadend 内置了预定义复用器列表。请在下面为每个网络选择一个列表。"
 
 #: src/docs_inc.c:3568
 msgid ""
@@ -2113,7 +2113,7 @@ msgid ""
 "this covers the network details for address-based access to the system; for "
 "example, 192.168.1.0/24 to allow local access only to 192.168.1.x clients, "
 "or 0.0.0.0/0 or empty value for access from any system."
-msgstr ""
+msgstr "输入访问控制信息以保护系统安全。第一部分是基于地址访问系统的网络设置；例如，使用 192.168.1.0/24 仅允许 192.168.1.x 客户端本地访问，或使用 0.0.0.0/0 / 留空以允许任意系统访问。"
 
 #: src/docs_inc.c:2859
 msgid ""
@@ -2771,7 +2771,7 @@ msgstr ""
 msgid ""
 "If you confirm this dialog, the default administrator account will be "
 "removed. Please then the use credentials you defined thru this wizard."
-msgstr ""
+msgstr "如果确认此对话框，默认管理员账户将被移除。之后请使用你在本向导中定义的凭据登录。"
 
 #: src/docs_inc.c:299
 msgid ""
@@ -2871,7 +2871,7 @@ msgid ""
 "If you would like Tvheadend to do this for you, check the 'Map all services'"
 " option below, but be aware that this will also map encrypted services you "
 "may not have access to."
-msgstr ""
+msgstr "如果希望 Tvheadend 自动完成，请勾选下面的“映射所有服务”选项。但请注意，这也会映射你可能无权访问的加密服务。"
 
 #: src/docs_inc.c:2913
 msgid ""
@@ -2948,7 +2948,7 @@ msgstr ""
 msgid ""
 "In order for your frontend client(s) (such as Kodi, Movian, and similar) to "
 "see/play channels, you must first map discovered services to channels."
-msgstr ""
+msgstr "为了让前端客户端（如 Kodi、Movian 等）看到并播放频道，你必须先把发现的服务映射为频道。"
 
 #: src/docs_inc.c:581
 msgid ""
@@ -3227,7 +3227,7 @@ msgstr ""
 msgid ""
 "Many providers include undesirable services - Teleshopping, Adult "
 "Entertainment, etc; using the 'Map all services' will include these."
-msgstr ""
+msgstr "许多提供商会包含不需要的服务，例如电视购物、成人内容等；使用“映射所有服务”会把这些也包含进去。"
 
 #: src/docs_inc.c:351
 msgid ""
@@ -3264,7 +3264,7 @@ msgstr ""
 
 #: src/docs_inc.c:5130
 msgid "Map all discovered services to channels."
-msgstr ""
+msgstr "将所有发现的服务映射为频道。"
 
 #: src/docs_inc.c:2004 src/docs_inc.c:3554
 msgid "Map all services"
@@ -3707,7 +3707,7 @@ msgid ""
 "Now let's get your tuners configured. Go ahead and select a network for each"
 " of the tuners you would like to use. if you do not assign a network to a "
 "tuner it will __not__ be used."
-msgstr ""
+msgstr "现在开始配置调谐器。请为每个要使用的调谐器选择网络。如果不为调谐器分配网络，它将__不会__被使用。"
 
 #: src/docs_inc.c:3574
 msgid "Number Down"
@@ -3987,7 +3987,7 @@ msgstr ""
 
 #: src/docs_inc.c:2018
 msgid "Press the _[Map services]_ button and then _[Map all services]_ ."
-msgstr ""
+msgstr "点击 _[映射服务]_ 按钮，然后点击 _[映射所有服务]_。"
 
 #: src/docs_inc.c:3432
 msgid ""
@@ -5644,7 +5644,7 @@ msgid ""
 "This works alongside the second part, which is a familiar username/password "
 "combination, so provide these for both an administrator and regular (day-to-"
 "day) user."
-msgstr ""
+msgstr "这会与第二部分的用户名/密码认证配合使用；请分别为管理员和日常普通用户设置凭据。"
 
 #: src/docs_inc.c:3691
 msgid "Thread"
@@ -5909,7 +5909,7 @@ msgstr ""
 msgid ""
 "Tvheadend is now scanning for available services. Please wait until the scan"
 " completes.."
-msgstr ""
+msgstr "Tvheadend 正在扫描可用服务，请等待扫描完成。"
 
 #: src/docs_inc.c:1117
 msgid "Tvheadend is operated primarily through a tabbed web interface."
@@ -6204,7 +6204,7 @@ msgstr ""
 
 #: src/docs_inc.c:181
 msgid "Welcome to Tvheadend!"
-msgstr ""
+msgstr "欢迎使用 Tvheadend！"
 
 #: src/docs_inc.c:5206
 msgid ""
@@ -6212,7 +6212,7 @@ msgid ""
 "wizard will help you get up and running fast. Let's start by configuring the"
 " basic language settings. Please select the default user interface and EPG "
 "language(s)."
-msgstr ""
+msgstr "欢迎使用 Tvheadend，你的电视串流服务器和录像机。本向导会帮助你快速完成初始配置。先从基础语言设置开始，请选择默认用户界面语言和节目指南语言。"
 
 #: src/docs_inc.c:279
 msgid ""
@@ -6308,7 +6308,7 @@ msgstr ""
 
 #: src/docs_inc.c:5105 src/docs_inc.c:5179
 msgid "You are now finished."
-msgstr ""
+msgstr "现在已经完成。"
 
 #: src/docs_inc.c:1589
 msgid "You basically have the choice of:"
@@ -6935,7 +6935,7 @@ msgstr ""
 msgid ""
 "__You may omit this step (do not check 'Map all services') and map services "
 "to channels manually.__"
-msgstr ""
+msgstr "__你可以跳过此步骤（不要勾选“映射所有服务”），之后手动将服务映射为频道。__"
 
 #: src/docs_inc.c:3745
 msgid "access"
@@ -7720,3 +7720,30 @@ msgid ""
 "Content from cell 2 Content in the first column | Content in the second "
 "column"
 msgstr ""
+
+msgid "This wizard is optional, and can be cancelled at any time, but it is recommended for new users."
+msgstr "本向导是可选的，可随时取消，但建议新用户使用。"
+
+msgid "Running this wizard on existing configurations is NOT a good idea as it may lead to confusion, misconfiguration and unexpected behavior."
+msgstr "不建议在已有配置上运行此向导，因为可能导致混乱、错误配置和意外行为。"
+
+msgid "The wizard will reload the interface in your chosen language. Unfortunately not all translations are available or complete."
+msgstr "向导会用你选择的语言重新加载界面。注意，并非所有翻译都已提供或完整。"
+
+msgid "If you get stuck at any point and need more information, press [Help]."
+msgstr "如果某一步卡住并需要更多信息，请点击 [帮助]。"
+
+msgid "Pre-defined lists are not always up-to-date, but this generally isn't a problem provided that one of the muxes in the list is active and contains network information."
+msgstr "预定义列表并不总是最新的，但通常只要列表中有一个复用器处于活动状态并包含网络信息，就不会有问题。"
+
+msgid "If you don't see any options below, you need to go back and assign a network type to a tuner."
+msgstr "如果下面没有任何选项，需要返回上一步为调谐器分配网络类型。"
+
+msgid "You may further customise your settings by editing channel numbers, etc."
+msgstr "你可以继续自定义设置，例如编辑频道编号等。"
+
+msgid "If you require further help, check out [Tvheadend.org](http://tvheadend.org) or chat to us on [IRC](https://web.libera.chat/?nick=tvhhelp|?#hts)."
+msgstr "如果需要更多帮助，请访问 [Tvheadend.org](http://tvheadend.org)，或在 [IRC](https://web.libera.chat/?nick=tvhhelp|?#hts) 与我们交流。"
+
+msgid "Thank you for using Tvheadend (and don't forget to [donate](https://opencollective.com/tvheadend/donate))! :)"
+msgstr "感谢使用 Tvheadend（也别忘了可以 [捐赠](https://opencollective.com/tvheadend/donate) 支持项目）！:)"
