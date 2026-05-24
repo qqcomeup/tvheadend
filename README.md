@@ -23,7 +23,8 @@ Simplified Chinese / 简体中文汉化版
 ----------------------------------
 
 这个 fork 在上游 Tvheadend 的基础上补充了简体中文 Web UI 翻译，并修复了
-常见反向代理场景下的 `X-Forwarded-For` 解析兼容问题。
+常见反向代理场景下的 `X-Forwarded-For` 解析兼容问题，同时改善了
+M3U 播放列表对 IPTV 客户端分组和台标字段的兼容性。
 
 已更新的翻译文件：
 
@@ -54,6 +55,19 @@ Lucky / 反代兼容修复：
   * 兼容部分反代发送的 IPv4 带端口格式，例如
     `X-Forwarded-For: 1.2.3.4:12345`
   * 保留 IPv6 地址处理逻辑，避免把 IPv6 中的冒号误认为端口分隔符
+
+播放列表兼容改进：
+
+  * `/playlist/auth/channels.m3u` 会为频道输出 `group-title`，分组来自频道绑定的
+    第一个已启用、非内部频道标签，便于 mytv、IPTV 播放器等客户端按标签分组
+  * `/playlist/auth/grouped.m3u` 作为频道列表别名可直接使用，同样包含 `group-title`
+    和频道元数据
+  * M3U 条目补充 `tvg-name`、`tvg-id`、`tvg-chno`，方便客户端识别频道名、频道号和
+    EPG 关联
+  * `tvg-logo` 优先使用 Tvheadend 的 `/imagecache/` 可访问地址；未缓存的本地
+    `file://` 台标路径不会暴露到播放列表，避免外部客户端拿到不可访问的本机路径
+  * 播放列表字段会规整换行和制表符，减少异常频道名、标签名或录像标题导致的
+    M3U/E2/SATIP 播放列表格式问题
 
 ![Tvheadend Simplified Chinese web interface](docs/images/tvheadend-zh-hans.png)
 
@@ -131,6 +145,8 @@ Running in Docker can be as simple as:
 	$ docker pull ghcr.io/qqcomeup/tvheadend:latest
 	$ docker run --rm -p 9981:9981 -p 9982:9982 ghcr.io/qqcomeup/tvheadend:latest --firstrun
 
-该镜像包含本 fork 的简体中文翻译和 Lucky / `X-Forwarded-For` 兼容修复。
+该镜像包含本 fork 的简体中文翻译、Lucky / `X-Forwarded-For` 兼容修复和
+M3U 播放列表分组改进。升级已有 Docker Compose 部署时，通常只需要拉取新镜像并
+重建容器，配置目录保持不变。
 
 See [README.Docker.md](README.Docker.md) for more details.

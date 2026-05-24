@@ -63,6 +63,93 @@ optional. Please do read the remainder of the next chapter
 [Persistently storing configuration](#Persistently-storing-configuration)
 to learn more about where configuration is stored.
 
+## Running this Chinese fork
+This fork publishes a Chinese-enhanced image at:
+
+```sh
+docker image pull ghcr.io/qqcomeup/tvheadend:latest
+```
+
+A simple Docker Compose deployment for a home server is:
+
+```yaml
+services:
+  tvheadend:
+    image: ghcr.io/qqcomeup/tvheadend:latest
+    container_name: tvheadend
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "9981:9981"
+      - "9982:9982"
+    volumes:
+      - ./config:/var/lib/tvheadend:rw
+      - ./recordings:/var/lib/tvheadend/recordings:rw
+      # Optional picons directory. Match the path in Configuration -> Base.
+      - ./picons:/picons:ro
+    devices:
+      # Optional DVB tuners.
+      - /dev/dvb:/dev/dvb
+      # Optional VAAPI/QSV device.
+      - /dev/dri:/dev/dri
+```
+
+The important persistent paths are:
+
+  * `./config:/var/lib/tvheadend:rw` for Tvheadend configuration, users,
+    channels, EPG settings and recordings database
+  * `./recordings:/var/lib/tvheadend/recordings:rw` for recorded files
+  * `./picons:/picons:ro` for local picons if you use paths such as
+    `file:///picons/%C.png`
+
+### Lucky / reverse proxy
+When using Lucky or another reverse proxy, point it directly to Tvheadend on
+`http://host-ip:9981`. An extra nginx real-IP shim is not required for this
+fork.
+
+If the proxy sends `X-Forwarded-For`, enable `PROXY protocol & X-Forwarded-For`
+in Tvheadend only when you trust the proxy path. This fork accepts common proxy
+formats such as:
+
+  * `X-Forwarded-For: 1.2.3.4, 5.6.7.8`
+  * `X-Forwarded-For: 1.2.3.4:12345`
+
+### Playlist URLs
+Common playlist URLs:
+
+```text
+http://user:pass@example:9981/playlist/auth/channels.m3u
+http://user:pass@example:9981/playlist/auth/grouped.m3u
+http://user:pass@example:9981/playlist/auth/tags.m3u
+```
+
+`channels.m3u` and `grouped.m3u` include `group-title`, `tvg-name`, `tvg-id`
+and `tvg-chno` metadata. `group-title` comes from the first enabled,
+non-internal channel tag.
+
+The `tvg-id` value is configurable per request:
+
+```text
+/playlist/auth/channels.m3u?tvg-id=uuid
+/playlist/auth/channels.m3u?tvg-id=name
+/playlist/auth/channels.m3u?tvg-id=number
+/playlist/auth/channels.m3u?tvg-id=none
+```
+
+The default is `uuid`, which is stable and unique. Use `name` or `number` only
+when your EPG provider expects those identifiers.
+
+For a quick local regression check after upgrading the image:
+
+```sh
+sh support/check-playlist-metadata.sh \
+  'http://user:pass@example:9981/playlist/auth/channels.m3u'
+```
+
+The script checks that the playlist has an M3U header, stream URLs, `tvg-id`,
+`tvg-name`, `group-title`, and no leaked local `file://` logo paths.
+
 
 ## Persistently storing configuration
 Containers do not store files persistently, they are ephemeral by design.
