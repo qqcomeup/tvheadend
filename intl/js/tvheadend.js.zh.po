@@ -689,7 +689,7 @@ msgstr "错误"
 
 #: src/webui/static/app/epg.js:935
 msgid "Events"
-msgstr ""
+msgstr "事件"
 
 #: src/webui/static/app/dvr.js:162
 msgid "Every day"
@@ -1139,7 +1139,7 @@ msgstr "未验证访问"
 #. / {0} title (lowercase), {1} title
 #: src/webui/static/app/tvheadend.js:363
 msgid "No {0} to display"
-msgstr ""
+msgstr "没有可显示的{0}"
 
 #: src/webui/static/app/idnode.js:1941 src/webui/static/app/mpegts.js:206
 #: src/webui/static/app/mpegts.js:216
@@ -1819,11 +1819,11 @@ msgstr ""
 
 #: src/webui/static/app/tvheadend.js:1024
 msgid "Tvheadend Web-Panel"
-msgstr ""
+msgstr "Tvheadend 控制面板"
 
 #: src/webui/static/app/tvheadend.js:1045
 msgid "Tvheadend log"
-msgstr ""
+msgstr "Tvheadend 日志"
 
 #: src/webui/static/app/caclient.js:48 src/webui/static/app/esfilter.js:32
 #: src/webui/static/app/mpegts.js:74 src/webui/static/app/mpegts.js:167
@@ -1961,7 +1961,7 @@ msgstr ""
 #: src/webui/static/app/idnode.js:363 src/webui/static/app/idnode.js:364
 #: src/webui/static/app/epg.js:466 src/webui/static/app/epg.js:468
 msgid "hrs"
-msgstr ""
+msgstr "小时"
 
 #: src/webui/static/app/tvheadend.js:963
 msgid "login"
@@ -1969,7 +1969,7 @@ msgstr "登录"
 
 #: src/webui/static/app/tvheadend.js:960
 msgid "logout"
-msgstr ""
+msgstr "退出登录"
 
 #: src/webui/static/app/tvheadend.js:250
 msgid ""
@@ -2005,7 +2005,7 @@ msgstr ""
 #: src/webui/static/app/epg.js:116 src/webui/static/app/epg.js:468
 #: src/webui/static/app/epg.js:471 src/webui/static/app/dvr.js:52
 msgid "min"
-msgstr ""
+msgstr "分钟"
 
 #: src/webui/static/app/i18n-post.js:145
 msgid "of {0}"
@@ -2044,7 +2044,7 @@ msgstr ""
 #. / {0} start, {1} end, {2} total, {3} title
 #: src/webui/static/app/tvheadend.js:361
 msgid "{3} {0} - {1} of {2}"
-msgstr ""
+msgstr "{3} {0} - {1}，共 {2}"
 
 msgid "Name"
 msgstr "名称"
