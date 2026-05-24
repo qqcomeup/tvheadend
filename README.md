@@ -19,6 +19,23 @@ Tvheadend is the leading TV streaming server and Digital Video Recorder for Linu
 
 ![tvheadend front page](https://github.com/tvheadend/tvheadend/raw/master/src/webui/static/img/epg.png)
 
+Simplified Chinese / 简体中文汉化版
+----------------------------------
+
+这个 fork 更新了 Tvheadend 的简体中文翻译，覆盖核心字符串、Web
+界面和文档翻译。
+
+已更新的翻译文件：
+
+  * `intl/tvheadend.zh-Hans.po`
+  * `intl/js/tvheadend.js.zh-Hans.po`
+  * `intl/docs/tvheadend.doc.zh-Hans.po`
+
+使用时在 Web 界面语言中选择 `Chinese (CN)`。Tvheadend 会将该选项映射到
+`zh-Hans` 简体中文语言包。
+
+![Tvheadend Simplified Chinese web interface](docs/images/tvheadend-zh-hans.png)
+
 It supports the following inputs:
 
   * ATSC
@@ -87,5 +104,10 @@ Running in Docker
 Running in Docker can be as simple as:
 
 	$ docker run --rm ghcr.io/tvheadend/tvheadend:latest
+
+使用这个简体中文 fork 的镜像：
+
+	$ docker pull ghcr.io/qqcomeup/tvheadend:latest
+	$ docker run --rm -p 9981:9981 -p 9982:9982 ghcr.io/qqcomeup/tvheadend:latest --firstrun
 
 See [README.Docker.md](README.Docker.md) for more details.
