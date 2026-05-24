@@ -22,17 +22,38 @@ Tvheadend is the leading TV streaming server and Digital Video Recorder for Linu
 Simplified Chinese / 简体中文汉化版
 ----------------------------------
 
-这个 fork 更新了 Tvheadend 的简体中文翻译，覆盖核心字符串、Web
-界面和文档翻译。
+这个 fork 在上游 Tvheadend 的基础上补充了简体中文 Web UI 翻译，并修复了
+常见反向代理场景下的 `X-Forwarded-For` 解析兼容问题。
 
 已更新的翻译文件：
 
   * `intl/tvheadend.zh-Hans.po`
+  * `intl/tvheadend.zh.po`
   * `intl/js/tvheadend.js.zh-Hans.po`
+  * `intl/js/tvheadend.js.zh.po`
   * `intl/docs/tvheadend.doc.zh-Hans.po`
 
 使用时在 Web 界面语言中选择 `Chinese (CN)`。Tvheadend 会将该选项映射到
 `zh-Hans` 简体中文语言包。
+
+汉化覆盖范围：
+
+  * 主导航、配置页签、频道 / 节目指南、录像、用户、调试等常用 Web UI 文案
+  * `配置 -> 基本` 中常见后端字段，例如服务器名称、频道图标命名方案、
+    PROXY 协议和 X-Forwarded-For、RTSP UDP 端口、更新时间容差等
+  * 播放列表、状态页、调试页中的常见按钮和提示，例如流过滤器、已删除录像、
+    显示密码、选择子系统、应用运行时配置等
+
+说明：Tvheadend 的部分字段来自后端 idnode 翻译表，需要随镜像重新编译后才会
+生效；浏览器刷新或替换前端 JS 语言包不能单独更新这类字段。
+
+Lucky / 反代兼容修复：
+
+  * 修复开启 `PROXY protocol & X-Forwarded-For` 后，常见反代发送
+    `X-Forwarded-For: 1.2.3.4, 5.6.7.8` 被判为错误请求的问题
+  * 兼容部分反代发送的 IPv4 带端口格式，例如
+    `X-Forwarded-For: 1.2.3.4:12345`
+  * 保留 IPv6 地址处理逻辑，避免把 IPv6 中的冒号误认为端口分隔符
 
 ![Tvheadend Simplified Chinese web interface](docs/images/tvheadend-zh-hans.png)
 
@@ -109,5 +130,7 @@ Running in Docker can be as simple as:
 
 	$ docker pull ghcr.io/qqcomeup/tvheadend:latest
 	$ docker run --rm -p 9981:9981 -p 9982:9982 ghcr.io/qqcomeup/tvheadend:latest --firstrun
+
+该镜像包含本 fork 的简体中文翻译和 Lucky / `X-Forwarded-For` 兼容修复。
 
 See [README.Docker.md](README.Docker.md) for more details.
