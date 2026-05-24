@@ -186,7 +186,7 @@ msgstr ""
 
 #: src/webui/static/app/tvhlog.js:24
 msgid "Apply configuration (run-time only)"
-msgstr ""
+msgstr "应用配置（仅运行时）"
 
 #: src/webui/static/app/idnode.js:1482
 msgid "Apply settings"
@@ -218,7 +218,7 @@ msgstr ""
 
 #: src/webui/static/app/esfilter.js:66
 msgid "Audio Stream Filters"
-msgstr ""
+msgstr "音频流过滤器"
 
 #: src/webui/static/app/epg.js:167
 msgid "Audio description#EPG"
@@ -311,7 +311,7 @@ msgstr ""
 
 #: src/webui/static/app/esfilter.js:117
 msgid "CA Stream Filters"
-msgstr ""
+msgstr "CA 流过滤器"
 
 #: src/webui/static/app/mpegts.js:188
 msgid "CAIDS: "
@@ -402,7 +402,7 @@ msgstr "清除所选输入的统计信息？"
 
 #: src/webui/static/app/caclient.js:34
 msgid "Client Name"
-msgstr ""
+msgstr "客户端名称"
 
 #: src/webui/static/app/idnode.js:1430 src/webui/static/app/idnode.js:2299
 msgid "Clone"
@@ -1021,7 +1021,7 @@ msgstr ""
 
 #: src/webui/static/app/tvhlog.js:36
 msgid "Memory Information Entries"
-msgstr ""
+msgstr "内存信息条目"
 
 #: src/webui/static/app/tvhlog.js:35
 msgid "Memory Information Entry"
@@ -1200,7 +1200,7 @@ msgstr ""
 
 #: src/webui/static/app/esfilter.js:133
 msgid "Other Stream Filters"
-msgstr ""
+msgstr "其它流过滤器"
 
 #: src/webui/static/app/status.js:780
 msgid "Out"
@@ -1393,7 +1393,7 @@ msgstr ""
 
 #: src/webui/static/app/dvr.js:675
 msgid "Removed Recordings"
-msgstr ""
+msgstr "已删除录像"
 
 #: src/webui/static/app/epg.js:155
 msgid "Repeat#EPG"
@@ -1529,7 +1529,7 @@ msgstr ""
 
 #: src/webui/static/app/idnode.js:2383 src/webui/static/app/idnode.js:2387
 msgid "Show passwords"
-msgstr ""
+msgstr "显示密码"
 
 #: src/webui/static/app/status.js:465
 msgid "Signal Strength"
@@ -1635,7 +1635,7 @@ msgstr ""
 
 #: src/webui/static/app/esfilter.js:100
 msgid "Subtitle Stream Filters"
-msgstr ""
+msgstr "字幕流过滤器"
 
 #: src/webui/static/app/epg.js:165
 msgid "Subtitled#EPG"
@@ -1671,7 +1671,7 @@ msgstr ""
 
 #: src/webui/static/app/esfilter.js:83
 msgid "Teletext Stream Filters"
-msgstr ""
+msgstr "图文电视流过滤器"
 
 #: src/webui/static/app/dvr.js:595
 msgid "The associated file will be removed from storage."
@@ -1878,7 +1878,7 @@ msgstr ""
 
 #: src/webui/static/app/esfilter.js:49
 msgid "Video Stream Filters"
-msgstr ""
+msgstr "视频流过滤器"
 
 #: src/webui/static/app/idnode.js:624
 msgid "View level"
@@ -2048,6 +2048,14 @@ msgstr "{3} {0} - {1}，共 {2}"
 
 msgid "Name"
 msgstr "名称"
+
+#: src/webui/static/app/tvhlog.js:34 src/webui/static/app/tvhlog.js:332
+msgid "Select Subsystems"
+msgstr "选择子系统"
+
+#: src/webui/static/app/esfilter.js:11
+msgid "Stream Filters"
+msgstr "流过滤器"
 
 msgid "Enabled"
 msgstr "已启用"
