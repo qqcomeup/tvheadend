@@ -58,6 +58,9 @@ Lucky / 反代兼容修复：
 
 播放列表兼容改进：
 
+  * M3U 播放列表 `#EXTM3U` 头部自动输出 `x-tvg-url`，指向同域名的
+    `/xmltv/channels` 并携带相同的认证参数，IPTV 客户端加载播放列表后可自动
+    获取 EPG 节目指南，无需手动配置 EPG 地址
   * `/playlist/auth/channels.m3u` 会为频道输出 `group-title`，分组来自频道绑定的
     第一个已启用、非内部频道标签，便于 mytv、IPTV 播放器等客户端按标签分组
   * `/playlist/auth/grouped.m3u` 作为频道列表别名可直接使用，同样包含 `group-title`
