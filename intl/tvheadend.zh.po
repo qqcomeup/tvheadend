@@ -31,7 +31,7 @@ msgstr "# 頻道"
 
 #: src/input/mpegts/mpegts_network.c:288
 msgid "# Mapped channels"
-msgstr "# 對映頻道"
+msgstr "已映射频道数"
 
 #: src/input/mpegts/mpegts_network.c:272
 msgid "# Muxes"
@@ -370,7 +370,7 @@ msgstr ""
 
 #: src/satip/server.c:625
 msgid "Accept remote subscription weight"
-msgstr ""
+msgstr "接受远程订阅权重"
 
 #: src/satip/server.c:626
 msgid "Accept the remote subscription weight (from the SAT>IP client)."
@@ -1134,7 +1134,7 @@ msgstr ""
 #: src/input/mpegts/mpegts_network.c:253 src/input/mpegts/mpegts_mux.c:630
 #: src/input/mpegts/mpegts_service.c:203
 msgid "Character set"
-msgstr ""
+msgstr "字符集"
 
 #: src/dvr/dvr_config.c:1281
 msgid ""
@@ -1290,7 +1290,7 @@ msgstr ""
 
 #: src/dvr/dvr_config.c:859
 msgid "Configuration name"
-msgstr ""
+msgstr "配置文件名称"
 
 #: src/config.c:2062
 msgid "Configuration version"
@@ -1367,7 +1367,7 @@ msgstr ""
 
 #: src/memoryinfo.c:69
 msgid "Count of objects"
-msgstr ""
+msgstr "对象数量"
 
 #: src/service_mapper.c:532
 msgid "Create SDTV/HDTV/Radio tags."
@@ -1416,7 +1416,7 @@ msgstr ""
 
 #: src/input/mpegts/iptv/iptv.c:855
 msgid "Create bouquet"
-msgstr ""
+msgstr "创建频道包"
 
 #: src/bouquet.c:794
 msgid "Create bouquet tag"
@@ -1478,7 +1478,7 @@ msgstr ""
 
 #: src/epggrab.c:327
 msgid "Cron multi-line"
-msgstr ""
+msgstr "Cron 多行"
 
 #: src/epg.c:2388
 msgid "Culture (without music)"
@@ -1760,7 +1760,7 @@ msgstr ""
 
 #: src/tvhlog.c:793
 msgid "Debug libav log"
-msgstr ""
+msgstr "调试 libav 日志"
 
 #: src/tvhlog.c:725
 msgid "Debug log path"
@@ -1772,15 +1772,15 @@ msgstr ""
 
 #: src/tvhlog.c:754
 msgid "Debug subsystems"
-msgstr ""
+msgstr "调试子系统"
 
 #: src/tvhlog.c:745
 msgid "Debug to syslog"
-msgstr ""
+msgstr "调试输出到 syslog"
 
 #: src/tvhlog.c:766
 msgid "Debug trace (low-level)"
-msgstr ""
+msgstr "调试跟踪（低级）"
 
 #: src/tvhlog.c:710
 msgid "Debugging"
@@ -1788,7 +1788,7 @@ msgstr ""
 
 #: src/access.c:1383 src/access.c:1395 src/config.c:1931 src/profile.c:316
 msgid "Default"
-msgstr ""
+msgstr "默认"
 
 #: src/config.c:2207
 msgid "Default language(s)"
@@ -1800,7 +1800,7 @@ msgstr ""
 
 #: src/profile.c:345
 msgid "Default priority"
-msgstr ""
+msgstr "默认优先级"
 
 #: src/access.c:1656
 msgid "Default user interface level."
@@ -1824,7 +1824,7 @@ msgstr ""
 
 #: src/satip/server.c:635
 msgid "Descramble services (limit per mux)"
-msgstr ""
+msgstr "解扰服务数（每个复用器限制）"
 
 #: src/tvhlog.c:134
 msgid "Descrambler"
@@ -1897,7 +1897,7 @@ msgstr ""
 #: src/input/mpegts/mpegts_network.c:136 src/input/mpegts/mpegts_mux.c:475
 #: src/input/mpegts/mpegts_mux.c:485
 msgid "Disable"
-msgstr ""
+msgstr "禁用"
 
 #: src/main.c:890
 msgid "Disable DVB bouquets"
@@ -2022,7 +2022,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:263
 msgid "EIT time offset"
-msgstr ""
+msgstr "EIT 时间偏移"
 
 #: src/tvhlog.c:142
 msgid "EPG Database"
@@ -2195,7 +2195,7 @@ msgstr ""
 
 #: src/tvhlog.c:736
 msgid "Enable syslog"
-msgstr ""
+msgstr "启用 syslog"
 
 #: src/config.c:2292
 msgid ""
@@ -2481,7 +2481,7 @@ msgstr ""
 
 #: src/satip/server.c:668
 msgid "External IP (NAT)"
-msgstr ""
+msgstr "外部 IP（NAT）"
 
 #: src/epggrab/module/pyepg.c:471
 msgid "External PyEPG Grabber"
@@ -2623,7 +2623,7 @@ msgstr ""
 
 #: src/timeshift.c:284
 msgid "Fit to RAM (cut rewind)"
-msgstr ""
+msgstr "适配 RAM（裁剪回看）"
 
 #: src/epg.c:2446
 msgid "Fitness and health"
@@ -2663,7 +2663,7 @@ msgstr ""
 
 #: src/epggrab.c:341
 msgid "Force initial EPG grab at start-up"
-msgstr ""
+msgstr "启动时强制初始 EPG 抓取"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_frontend.c:168
 msgid "Force old status"
@@ -2675,7 +2675,7 @@ msgstr ""
 
 #: src/profile.c:359
 msgid "Force priority"
-msgstr ""
+msgstr "强制优先级"
 
 #: src/config.c:1984
 msgid "Force service type to 1"
@@ -3234,7 +3234,7 @@ msgstr "过期时间"
 
 #: src/input/mpegts/mpegts_network.c:234
 msgid "Ignore provider's channel numbers"
-msgstr ""
+msgstr "忽略提供方频道号"
 
 #: src/tvhlog.c:108
 msgid "Image Cache"
@@ -3602,7 +3602,7 @@ msgstr ""
 
 #: src/input/mpegts/dvb_support.c:463
 msgid "Local (server) time"
-msgstr ""
+msgstr "本地（服务器）时间"
 
 #: src/input/mpegts/satip/satip.c:325
 msgid "Local bind IP address"
@@ -3883,7 +3883,7 @@ msgstr ""
 
 #: src/timeshift.c:254
 msgid "Maximum RAM size (MB)"
-msgstr ""
+msgstr "最大 RAM 大小（MB）"
 
 #: src/dvr/dvr_config.c:990
 msgid ""
@@ -3918,7 +3918,7 @@ msgstr ""
 
 #: src/timeshift.c:224
 msgid "Maximum period (mins)"
-msgstr ""
+msgstr "最大时长（分钟）"
 
 #: src/dvr/dvr_autorec.c:1228
 msgid "Maximum schedules limit (0=default)"
@@ -3926,7 +3926,7 @@ msgstr ""
 
 #: src/timeshift.c:243
 msgid "Maximum size (MB)"
-msgstr ""
+msgstr "最大大小（MB）"
 
 #: src/input/mpegts/iptv/iptv.c:776
 msgid "Maximum time to wait (in seconds) for a stream before a timeout."
@@ -4091,7 +4091,7 @@ msgstr ""
 
 #: src/satip/server.c:656
 msgid "Mux handling"
-msgstr ""
+msgstr "复用器处理"
 
 #: src/input/mpegts/iptv/iptv_mux.c:168
 msgid "Mux name"
@@ -4218,7 +4218,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:175
 msgid "Network ID (limit scanning)"
-msgstr ""
+msgstr "网络 ID（限制扫描）"
 
 #: src/input/mpegts/mpegts_mux.c:560
 msgid "Network UUID"
@@ -4230,7 +4230,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:183
 msgid "Network discovery"
-msgstr ""
+msgstr "网络发现"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:316
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:502
@@ -4278,7 +4278,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:159
 msgid "Network name"
-msgstr ""
+msgstr "网络名称"
 
 #: src/access.c:2191
 msgid "Network prefix"
@@ -4560,7 +4560,7 @@ msgstr ""
 
 #: src/timeshift.c:200
 msgid "On-demand (no first rewind)"
-msgstr ""
+msgstr "按需启用（首次不回看）"
 
 #: src/epggrab/channel.c:844
 msgid "Once per auto channel"
@@ -4705,7 +4705,7 @@ msgstr ""
 
 #: src/epggrab.c:350
 msgid "Over-the-air Cron multi-line"
-msgstr ""
+msgstr "无线 Cron 多行"
 
 #: src/input/mpegts/mpegts_input.c:272
 msgid "Over-the-air EPG"
@@ -4876,11 +4876,11 @@ msgstr ""
 
 #: src/memoryinfo.c:77
 msgid "Peak count of objects"
-msgstr ""
+msgstr "对象峰值数量"
 
 #: src/memoryinfo.c:61
 msgid "Peak size"
-msgstr ""
+msgstr "峰值大小"
 
 #: src/epg.c:2389
 msgid "Performing arts"
@@ -4888,7 +4888,7 @@ msgstr ""
 
 #: src/epggrab.c:315
 msgid "Periodically save EPG to disk (hours)"
-msgstr ""
+msgstr "定期保存 EPG 到磁盘（小时）"
 
 #: src/access.c:1665 src/config.c:2102
 msgid "Persistent user interface level"
@@ -5019,7 +5019,7 @@ msgstr ""
 
 #: src/profile.c:401
 msgid "Preferred service video type"
-msgstr ""
+msgstr "首选服务视频类型"
 
 #: src/input/mpegts/satip/satip.c:463
 msgid "Presentation"
@@ -5131,7 +5131,7 @@ msgstr ""
 
 #: src/timeshift.c:276
 msgid "RAM only"
-msgstr ""
+msgstr "仅使用 RAM"
 
 #: src/input/mpegts/satip/satip.c:235
 msgid "RTP/AVP/TCP (embedded data)"
@@ -5147,7 +5147,7 @@ msgstr ""
 
 #: src/satip/server.c:605
 msgid "RTSP port (554 or 9983, 0 = disable)"
-msgstr ""
+msgstr "RTSP 端口（554 或 9983，0 = 禁用）"
 
 #: src/service.c:157
 msgid "Radio"
@@ -5290,7 +5290,7 @@ msgstr ""
 
 #: src/profile.c:378
 msgid "Restart on error"
-msgstr ""
+msgstr "出错时重启"
 
 #: src/profile.c:379
 msgid ""
@@ -5461,7 +5461,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:244
 msgid "SAT>IP source number"
-msgstr ""
+msgstr "SAT>IP 源编号"
 
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:472
 #: src/input/mpegts/linuxdvb/linuxdvb_satconf.c:536
@@ -5559,7 +5559,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:296
 msgid "Scan queue length"
-msgstr ""
+msgstr "扫描队列长度"
 
 #: src/input/mpegts/mpegts_mux.c:621
 msgid "Scan result"
@@ -5789,7 +5789,7 @@ msgstr ""
 
 #: src/satip/server.c:596
 msgid "Server UUID"
-msgstr ""
+msgstr "服务器 UUID"
 
 #: src/main.c:853
 msgid "Server connectivity"
@@ -5951,7 +5951,7 @@ msgstr ""
 
 #: src/memoryinfo.c:53
 msgid "Size"
-msgstr ""
+msgstr "大小"
 
 #: src/input/mpegts/satip/satip.c:333
 msgid "Skip TS packets (0-200)"
@@ -6212,7 +6212,7 @@ msgstr ""
 
 #: src/dvr/dvr_config.c:878
 msgid "Stream profile"
-msgstr ""
+msgstr "流配置文件"
 
 #: src/htsp_server.c:2437
 msgid "Stream setup error"
@@ -6270,7 +6270,7 @@ msgstr ""
 
 #: src/satip/server.c:615
 msgid "Subscription weight"
-msgstr ""
+msgstr "订阅权重"
 
 #: src/input/mpegts/iptv/iptv_mux.c:147
 msgid "Substitute formatters"
@@ -7474,7 +7474,7 @@ msgstr ""
 
 #: src/tvhlog.c:778
 msgid "Trace subsystems"
-msgstr ""
+msgstr "跟踪子系统"
 
 #: src/epg.c:2392
 msgid "Traditional arts"
@@ -7819,11 +7819,11 @@ msgstr ""
 
 #: src/timeshift.c:266
 msgid "Unlimited size"
-msgstr ""
+msgstr "不限大小"
 
 #: src/timeshift.c:232
 msgid "Unlimited time"
-msgstr ""
+msgstr "不限时间"
 
 #: src/profile.c:247
 msgid "Unset (default)"
@@ -7975,7 +7975,7 @@ msgstr ""
 
 #: src/input/mpegts/mpegts_network.c:225
 msgid "Use service IDs as channel numbers"
-msgstr ""
+msgstr "使用服务 ID 作为频道号"
 
 #: src/channels.c:1464
 msgid "Use tag internally (don't expose to clients)."
@@ -8508,3 +8508,120 @@ msgstr "自动清除输入错误计数器"
 
 msgid "Parse HbbTV info"
 msgstr "解析 HbbTV 信息"
+
+
+# Additional Chinese translations for common backend UI labels.
+msgid "General Settings"
+msgstr "常规设置"
+
+msgid "NAT Settings"
+msgstr "NAT 设置"
+
+msgid "Signal Settings"
+msgstr "信号设置"
+
+msgid "Exported Tuner(s) Settings"
+msgstr "导出调谐器设置"
+
+msgid "Anonymize"
+msgstr "匿名化"
+
+msgid "Disable UPnP"
+msgstr "禁用 UPnP"
+
+msgid "RTP over TCP payload"
+msgstr "RTP over TCP 负载"
+
+msgid "External RTSP port (NAT)"
+msgstr "外部 RTSP 端口（NAT）"
+
+msgid "Force RTSP announcement of the external (NAT) ip:port"
+msgstr "强制公告外部（NAT）RTSP 地址和端口"
+
+msgid "RTP Local bind IP address"
+msgstr "RTP 本地绑定 IP 地址"
+
+msgid "IPTV signal level"
+msgstr "IPTV 信号电平"
+
+msgid "Force signal level"
+msgstr "强制信号电平"
+
+msgid "Save EPG to disk after xmltv import"
+msgstr "XMLTV 导入后保存 EPG 到磁盘"
+
+msgid "Process Parental Rating Labels"
+msgstr "处理家长分级标签"
+
+msgid "Internal Grabber Settings"
+msgstr "内部抓取器设置"
+
+msgid "OTA (Over-the-air) Grabber Settings"
+msgstr "OTA（无线）抓取器设置"
+
+msgid "OTA (Over-the-air) Genre Translation"
+msgstr "OTA（无线）类型翻译"
+
+msgid "Force initial EPG grab at start-up (internal grabbers)"
+msgstr "启动时强制初始 EPG 抓取（内部抓取器）"
+
+msgid "EPG scan time-out in seconds (30-7200)"
+msgstr "EPG 扫描超时秒数（30-7200）"
+
+msgid "Over-the-air Genre Translation"
+msgstr "无线类型翻译"
+
+msgid "XPath Settings"
+msgstr "XPath 设置"
+
+msgid "Data timeout (sec) (0=infinite)"
+msgstr "数据超时（秒）（0 = 无限）"
+
+msgid "Data start timeout (sec) (0=default)"
+msgstr "数据启动超时（秒）（0 = 默认）"
+
+msgid "Continue if descrambling fails"
+msgstr "解扰失败时继续"
+
+msgid "Descrambling timeout (ms)"
+msgstr "解扰超时（毫秒）"
+
+msgid "Switch to another service"
+msgstr "切换到其他服务"
+
+msgid "Include teletext"
+msgstr "包含图文电视"
+
+msgid "Filename (including path)"
+msgstr "文件名（含路径）"
+
+msgid "Subsystem Output Settings"
+msgstr "子系统输出设置"
+
+msgid "Miscellaneous Settings"
+msgstr "其他设置"
+
+msgid "Memory Information Entries"
+msgstr "内存信息条目"
+
+msgid "Show passwords"
+msgstr "显示密码"
+
+msgid "Apply configuration (run-time only)"
+msgstr "应用配置（仅运行时）"
+
+msgid "Select Subsystems"
+msgstr "选择子系统"
+
+msgid "Client Name"
+msgstr "客户端名称"
+
+msgid "Removed Recordings"
+msgstr "已删除录像"
+
+msgid "Stream Filters"
+msgstr "流过滤器"
+
+# Additional Chinese translations for MPEG-TS network grid labels.
+msgid "Skip startup scan"
+msgstr "跳过启动扫描"
