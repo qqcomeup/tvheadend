@@ -4,8 +4,6 @@ name: Coverity Scan
 # schedule: runs a weekly scan at 0700 on Monday
 
 on:
-  schedule:
-    - cron: "0 7 * * 1"
   workflow_dispatch:
 
 jobs:

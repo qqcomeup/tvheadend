@@ -1,7 +1,6 @@
 name: Enforce issue template
 on:
-  issues:
-    types: [opened, edited, renamed]
+  workflow_dispatch:
 
 jobs:
   auto_close_issues:

@@ -10,13 +10,7 @@ on:
       - 'README.md'
       - 'README.*.md'
       - 'docs/**'
-  pull_request:
-    branches:
-      - master
-    paths-ignore:
-      - 'README.md'
-      - 'README.*.md'
-      - 'docs/**'
+  workflow_dispatch:
 
 env:
   REGISTRY: ghcr.io
@@ -25,18 +19,9 @@ env:
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
-    continue-on-error: true
     permissions:
       contents: read
       packages: write
-    strategy:
-      matrix:
-        include:
-          - container: Containerfile.debian
-            autotag: false
-            suffix: -debian
-          - container: Containerfile.alpine
-            autotag: ${{ github.ref == 'refs/heads/master' && 'true' || 'auto' }}
 
     steps:
       - name: Checkout repository
@@ -65,21 +50,19 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
             type=edge
             type=semver,pattern={{version}}
             type=semver,pattern={{major}}.{{minor}}
             type=semver,pattern={{major}}
           flavor: |
-            latest=${{ matrix.autotag }}
-            suffix=${{ matrix.suffix }}
+            latest=${{ github.ref == 'refs/heads/master' && 'true' || 'auto' }}
 
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
           platforms: linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6
           context: .
-          file: ${{ matrix.container }}
-          push: ${{ github.event_name != 'pull_request' }}
+          file: Containerfile.alpine
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

@@ -1,8 +1,6 @@
 name: Close issue based on label
 on:
-  issues:
-    types:
-      - labeled
+  workflow_dispatch:
 jobs:
   close-unsuported-version:
     if: github.event.label.name == 'unsupported-version'
