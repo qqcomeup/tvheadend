@@ -810,9 +810,25 @@ http_tag_playlist(http_connection_t *hc, int pltype, int urlauth, channel_tag_t 
   tvgid_mode = http_arg_get(&hc->hc_req_args, "tvg-id");
   chlist = channel_get_sorted_list_for_tag(sort, tag, &count);
 
-  if (pltype == PLAYLIST_M3U)
-    htsbuf_append_str(hq, "#EXTM3U\n");
-  else if (pltype == PLAYLIST_E2)
+  if (pltype == PLAYLIST_M3U) {
+    htsbuf_append_str(hq, "#EXTM3U");
+    switch (urlauth) {
+    case URLAUTH_CODE:
+      if (!strempty(hc->hc_access->aa_auth))
+        htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels?auth=%s\"", hostpath, hc->hc_access->aa_auth);
+      break;
+    case URLAUTH_TICKET:
+      {
+        const char *ticket = access_ticket_create("/xmltv/channels", hc->hc_access);
+        htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels?ticket=%s\"", hostpath, ticket);
+      }
+      break;
+    default:
+      htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels\"", hostpath);
+      break;
+    }
+    htsbuf_append_str(hq, "\n");
+  } else if (pltype == PLAYLIST_E2)
     htsbuf_qprintf(hq, "#NAME %s\n", tag->ct_name);
   blank = tvh_gettext_lang(lang, channel_blank_name);
   for (idx = 0; idx < count; idx++) {
@@ -881,7 +897,25 @@ http_tag_list_playlist(http_connection_t *hc, int pltype, int urlauth)
   }
 
   blank = tvh_gettext_lang(lang, channel_blank_name);
-  htsbuf_append_str(hq, pltype == PLAYLIST_E2 ? "#NAME Tvheadend Channels\n" : "#EXTM3U\n");
+  htsbuf_append_str(hq, pltype == PLAYLIST_E2 ? "#NAME Tvheadend Channels\n" : "#EXTM3U");
+  if (pltype == PLAYLIST_M3U) {
+    switch (urlauth) {
+    case URLAUTH_CODE:
+      if (!strempty(hc->hc_access->aa_auth))
+        htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels?auth=%s\"", hostpath, hc->hc_access->aa_auth);
+      break;
+    case URLAUTH_TICKET:
+      {
+        const char *ticket = access_ticket_create("/xmltv/channels", hc->hc_access);
+        htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels?ticket=%s\"", hostpath, ticket);
+      }
+      break;
+    default:
+      htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels\"", hostpath);
+      break;
+    }
+  }
+  htsbuf_append_str(hq, "\n");
   for (idx = 0; idx < count; idx++) {
     ct = ctlist[idx];
     if (pltype == PLAYLIST_M3U) {
@@ -947,7 +981,25 @@ http_channel_list_playlist(http_connection_t *hc, int pltype, int urlauth)
   chlist = channel_get_sorted_list(sort, 0, &count);
   blank = tvh_gettext_lang(lang, channel_blank_name);
 
-  htsbuf_append_str(hq, pltype == PLAYLIST_E2 ? "#NAME Tvheadend Channels\n" : "#EXTM3U\n");
+  htsbuf_append_str(hq, pltype == PLAYLIST_E2 ? "#NAME Tvheadend Channels\n" : "#EXTM3U");
+  if (pltype == PLAYLIST_M3U) {
+    switch (urlauth) {
+    case URLAUTH_CODE:
+      if (!strempty(hc->hc_access->aa_auth))
+        htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels?auth=%s\"", hostpath, hc->hc_access->aa_auth);
+      break;
+    case URLAUTH_TICKET:
+      {
+        const char *ticket = access_ticket_create("/xmltv/channels", hc->hc_access);
+        htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels?ticket=%s\"", hostpath, ticket);
+      }
+      break;
+    default:
+      htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels\"", hostpath);
+      break;
+    }
+  }
+  htsbuf_append_str(hq, "\n");
   for (idx = 0; idx < count; idx++) {
     ch = chlist[idx];
 
