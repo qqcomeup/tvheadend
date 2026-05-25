@@ -636,8 +636,9 @@ http_check_local_ip( http_connection_t *hc )
  * Transmit a HTTP reply
  */
 static void
-http_send_reply(http_connection_t *hc, int rc, const char *content, 
-		const char *encoding, const char *location, int maxage)
+http_send_reply_disposition(http_connection_t *hc, int rc, const char *content,
+                            const char *encoding, const char *location,
+                            int maxage, const char *disposition)
 {
   size_t size = hc->hc_reply.hq_size;
   uint8_t *data = NULL;
@@ -653,7 +654,7 @@ http_send_reply(http_connection_t *hc, int rc, const char *content,
 
   http_send_begin(hc);
   http_send_header(hc, rc, content, size,
-		   encoding, location, maxage, 0, NULL, NULL);
+		   encoding, location, maxage, 0, disposition, NULL);
   
   if(!hc->hc_no_output) {
     if (data == NULL)
@@ -664,6 +665,13 @@ http_send_reply(http_connection_t *hc, int rc, const char *content,
   http_send_end(hc);
 
   free(data);
+}
+
+static void
+http_send_reply(http_connection_t *hc, int rc, const char *content,
+		const char *encoding, const char *location, int maxage)
+{
+  http_send_reply_disposition(hc, rc, content, encoding, location, maxage, NULL);
 }
 
 
@@ -737,6 +745,14 @@ void
 http_output_content(http_connection_t *hc, const char *content)
 {
   return http_send_reply(hc, HTTP_STATUS_OK, content, NULL, NULL, 0);
+}
+
+void
+http_output_content_disposition(http_connection_t *hc, const char *content,
+                                const char *disposition)
+{
+  return http_send_reply_disposition(hc, HTTP_STATUS_OK, content,
+                                     NULL, NULL, 0, disposition);
 }
 
 

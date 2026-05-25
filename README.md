@@ -66,6 +66,8 @@ Lucky / 反代兼容修复：
     EPG 关联
   * `tvg-logo` 优先使用 Tvheadend 的 `/imagecache/` 可访问地址；未缓存的本地
     `file://` 台标路径不会暴露到播放列表，避免外部客户端拿到不可访问的本机路径
+  * 浏览器需要强制下载播放列表时，可以追加 `download=1`，例如
+    `/playlist/auth/channels.m3u?download=1`
   * 播放列表字段会规整换行和制表符，减少异常频道名、标签名或录像标题导致的
     M3U/E2/SATIP 播放列表格式问题
 

@@ -140,6 +140,16 @@ The `tvg-id` value is configurable per request:
 The default is `uuid`, which is stable and unique. Use `name` or `number` only
 when your EPG provider expects those identifiers.
 
+To force a browser download instead of inline playback, add `download=1`:
+
+```text
+/playlist/auth/channels.m3u?download=1
+/playlist/auth/grouped.m3u?tvg-id=name&download=1
+```
+
+This adds `Content-Disposition: attachment` only for that request. Normal
+playlist subscriptions remain unchanged.
+
 For a quick local regression check after upgrading the image:
 
 ```sh

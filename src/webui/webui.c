@@ -1118,9 +1118,9 @@ static int
 page_http_playlist_
   (http_connection_t *hc, const char *remain, void *opaque, int urlauth)
 {
-  char *components[2], *cmd, *s, buf[40];
+  char *components[2], *cmd, *s, buf[40], filename[80];
   const char *cs;
-  int nc, r, pltype = PLAYLIST_M3U;
+  int download, nc, r, pltype = PLAYLIST_M3U;
   channel_t *ch = NULL;
   dvr_entry_t *de = NULL;
   channel_tag_t *tag = NULL;
@@ -1220,8 +1220,21 @@ page_http_playlist_
 
   tvh_mutex_unlock(&global_lock);
 
-  if (r == 0)
-    http_output_content(hc, pltype == PLAYLIST_E2 ? MIME_E2 : MIME_M3U);
+  if (r == 0) {
+    s = http_arg_get(&hc->hc_req_args, "download");
+    download = s != NULL &&
+               (!strcmp(s, "1") || !strcasecmp(s, "true") ||
+                !strcasecmp(s, "yes") || !strcasecmp(s, "on"));
+    if (download) {
+      snprintf(filename, sizeof(filename), "attachment; filename=\"%s.%s\"",
+               cmd, pltype == PLAYLIST_E2 ? "e2" : "m3u");
+      http_output_content_disposition(hc,
+                                      pltype == PLAYLIST_E2 ? MIME_E2 : MIME_M3U,
+                                      filename);
+    } else {
+      http_output_content(hc, pltype == PLAYLIST_E2 ? MIME_E2 : MIME_M3U);
+    }
+  }
 
   return r;
 }
