@@ -151,4 +151,33 @@ Running in Docker can be as simple as:
 M3U 播放列表分组改进。升级已有 Docker Compose 部署时，通常只需要拉取新镜像并
 重建容器，配置目录保持不变。
 
+推荐 Docker Compose 部署：
+
+```yaml
+services:
+  tvheadend:
+    image: ghcr.io/qqcomeup/tvheadend:latest
+    container_name: tvheadend
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+    ports:
+      - "9981:9981"
+      - "9982:9982"
+    volumes:
+      - ./config:/var/lib/tvheadend:rw
+      - ./recordings:/var/lib/tvheadend/recordings:rw
+      # 可选：本地台标目录，对应 file:///picons/%C.png
+      - ./picons:/picons:ro
+    devices:
+      # 可选：DVB 设备
+      - /dev/dvb:/dev/dvb
+      # 可选：硬件转码 / VAAPI / QSV
+      - /dev/dri:/dev/dri
+```
+
+使用 Lucky 或其他反代时，直接反代到 `http://服务器IP:9981` 即可，不需要额外
+nginx real-IP 中转容器。播放列表强制浏览器下载可追加 `download=1`，例如
+`/playlist/auth/channels.m3u?download=1`。
+
 See [README.Docker.md](README.Docker.md) for more details.
