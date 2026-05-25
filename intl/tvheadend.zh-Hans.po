@@ -3220,12 +3220,16 @@ msgstr ""
 
 #: src/imagecache.c:98
 msgid "Ignore invalid SSL certificate"
-msgstr ""
+msgstr "忽略无效的 SSL 证书"
 
 #: src/imagecache.c:99
 msgid ""
 "Ignore invalid/unverifiable (expired, self-certified, etc.) certificates"
 msgstr ""
+
+#: src/imagecache.c:107
+msgid "Expire time"
+msgstr "过期时间"
 
 #: src/input/mpegts/mpegts_network.c:234
 msgid "Ignore provider's channel numbers"
@@ -5154,7 +5158,7 @@ msgstr ""
 
 #: src/imagecache.c:106
 msgid "Re-fetch period (hours)"
-msgstr ""
+msgstr "重新获取周期（小时）"
 
 #: src/bouquet.c:1063 src/input/mpegts/iptv/iptv.c:881
 msgid "Re-fetch period (mins)"
@@ -5171,7 +5175,7 @@ msgstr ""
 
 #: src/imagecache.c:114
 msgid "Re-try period (hours)"
-msgstr ""
+msgstr "重试周期（小时）"
 
 #: src/htsp_server.c:2762
 msgid "Read error"
