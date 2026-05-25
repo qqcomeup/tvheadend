@@ -574,30 +574,43 @@ http_m3u_append_line_value(htsbuf_queue_t *hq, const char *value)
 }
 
 static void
+http_m3u_append_epg_param(htsbuf_queue_t *hq, const char **delim,
+                          const char *name, const char *value)
+{
+  if (strempty(value))
+    return;
+
+  htsbuf_qprintf(hq, "%s%s=", *delim, name);
+  htsbuf_append_and_escape_url(hq, value);
+  *delim = "&";
+}
+
+static void
 http_m3u_append_epg_url(htsbuf_queue_t *hq, const char *hostpath,
                         const char *profile, int urlauth, access_t *access)
 {
+  htsbuf_queue_t url;
   const char *delim = "?";
+  char *epg_url;
 
-  htsbuf_qprintf(hq, " x-tvg-url=\"%s/xmltv/channels", hostpath);
+  htsbuf_queue_init(&url, 0);
+  htsbuf_qprintf(&url, "%s/xmltv/channels", hostpath);
   switch (urlauth) {
   case URLAUTH_CODE:
-    if (access && !strempty(access->aa_auth)) {
-      htsbuf_qprintf(hq, "%sauth=%s", delim, access->aa_auth);
-      delim = "&";
-    }
+    if (access)
+      http_m3u_append_epg_param(&url, &delim, "auth", access->aa_auth);
     break;
   case URLAUTH_TICKET:
-    htsbuf_qprintf(hq, "%sticket=%s", delim,
-                   access_ticket_create("/xmltv/channels", access));
-    delim = "&";
+    http_m3u_append_epg_param(&url, &delim, "ticket",
+                              access_ticket_create("/xmltv/channels", access));
     break;
   default:
     break;
   }
-  if (!strempty(profile))
-    htsbuf_qprintf(hq, "%sprofile=%s", delim, profile);
-  htsbuf_append_str(hq, "\"");
+  http_m3u_append_epg_param(&url, &delim, "profile", profile);
+  epg_url = htsbuf_to_string(&url);
+  http_m3u_append_attr(hq, "x-tvg-url", epg_url);
+  free(epg_url);
 }
 
 static void
