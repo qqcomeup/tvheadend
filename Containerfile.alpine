@@ -69,7 +69,6 @@ EXPOSE 9981 \
        9983
 
 RUN apk add --no-cache \
-        'tzdata' \
         'avahi' \
         'bzip2' \
         'dbus-libs' \
