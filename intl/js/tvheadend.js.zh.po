@@ -2578,3 +2578,29 @@ msgstr "向我们的项目捐赠"
 
 msgid "To support Tvheadend development please consider making a donation towards project operating costs."
 msgstr "为了支持 Tvheadend 开发，请考虑捐赠以帮助承担项目运营成本。"
+msgid "Copy URL"
+msgstr "复制地址"
+
+msgid "Select one password entry first."
+msgstr "请先选择一个密码条目。"
+
+msgid "Enable persistent authentication for this user first."
+msgstr "请先为此用户启用持久认证。"
+
+msgid "M3U URL"
+msgstr "M3U 地址"
+
+msgid "XMLTV URL"
+msgstr "XMLTV 地址"
+
+msgid "Copy the authenticated M3U playlist URL for the selected user"
+msgstr "复制所选用户的认证 M3U 播放列表地址"
+
+msgid "Copy M3U URL"
+msgstr "复制 M3U 地址"
+
+msgid "Copy the authenticated XMLTV URL for the selected user"
+msgstr "复制所选用户的认证 XMLTV 地址"
+
+msgid "Copy XMLTV URL"
+msgstr "复制 XMLTV 地址"

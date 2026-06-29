@@ -208,6 +208,36 @@ passwd_auth_exists(const char *id)
   return 0;
 }
 
+static int
+passwd_auth_exists_for_other(const char *id, passwd_entry_t *entry)
+{
+  passwd_entry_t *pw;
+
+  if (id == NULL)
+    return 0;
+  TAILQ_FOREACH(pw, &passwd_entries, pw_link) {
+    if (pw == entry || strempty(pw->pw_auth)) continue;
+    if (strcmp(id, pw->pw_auth) == 0) return 1;
+  }
+  return 0;
+}
+
+static int
+passwd_authcode_valid(const char *id)
+{
+  size_t i, len;
+
+  if (id == NULL)
+    return 0;
+  len = strlen(id);
+  if (len < 8 || len >= 42 || id[0] != 'P')
+    return 0;
+  for (i = 0; i < len; i++)
+    if (!isalnum((uint8_t)id[i]) && id[i] != '-' && id[i] != '.')
+      return 0;
+  return 1;
+}
+
 /**
  *
  */
@@ -2216,6 +2246,32 @@ passwd_entry_class_password2_set(void *o, const void *v)
 }
 
 static int
+passwd_entry_class_authcode_set(void *o, const void *v)
+{
+  passwd_entry_t *pw = o;
+  const char *authcode = v ?: "";
+
+  if (strcmp(authcode, pw->pw_auth ?: "") == 0)
+    return 0;
+
+  if (!passwd_authcode_valid(authcode)) {
+    tvhwarn(LS_ACCESS, "invalid persistent authentication code for user '%s'",
+            pw->pw_username ?: "");
+    return 0;
+  }
+
+  if (passwd_auth_exists_for_other(authcode, pw)) {
+    tvhwarn(LS_ACCESS, "duplicate persistent authentication code for user '%s'",
+            pw->pw_username ?: "");
+    return 0;
+  }
+
+  tvh_str_set(&pw->pw_auth, authcode);
+  pw->pw_auth_enabled = 1;
+  return 1;
+}
+
+static int
 passwd_entry_class_auth_enabled_set ( void *obj, idnode_slist_t *entry, int val )
 {
   passwd_entry_t *pw = (passwd_entry_t *)obj;
@@ -2346,7 +2402,7 @@ const idclass_t passwd_entry_class = {
       .desc     = N_("The code which may be used for HTTP streaming."),
       .doc      = prop_doc_authcode,
       .off      = offsetof(passwd_entry_t, pw_auth),
-      .opts     = PO_RDONLY,
+      .set      = passwd_entry_class_authcode_set,
     },
     {
       .type     = PT_STR,

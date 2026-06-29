@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - bata
     tags:
       - 'v*'
     paths-ignore:

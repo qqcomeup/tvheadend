@@ -61,6 +61,105 @@ tvheadend.acleditor = function(panel, index)
  * Password Control
  */
 
+tvheadend.passwdM3uBaseUrl = function()
+{
+    return window.location.protocol + '//' + window.location.host;
+};
+
+tvheadend.passwdCopyText = function(text)
+{
+    var area;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text);
+        return;
+    }
+
+    area = document.createElement('textarea');
+    area.value = text;
+    area.style.position = 'fixed';
+    area.style.left = '-1000px';
+    area.style.top = '-1000px';
+    document.body.appendChild(area);
+    area.focus();
+    area.select();
+    try {
+        document.execCommand('copy');
+    } finally {
+        document.body.removeChild(area);
+    }
+};
+
+tvheadend.passwdShowUrl = function(title, url)
+{
+    var textareaId = Ext.id();
+    var win;
+
+    win = new Ext.Window({
+        title: title,
+        modal: true,
+        width: 560,
+        layout: 'fit',
+        bodyStyle: 'padding:10px;',
+        html: '<textarea id="' + textareaId + '" readonly="readonly" ' +
+              'style="width:100%;height:88px;box-sizing:border-box;">' +
+              Ext.util.Format.htmlEncode(url) + '</textarea>',
+        buttons: [
+            {
+                text: '复制',
+                handler: function() {
+                    tvheadend.passwdCopyText(url);
+                }
+            },
+            {
+                text: '关闭',
+                handler: function() {
+                    win.close();
+                }
+            }
+        ],
+        listeners: {
+            show: function() {
+                var area = document.getElementById(textareaId);
+                tvheadend.passwdCopyText(url);
+                if (area) {
+                    area.focus();
+                    area.select();
+                }
+            }
+        }
+    });
+    win.show();
+};
+
+tvheadend.passwdCopyAuthUrl = function(select, type)
+{
+    var r = select.getSelected();
+    var authcode = r ? r.get('authcode') : null;
+    var base = tvheadend.passwdM3uBaseUrl();
+    var url;
+
+    if (!r) {
+        Ext.MessageBox.alert('复制地址', '请先选择一个密码条目。');
+        return;
+    }
+    if (!authcode) {
+        Ext.MessageBox.alert('复制地址',
+            '请先为此用户启用持久认证。');
+        return;
+    }
+
+    if (type == 'xmltv') {
+        url = base + '/xmltv/channels?auth=' +
+              encodeURIComponent(authcode) + '&profile=pass';
+        tvheadend.passwdShowUrl('XMLTV 地址', url);
+    } else {
+        url = base + '/playlist/auth/channels.m3u?download=1&auth=' +
+              encodeURIComponent(authcode);
+        tvheadend.passwdShowUrl('M3U 地址', url);
+    }
+};
+
 tvheadend.passwdeditor = function(panel, index)
 {
     var list = 'enabled,username,password,auth,authcode,comment';
@@ -75,9 +174,46 @@ tvheadend.passwdeditor = function(panel, index)
             username: { width: 250 },
             password: { width: 250 },
             auth:     { width: 250 },
-            authcode: { width: 250 }
+            authcode: { width: 350 }
         },
         tabIndex: index,
+        selected: function(s, abuttons) {
+            var enabled = s.getCount() == 1;
+            if (abuttons.copyM3u)
+                abuttons.copyM3u.setDisabled(!enabled);
+            if (abuttons.copyXmltv)
+                abuttons.copyXmltv.setDisabled(!enabled);
+        },
+        tbar: [
+            {
+                name: 'copyM3u',
+                builder: function() {
+                    return new Ext.Toolbar.Button({
+                        tooltip: '复制所选用户的认证 M3U 播放列表地址',
+                        iconCls: 'copy',
+                        text: '复制 M3U 地址',
+                        disabled: true
+                    });
+                },
+                callback: function(b, e, store, select) {
+                    tvheadend.passwdCopyAuthUrl(select, 'm3u');
+                }
+            },
+            {
+                name: 'copyXmltv',
+                builder: function() {
+                    return new Ext.Toolbar.Button({
+                        tooltip: '复制所选用户的认证 XMLTV 地址',
+                        iconCls: 'copy',
+                        text: '复制 XMLTV 地址',
+                        disabled: true
+                    });
+                },
+                callback: function(b, e, store, select) {
+                    tvheadend.passwdCopyAuthUrl(select, 'xmltv');
+                }
+            }
+        ],
         edit: {
             params: {
                 list: list
