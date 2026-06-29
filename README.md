@@ -148,6 +148,7 @@ Running in Docker can be as simple as:
 使用这个简体中文 fork 的镜像：
 
 	$ docker pull ghcr.io/qqcomeup/tvheadend:latest
+	$ docker pull ghcr.io/qqcomeup/tvheadend:bata
 	$ docker run --rm -p 9981:9981 -p 9982:9982 ghcr.io/qqcomeup/tvheadend:latest --firstrun
 
 该镜像包含本 fork 的简体中文翻译、Lucky / `X-Forwarded-For` 兼容修复和
@@ -177,10 +178,33 @@ services:
       - /dev/dvb:/dev/dvb
       # 可选：硬件转码 / VAAPI / QSV
       - /dev/dri:/dev/dri
+    group_add:
+      # DVB 设备常见权限是 root:video 0660，容器需要加入宿主机 video 组。
+      # 多数 Linux 主机 video gid 为 44，可用以下命令确认：
+      # stat -c %g /dev/dvb/adapter0/frontend0
+      - "44"
 ```
 
 使用 Lucky 或其他反代时，直接反代到 `http://服务器IP:9981` 即可，不需要额外
 nginx real-IP 中转容器。播放列表强制浏览器下载可追加 `download=1`，例如
 `/playlist/auth/channels.m3u?download=1`。
+
+Auth token 播放列表分享：
+
+  * 管理员可在 `配置 -> 用户 -> 密码` 中手动修改 `Persistent authentication code`
+  * token 需以 `P` 开头，长度 8-41，仅允许字母、数字、`.` 和 `-`，且不能重复
+  * 保存新 token 后立即生效：旧 token 立刻失效，新 token 可直接下载 M3U/XMLTV
+  * 密码页选择用户后可直接点击 `复制 M3U 地址` / `复制 XMLTV 地址`
+  * 点击后会直接复制，并以 TVH 风格轻提示显示 `已复制` 和完整 URL，方便审查
+  * URL 会按当前浏览器访问域名自动拼接，因此 Lucky / 反代域名会被保留
+  * token 只负责认证；对应用户仍需要在 Access Entries 中有 `Streaming` 权限
+  * WebUI 登录仍由 Access Entries 的 `webui` / `admin` 控制，非管理员不会因 token 获得 WebUI 权限
+
+Auth token URL 示例：
+
+```text
+https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=Puserpass123
+https://m3u.example.com/xmltv/channels?auth=Puserpass123&profile=pass
+```
 
 See [README.Docker.md](README.Docker.md) for more details.
