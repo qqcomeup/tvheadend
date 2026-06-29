@@ -66,12 +66,15 @@ tvheadend.passwdM3uBaseUrl = function()
     return window.location.protocol + '//' + window.location.host;
 };
 
-tvheadend.passwdCopyText = function(text)
+tvheadend.passwdCopyText = function(text, callback)
 {
     var area;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text);
+        navigator.clipboard.writeText(text).then(function() {
+            if (callback)
+                callback();
+        });
         return;
     }
 
@@ -85,6 +88,8 @@ tvheadend.passwdCopyText = function(text)
     area.select();
     try {
         document.execCommand('copy');
+        if (callback)
+            callback();
     } finally {
         document.body.removeChild(area);
     }
@@ -93,7 +98,20 @@ tvheadend.passwdCopyText = function(text)
 tvheadend.passwdShowUrl = function(title, url)
 {
     var textareaId = Ext.id();
+    var statusId = Ext.id();
     var win;
+    var showCopied = function() {
+        var status = Ext.get(statusId);
+        if (status) {
+            status.update('已复制');
+            status.setStyle('visibility', 'visible');
+            window.setTimeout(function() {
+                var s = Ext.get(statusId);
+                if (s)
+                    s.setStyle('visibility', 'hidden');
+            }, 1600);
+        }
+    };
 
     win = new Ext.Window({
         title: title,
@@ -103,12 +121,15 @@ tvheadend.passwdShowUrl = function(title, url)
         bodyStyle: 'padding:10px;',
         html: '<textarea id="' + textareaId + '" readonly="readonly" ' +
               'style="width:100%;height:88px;box-sizing:border-box;">' +
-              Ext.util.Format.htmlEncode(url) + '</textarea>',
+              Ext.util.Format.htmlEncode(url) + '</textarea>' +
+              '<div id="' + statusId + '" class="passwd-copy-status">' +
+              '已复制</div>',
         buttons: [
             {
                 text: '复制',
+                iconCls: 'passwd-copy-url',
                 handler: function() {
-                    tvheadend.passwdCopyText(url);
+                    tvheadend.passwdCopyText(url, showCopied);
                 }
             },
             {
@@ -121,7 +142,7 @@ tvheadend.passwdShowUrl = function(title, url)
         listeners: {
             show: function() {
                 var area = document.getElementById(textareaId);
-                tvheadend.passwdCopyText(url);
+                tvheadend.passwdCopyText(url, showCopied);
                 if (area) {
                     area.focus();
                     area.select();
@@ -190,7 +211,7 @@ tvheadend.passwdeditor = function(panel, index)
                 builder: function() {
                     return new Ext.Toolbar.Button({
                         tooltip: '复制所选用户的认证 M3U 播放列表地址',
-                        iconCls: 'copy',
+                        iconCls: 'passwd-copy-url',
                         text: '复制 M3U 地址',
                         disabled: true
                     });
@@ -204,7 +225,7 @@ tvheadend.passwdeditor = function(panel, index)
                 builder: function() {
                     return new Ext.Toolbar.Button({
                         tooltip: '复制所选用户的认证 XMLTV 地址',
-                        iconCls: 'copy',
+                        iconCls: 'passwd-copy-url',
                         text: '复制 XMLTV 地址',
                         disabled: true
                     });

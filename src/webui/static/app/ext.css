@@ -256,6 +256,20 @@
     background-image: url(../icons/save.png) !important;
 }
 
+.passwd-copy-url {
+    background-image: url(../icons/linked.gif) !important;
+}
+
+.passwd-copy-status {
+    color: #1f7a1f;
+    font-weight: bold;
+    height: 18px;
+    line-height: 18px;
+    padding-top: 6px;
+    text-align: right;
+    visibility: hidden;
+}
+
 .apply {
     background-image: url(../icons/accept.png) !important;
 }

@@ -50,6 +50,7 @@ def test_password_editor_can_copy_playlist_urls():
 
 def test_password_editor_copy_ui_is_chinese():
     acl = read("src/webui/static/app/acleditor.js")
+    css = read("src/webui/static/app/ext.css")
     require("'复制 M3U 地址'" in acl,
             "M3U copy button must display Chinese text directly")
     require("'复制 XMLTV 地址'" in acl,
@@ -58,8 +59,14 @@ def test_password_editor_copy_ui_is_chinese():
             "copy warning dialogs must display Chinese titles directly")
     require("text: '复制'" in acl and "text: '关闭'" in acl,
             "URL popup must include explicit Chinese copy and close buttons")
-    require("tvheadend.passwdCopyText(url);" in acl,
-            "URL popup must copy the generated URL")
+    require("passwd-copy-status" in acl and "已复制" in acl,
+            "URL popup must show a Chinese copied confirmation")
+    require("iconCls: 'passwd-copy-url'" in acl,
+            "copy URL buttons must use the Tvheadend toolbar icon style")
+    require(".passwd-copy-url" in css and "../icons/linked.gif" in css,
+            "copy URL icon class must use a bundled Tvheadend icon")
+    require("tvheadend.passwdCopyText(url, showCopied);" in acl,
+            "URL popup must copy the generated URL and report success")
 
 
 if __name__ == "__main__":
