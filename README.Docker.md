@@ -68,6 +68,7 @@ This fork publishes a Chinese-enhanced image at:
 
 ```sh
 docker image pull ghcr.io/qqcomeup/tvheadend:latest
+docker image pull ghcr.io/qqcomeup/tvheadend:bata
 ```
 
 A simple Docker Compose deployment for a home server is:
@@ -93,6 +94,11 @@ services:
       - /dev/dvb:/dev/dvb
       # Optional VAAPI/QSV device.
       - /dev/dri:/dev/dri
+    group_add:
+      # Required for DVB tuners on hosts where /dev/dvb is root:video 0660.
+      # On most Linux hosts the video group is gid 44; verify with:
+      # stat -c %g /dev/dvb/adapter0/frontend0
+      - "44"
 ```
 
 The important persistent paths are:
@@ -149,6 +155,36 @@ To force a browser download instead of inline playback, add `download=1`:
 
 This adds `Content-Disposition: attachment` only for that request. Normal
 playlist subscriptions remain unchanged.
+
+### Auth-token playlist sharing
+Password entries have a persistent authentication code. In this fork an admin
+can edit that code and copy ready-to-share M3U/XMLTV URLs from the password
+editor.
+
+The token must:
+
+  * start with `P`
+  * be 8 to 41 characters long
+  * contain only letters, numbers, `.` or `-`
+  * be unique across password entries
+
+When a valid token is saved, persistent authentication is enabled for that
+password entry immediately. The old token stops working and the new token can
+be used without restarting Tvheadend.
+
+Example:
+
+```text
+https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=Puserpass123
+https://m3u.example.com/xmltv/channels?auth=Puserpass123&profile=pass
+```
+
+The copied URLs are built from the browser origin, so a Lucky or other reverse
+proxy domain is preserved in the generated address.
+
+The token only authenticates the request. The matching username still needs an
+access entry with streaming permission. Web UI access remains controlled by the
+access entry `webui` and `admin` flags.
 
 For a quick local regression check after upgrading the image:
 
