@@ -66,14 +66,18 @@ tvheadend.passwdM3uBaseUrl = function()
     return window.location.protocol + '//' + window.location.host;
 };
 
-tvheadend.passwdCopyText = function(text, callback)
+tvheadend.passwdCopyText = function(text, success, failure)
 {
     var area;
+    var copied = false;
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(function() {
-            if (callback)
-                callback();
+            if (success)
+                success();
+        }, function() {
+            if (failure)
+                failure();
         });
         return;
     }
@@ -87,12 +91,41 @@ tvheadend.passwdCopyText = function(text, callback)
     area.focus();
     area.select();
     try {
-        document.execCommand('copy');
-        if (callback)
-            callback();
+        copied = document.execCommand('copy');
     } finally {
         document.body.removeChild(area);
     }
+    if (copied) {
+        if (success)
+            success();
+    } else if (failure) {
+        failure();
+    }
+};
+
+tvheadend.passwdCopyToast = function(message, url)
+{
+    var toastId = 'passwd-copy-toast';
+    var toast = Ext.get(toastId);
+
+    if (!toast) {
+        toast = Ext.DomHelper.append(Ext.getBody(), {
+            tag: 'div',
+            id: toastId,
+            cls: 'passwd-copy-toast'
+        }, true);
+    }
+    toast.update('<div class="passwd-copy-toast-title">' +
+                 Ext.util.Format.htmlEncode(message) + '</div>' +
+                 '<div class="passwd-copy-toast-url">' +
+                 Ext.util.Format.htmlEncode(url) + '</div>');
+    toast.setStyle('display', 'block');
+    window.clearTimeout(tvheadend.passwdCopyToastTimer);
+    tvheadend.passwdCopyToastTimer = window.setTimeout(function() {
+        var t = Ext.get(toastId);
+        if (t)
+            t.setStyle('display', 'none');
+    }, 1800);
 };
 
 tvheadend.passwdShowUrl = function(title, url)
@@ -173,11 +206,19 @@ tvheadend.passwdCopyAuthUrl = function(select, type)
     if (type == 'xmltv') {
         url = base + '/xmltv/channels?auth=' +
               encodeURIComponent(authcode) + '&profile=pass';
-        tvheadend.passwdShowUrl('XMLTV 地址', url);
+        tvheadend.passwdCopyText(url, function() {
+            tvheadend.passwdCopyToast('已复制 XMLTV 地址', url);
+        }, function() {
+            tvheadend.passwdShowUrl('XMLTV 地址', url);
+        });
     } else {
         url = base + '/playlist/auth/channels.m3u?download=1&auth=' +
               encodeURIComponent(authcode);
-        tvheadend.passwdShowUrl('M3U 地址', url);
+        tvheadend.passwdCopyText(url, function() {
+            tvheadend.passwdCopyToast('已复制 M3U 地址', url);
+        }, function() {
+            tvheadend.passwdShowUrl('M3U 地址', url);
+        });
     }
 };
 

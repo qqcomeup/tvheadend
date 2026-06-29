@@ -61,12 +61,18 @@ def test_password_editor_copy_ui_is_chinese():
             "URL popup must include explicit Chinese copy and close buttons")
     require("passwd-copy-status" in acl and "已复制" in acl,
             "URL popup must show a Chinese copied confirmation")
+    require("passwdCopyToast" in acl and "已复制 M3U 地址" in acl and
+            "已复制 XMLTV 地址" in acl,
+            "toolbar copy action must show a copied toast")
+    require("passwd-copy-toast-url" in acl and
+            "Ext.util.Format.htmlEncode(url)" in acl,
+            "copied toast must show the copied URL safely")
     require("iconCls: 'passwd-copy-url'" in acl,
             "copy URL buttons must use the Tvheadend toolbar icon style")
     require(".passwd-copy-url" in css and "../icons/linked.gif" in css,
             "copy URL icon class must use a bundled Tvheadend icon")
-    require("tvheadend.passwdCopyText(url, showCopied);" in acl,
-            "URL popup must copy the generated URL and report success")
+    require(".passwd-copy-toast" in css and ".passwd-copy-toast-url" in css,
+            "copied toast must be styled in the Tvheadend UI")
 
 
 if __name__ == "__main__":
