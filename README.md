@@ -192,7 +192,7 @@ nginx real-IP 中转容器。播放列表强制浏览器下载可追加 `downloa
 Auth token 播放列表分享：
 
   * 管理员可在 `配置 -> 用户 -> 密码` 中手动修改 `Persistent authentication code`
-  * token 需以 `P` 开头，长度 8-41，仅允许字母、数字、`.` 和 `-`，且不能重复
+  * token 长度 8-64，仅允许字母、数字、`.`、`-` 和 `_`，且不能重复
   * 保存新 token 后立即生效：旧 token 立刻失效，新 token 可直接下载 M3U/XMLTV
   * 密码页选择用户后可直接点击 `复制 M3U 地址` / `复制 XMLTV 地址`
   * 点击后会直接复制，并以 TVH 风格轻提示显示 `已复制` 和完整 URL，方便审查
@@ -203,8 +203,8 @@ Auth token 播放列表分享：
 Auth token URL 示例：
 
 ```text
-https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=Puserpass123
-https://m3u.example.com/xmltv/channels?auth=Puserpass123&profile=pass
+https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=user-pass_123
+https://m3u.example.com/xmltv/channels?auth=user-pass_123&profile=pass
 ```
 
 See [README.Docker.md](README.Docker.md) for more details.

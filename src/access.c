@@ -230,10 +230,11 @@ passwd_authcode_valid(const char *id)
   if (id == NULL)
     return 0;
   len = strlen(id);
-  if (len < 8 || len >= 42 || id[0] != 'P')
+  if (len < 8 || len > 64)
     return 0;
   for (i = 0; i < len; i++)
-    if (!isalnum((uint8_t)id[i]) && id[i] != '-' && id[i] != '.')
+    if (!isalnum((uint8_t)id[i]) && id[i] != '-' && id[i] != '.' &&
+        id[i] != '_')
       return 0;
   return 1;
 }

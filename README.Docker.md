@@ -163,9 +163,8 @@ editor.
 
 The token must:
 
-  * start with `P`
-  * be 8 to 41 characters long
-  * contain only letters, numbers, `.` or `-`
+  * be 8 to 64 characters long
+  * contain only letters, numbers, `.`, `-` or `_`
   * be unique across password entries
 
 When a valid token is saved, persistent authentication is enabled for that
@@ -175,8 +174,8 @@ be used without restarting Tvheadend.
 Example:
 
 ```text
-https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=Puserpass123
-https://m3u.example.com/xmltv/channels?auth=Puserpass123&profile=pass
+https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=user-pass_123
+https://m3u.example.com/xmltv/channels?auth=user-pass_123&profile=pass
 ```
 
 The copied URLs are built from the browser origin, so a Lucky or other reverse

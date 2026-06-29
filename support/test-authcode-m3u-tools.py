@@ -30,6 +30,12 @@ def test_authcode_validation_guards():
     access = read("src/access.c")
     require("passwd_authcode_valid" in access,
             "authcode setter must validate allowed characters and length")
+    require("len < 8 || len > 64" in access,
+            "authcode setter must allow 8 to 64 character tokens")
+    require("id[0] != 'P'" not in access,
+            "authcode setter must not require tokens to start with P")
+    require("id[i] != '_'" in access,
+            "authcode setter must allow underscores in custom tokens")
     require("passwd_auth_exists_for_other" in access,
             "authcode setter must reject duplicate tokens owned by another user")
     require("pw->pw_auth_enabled = 1" in access,
