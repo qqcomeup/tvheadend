@@ -46,6 +46,7 @@ ADMIN_CHAT_IDS=6907590840
 TVH_URL=http://127.0.0.1:9981
 TVH_USER=ck
 TVH_PASS=ck10028
+TVH_PASSWD_PATH=/tvh-passwd
 PUBLIC_BASE_URL=https://m3u.066671.xyz
 EXPECTED_DVB_COUNT=1
 CHECK_INTERVAL_SECONDS=60
@@ -65,7 +66,9 @@ CHECK_INTERVAL_SECONDS=60
 
 `/dvb` returns current DVB adapter paths and whether the count is below `EXPECTED_DVB_COUNT`.
 
-`/users` lists TVH users as inline buttons. Selecting a user shows:
+`/users` lists TVH users as inline buttons. The user list comes from the TVH HTTP API. Auth tokens are read from the read-only TVH `passwd` configuration directory because the TVH grid API does not expose `authcode`.
+
+Selecting a user shows:
 
 - username
 - token when available
@@ -105,4 +108,3 @@ Manual VPS verification:
 - `/status`, `/dvb`, `/users` work
 - selected user shows short M3U and EPG URLs
 - simulated DVB count drop sends one alert and recovery sends one alert
-

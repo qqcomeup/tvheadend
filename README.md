@@ -101,6 +101,7 @@ docker rm -f tvh-bot || true
 docker run -d --name tvh-bot --restart always \
   --env-file /home/ck/app/tvh-bot/.env \
   -v /dev/dvb:/dev/dvb:ro \
+  -v /home/ck/app/tvh/config/passwd:/tvh-passwd:ro \
   --network host \
   tvh-bot:local
 ```

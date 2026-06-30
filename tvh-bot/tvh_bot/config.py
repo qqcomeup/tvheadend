@@ -16,6 +16,7 @@ class Settings(BaseSettings):
     tvh_url: str = Field(alias="TVH_URL")
     tvh_user: str = Field(alias="TVH_USER")
     tvh_pass: str = Field(alias="TVH_PASS")
+    tvh_passwd_path: str | None = Field(default=None, alias="TVH_PASSWD_PATH")
     public_base_url: str = Field(alias="PUBLIC_BASE_URL")
     expected_dvb_count: int = Field(default=1, ge=0, alias="EXPECTED_DVB_COUNT")
     check_interval_seconds: int = Field(default=60, ge=10, alias="CHECK_INTERVAL_SECONDS")

@@ -29,7 +29,12 @@ async def main() -> None:
     logging.basicConfig(level=logging.INFO)
     settings = Settings()
     bot = Bot(settings.bot_token)
-    tvh_client = TvhClient(settings.tvh_url, settings.tvh_user, settings.tvh_pass)
+    tvh_client = TvhClient(
+        settings.tvh_url,
+        settings.tvh_user,
+        settings.tvh_pass,
+        settings.tvh_passwd_path,
+    )
     dispatcher = build_dispatcher(settings, tvh_client)
     monitor_task = asyncio.create_task(monitor_dvb(settings, bot))
     try:

@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+import json
+from pathlib import Path
 from typing import Any
 
 import aiohttp
@@ -29,10 +31,47 @@ def token_for_user(users: list[TvhUser], username: str) -> str | None:
     return None
 
 
+def load_passwd_tokens(path: Path | str | None) -> dict[str, str]:
+    if not path:
+        return {}
+
+    root = Path(path)
+    if not root.exists() or not root.is_dir():
+        return {}
+
+    tokens: dict[str, str] = {}
+    for item in root.iterdir():
+        if not item.is_file():
+            continue
+        try:
+            payload = json.loads(item.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            continue
+        username = payload.get("username")
+        token = payload.get("authcode")
+        if username and token:
+            tokens[str(username)] = str(token)
+    return tokens
+
+
+def merge_user_tokens(users: list[TvhUser], tokens: dict[str, str]) -> list[TvhUser]:
+    return [
+        TvhUser(username=user.username, token=user.token or tokens.get(user.username))
+        for user in users
+    ]
+
+
 class TvhClient:
-    def __init__(self, base_url: str, username: str, password: str) -> None:
+    def __init__(
+        self,
+        base_url: str,
+        username: str,
+        password: str,
+        passwd_path: Path | str | None = None,
+    ) -> None:
         self.base_url = base_url.rstrip("/")
         self.auth = BasicAuth(username, password)
+        self.passwd_path = passwd_path
 
     async def get_status(self) -> tuple[bool, str | None]:
         try:
@@ -50,4 +89,5 @@ class TvhClient:
         async with aiohttp.ClientSession(auth=self.auth) as session:
             async with session.get(f"{self.base_url}/api/access/entry/grid", timeout=10) as resp:
                 resp.raise_for_status()
-                return parse_users(await resp.json(content_type=None))
+                users = parse_users(await resp.json(content_type=None))
+                return merge_user_tokens(users, load_passwd_tokens(self.passwd_path))

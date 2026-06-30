@@ -116,6 +116,11 @@ def build_dispatcher(settings: Settings, tvh_client: TvhClient) -> Dispatcher:
 
 async def run_bot(settings: Settings) -> None:
     bot = Bot(settings.bot_token)
-    tvh_client = TvhClient(settings.tvh_url, settings.tvh_user, settings.tvh_pass)
+    tvh_client = TvhClient(
+        settings.tvh_url,
+        settings.tvh_user,
+        settings.tvh_pass,
+        settings.tvh_passwd_path,
+    )
     dispatcher = build_dispatcher(settings, tvh_client)
     await dispatcher.start_polling(bot)
