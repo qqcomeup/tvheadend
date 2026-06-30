@@ -178,6 +178,10 @@ https://m3u.example.com/m3u?a=user-pass_123
 https://m3u.example.com/epg?a=user-pass_123
 ```
 
+`/m3u?a=token` downloads the authenticated channel M3U playlist. `/epg?a=token`
+returns the matching XMLTV guide. The M3U header also uses the short `/epg?a=`
+URL for `x-tvg-url` when the playlist is requested with an auth token.
+
 Legacy long URLs remain supported:
 
 ```text

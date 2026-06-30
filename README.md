@@ -59,8 +59,9 @@ Lucky / 反代兼容修复：
 播放列表兼容改进：
 
   * M3U 播放列表 `#EXTM3U` 头部自动输出 `x-tvg-url`，指向同域名的
-    `/xmltv/channels` 并携带相同的认证参数，IPTV 客户端加载播放列表后可自动
-    获取 EPG 节目指南，无需手动配置 EPG 地址
+    EPG 地址并携带相同的认证参数；使用 auth token 分享时会优先输出短地址
+    `/epg?a=token`，IPTV 客户端加载播放列表后可自动获取 EPG 节目指南，
+    无需手动配置 EPG 地址
   * `/playlist/auth/channels.m3u` 会为频道输出 `group-title`，分组来自频道绑定的
     第一个已启用、非内部频道标签，便于 mytv、IPTV 播放器等客户端按标签分组
   * `/playlist/auth/grouped.m3u` 作为频道列表别名可直接使用，同样包含 `group-title`
@@ -206,6 +207,10 @@ Auth token URL 示例：
 https://m3u.example.com/m3u?a=user-pass_123
 https://m3u.example.com/epg?a=user-pass_123
 ```
+
+其中 `/m3u?a=token` 等价于下载频道播放列表，`/epg?a=token` 等价于 XMLTV
+节目指南；复制按钮会按当前浏览器访问域名自动生成，例如 Lucky 反代域名
+`https://m3u.066671.xyz`。
 
 旧长地址仍兼容：
 
