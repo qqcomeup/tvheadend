@@ -1321,7 +1321,7 @@ page_short_m3u
   (http_connection_t *hc, const char *remain, void *opaque)
 {
   const char *auth;
-  char remain[] = "channels.m3u";
+  char playlist_remain[] = "channels.m3u";
 
   auth = http_arg_get(&hc->hc_req_args, "a");
   if (strempty(auth))
@@ -1331,7 +1331,7 @@ page_short_m3u
     return http_noaccess_code(hc);
   if (http_arg_get(&hc->hc_req_args, "download") == NULL)
     http_arg_set(&hc->hc_req_args, "download", "1");
-  return page_http_playlist_(hc, remain, opaque, URLAUTH_CODE);
+  return page_http_playlist_(hc, playlist_remain, opaque, URLAUTH_CODE);
 }
 
 static int
@@ -1339,7 +1339,7 @@ page_short_epg
   (http_connection_t *hc, const char *remain, void *opaque)
 {
   const char *auth;
-  char remain[] = "channels";
+  char epg_remain[] = "channels";
 
   auth = http_arg_get(&hc->hc_req_args, "a");
   if (strempty(auth))
@@ -1349,7 +1349,7 @@ page_short_epg
     return http_noaccess_code(hc);
   if (http_arg_get(&hc->hc_req_args, "profile") == NULL)
     http_arg_set(&hc->hc_req_args, "profile", "pass");
-  return page_xmltv(hc, remain, opaque);
+  return page_xmltv(hc, epg_remain, opaque);
 }
 
 /**
