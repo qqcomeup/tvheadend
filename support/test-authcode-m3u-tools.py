@@ -65,6 +65,10 @@ def test_short_playlist_routes_exist():
     require('http_path_add("/playlist/auth"' in webui and
             'http_path_add("/xmltv"' in webui,
             "short routes must preserve the existing canonical endpoints")
+    require('char remain[] = "channels.m3u";' in webui,
+            "short M3U route must pass mutable remain text to playlist parser")
+    require('char remain[] = "channels";' in webui,
+            "short EPG route must pass mutable remain text to XMLTV parser")
 
 
 def test_password_editor_copy_ui_is_chinese():
