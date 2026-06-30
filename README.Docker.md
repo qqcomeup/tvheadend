@@ -174,6 +174,13 @@ be used without restarting Tvheadend.
 Example:
 
 ```text
+https://m3u.example.com/m3u?a=user-pass_123
+https://m3u.example.com/epg?a=user-pass_123
+```
+
+Legacy long URLs remain supported:
+
+```text
 https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=user-pass_123
 https://m3u.example.com/xmltv/channels?auth=user-pass_123&profile=pass
 ```

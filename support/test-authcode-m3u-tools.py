@@ -48,10 +48,23 @@ def test_password_editor_can_copy_playlist_urls():
             "password editor must build URLs from the current browser origin")
     require("window.location.protocol" in acl and "window.location.host" in acl,
             "URL builder must use the current Lucky/reverse-proxy origin")
-    require("/playlist/auth/channels.m3u?download=1&auth=" in acl,
-            "password editor must build the authenticated M3U URL")
-    require("/xmltv/channels?auth=" in acl,
-            "password editor must build the authenticated XMLTV URL")
+    require("/m3u?a=" in acl,
+            "password editor must build the short authenticated M3U URL")
+    require("/epg?a=" in acl,
+            "password editor must build the short authenticated XMLTV URL")
+
+
+def test_short_playlist_routes_exist():
+    webui = read("src/webui/webui.c")
+    require('http_path_add("/m3u"' in webui,
+            "webui must register the short M3U route")
+    require('http_path_add("/epg"' in webui,
+            "webui must register the short EPG route")
+    require('http_arg_get(&hc->hc_req_args, "a")' in webui,
+            "short routes must accept the short a= token parameter")
+    require('http_path_add("/playlist/auth"' in webui and
+            'http_path_add("/xmltv"' in webui,
+            "short routes must preserve the existing canonical endpoints")
 
 
 def test_password_editor_copy_ui_is_chinese():
@@ -86,6 +99,7 @@ if __name__ == "__main__":
         test_authcode_is_admin_editable,
         test_authcode_validation_guards,
         test_password_editor_can_copy_playlist_urls,
+        test_short_playlist_routes_exist,
         test_password_editor_copy_ui_is_chinese,
     ]
     for test in tests:

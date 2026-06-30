@@ -204,16 +204,14 @@ tvheadend.passwdCopyAuthUrl = function(select, type)
     }
 
     if (type == 'xmltv') {
-        url = base + '/xmltv/channels?auth=' +
-              encodeURIComponent(authcode) + '&profile=pass';
+        url = base + '/epg?a=' + encodeURIComponent(authcode);
         tvheadend.passwdCopyText(url, function() {
             tvheadend.passwdCopyToast('已复制 XMLTV 地址', url);
         }, function() {
             tvheadend.passwdShowUrl('XMLTV 地址', url);
         });
     } else {
-        url = base + '/playlist/auth/channels.m3u?download=1&auth=' +
-              encodeURIComponent(authcode);
+        url = base + '/m3u?a=' + encodeURIComponent(authcode);
         tvheadend.passwdCopyText(url, function() {
             tvheadend.passwdCopyToast('已复制 M3U 地址', url);
         }, function() {

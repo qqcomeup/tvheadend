@@ -594,17 +594,19 @@ http_m3u_append_epg_url(htsbuf_queue_t *hq, const char *hostpath,
   char *epg_url;
 
   htsbuf_queue_init(&url, 0);
-  htsbuf_qprintf(&url, "%s/xmltv/channels", hostpath);
   switch (urlauth) {
   case URLAUTH_CODE:
+    htsbuf_qprintf(&url, "%s/epg", hostpath);
     if (access)
-      http_m3u_append_epg_param(&url, &delim, "auth", access->aa_auth);
+      http_m3u_append_epg_param(&url, &delim, "a", access->aa_auth);
     break;
   case URLAUTH_TICKET:
+    htsbuf_qprintf(&url, "%s/xmltv/channels", hostpath);
     http_m3u_append_epg_param(&url, &delim, "ticket",
                               access_ticket_create("/xmltv/channels", access));
     break;
   default:
+    htsbuf_qprintf(&url, "%s/xmltv/channels", hostpath);
     break;
   }
   http_m3u_append_epg_param(&url, &delim, "profile", profile);
@@ -1312,6 +1314,40 @@ page_http_playlist_auth
   if (hc->hc_access == NULL || strempty(hc->hc_access->aa_auth))
     return http_noaccess_code(hc);
   return page_http_playlist_(hc, remain, opaque, URLAUTH_CODE);
+}
+
+static int
+page_short_m3u
+  (http_connection_t *hc, const char *remain, void *opaque)
+{
+  const char *auth;
+
+  auth = http_arg_get(&hc->hc_req_args, "a");
+  if (strempty(auth))
+    auth = http_arg_get(&hc->hc_req_args, "auth");
+  if (strempty(auth) || hc->hc_access == NULL ||
+      strempty(hc->hc_access->aa_auth))
+    return http_noaccess_code(hc);
+  if (http_arg_get(&hc->hc_req_args, "download") == NULL)
+    http_arg_set(&hc->hc_req_args, "download", "1");
+  return page_http_playlist_(hc, "channels.m3u", opaque, URLAUTH_CODE);
+}
+
+static int
+page_short_epg
+  (http_connection_t *hc, const char *remain, void *opaque)
+{
+  const char *auth;
+
+  auth = http_arg_get(&hc->hc_req_args, "a");
+  if (strempty(auth))
+    auth = http_arg_get(&hc->hc_req_args, "auth");
+  if (strempty(auth) || hc->hc_access == NULL ||
+      strempty(hc->hc_access->aa_auth))
+    return http_noaccess_code(hc);
+  if (http_arg_get(&hc->hc_req_args, "profile") == NULL)
+    http_arg_set(&hc->hc_req_args, "profile", "pass");
+  return page_xmltv(hc, "channels", opaque);
 }
 
 /**
@@ -2902,6 +2938,8 @@ webui_init(int xspf)
   http_path_add("/playlist", NULL, page_http_playlist, ACCESS_ANONYMOUS);
   http_path_add("/playlist/ticket", NULL, page_http_playlist_ticket, ACCESS_ANONYMOUS);
   http_path_add("/playlist/auth", NULL, page_http_playlist_auth, ACCESS_ANONYMOUS);
+  http_path_add("/m3u", NULL, page_short_m3u, ACCESS_ANONYMOUS);
+  http_path_add("/epg", NULL, page_short_epg, ACCESS_ANONYMOUS);
   http_path_add("/xmltv", NULL, page_xmltv, ACCESS_ANONYMOUS);
   http_path_add("/special/srvid2", NULL, page_srvid2, ACCESS_ADMIN);
   http_path_add("/markdown", NULL, page_markdown, ACCESS_ANONYMOUS);

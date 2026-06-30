@@ -203,6 +203,13 @@ Auth token 播放列表分享：
 Auth token URL 示例：
 
 ```text
+https://m3u.example.com/m3u?a=user-pass_123
+https://m3u.example.com/epg?a=user-pass_123
+```
+
+旧长地址仍兼容：
+
+```text
 https://m3u.example.com/playlist/auth/channels.m3u?download=1&auth=user-pass_123
 https://m3u.example.com/xmltv/channels?auth=user-pass_123&profile=pass
 ```

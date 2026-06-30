@@ -1007,6 +1007,8 @@ http_access_verify_auth(http_connection_t *hc)
   const char *auth_id;
 
   auth_id = http_arg_get(&hc->hc_req_args, "auth");
+  if (strempty(auth_id))
+    auth_id = http_arg_get(&hc->hc_req_args, "a");
   hc->hc_access = access_get_by_auth(hc->hc_peer, auth_id);
   if (hc->hc_access == NULL)
     return;
