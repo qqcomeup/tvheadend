@@ -74,6 +74,8 @@ Lucky / 反代兼容修复：
     `/playlist/auth/channels.m3u?download=1`
   * 播放列表字段会规整换行和制表符，减少异常频道名、标签名或录像标题导致的
     M3U/E2/SATIP 播放列表格式问题
+  * M3U 响应不会启用 gzip 压缩，避免部分浏览器或 Lucky 等反代携带
+    `Accept-Encoding: gzip` 时触发播放列表下载异常；XMLTV 等大文件仍按原逻辑处理
 
 ![Tvheadend Simplified Chinese web interface](docs/images/tvheadend-zh-hans.png)
 

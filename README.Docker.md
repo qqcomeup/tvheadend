@@ -134,6 +134,10 @@ http://user:pass@example:9981/playlist/auth/tags.m3u
 and `tvg-chno` metadata. `group-title` comes from the first enabled,
 non-internal channel tag.
 
+M3U responses are intentionally not gzip-compressed. This avoids playlist
+download failures when browsers or reverse proxies such as Lucky forward
+`Accept-Encoding: gzip`. Larger XMLTV responses keep the normal HTTP handling.
+
 The `tvg-id` value is configurable per request:
 
 ```text
