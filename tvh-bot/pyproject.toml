@@ -1,0 +1,21 @@
+[project]
+name = "tvh-bot"
+version = "0.1.0"
+description = "Admin Telegram bot for TVHeadend"
+requires-python = ">=3.12"
+dependencies = [
+  "aiogram>=3.13,<4",
+  "aiohttp>=3.10,<4",
+  "pydantic>=2.8,<3",
+  "pydantic-settings>=2.4,<3",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8,<10",
+  "pytest-asyncio>=0.24,<2",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

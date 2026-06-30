@@ -79,6 +79,39 @@ Lucky / 反代兼容修复：
 
 ![Tvheadend Simplified Chinese web interface](docs/images/tvheadend-zh-hans.png)
 
+Telegram 管理机器人
+-------------------
+
+`tvh-bot/` 是独立的第一阶段 Telegram 管理机器人，不嵌入 TVH 主程序。它只允许配置的管理员 Telegram ID 使用，适合在 VPS 上查看 TVH/DVB 状态、列出 TVH 用户，并复制用户短 M3U/EPG 地址。
+
+主要功能：
+
+  * `/status` 查看 TVH 连接状态、版本和 DVB 数量
+  * `/dvb` 查看当前 DVB adapter
+  * `/users` 选择用户后显示 token、`/m3u?a=token` 和 `/epg?a=token`
+  * DVB 数量低于 `EXPECTED_DVB_COUNT` 时通知管理员，恢复时再通知一次
+
+运行配置示例见 `tvh-bot/.env.example`。真实 `BOT_TOKEN`、TVH 管理员密码只放 VPS 的 `.env`，不要提交到 Git。
+
+VPS Docker 运行示例：
+
+```bash
+docker build -t tvh-bot:local tvh-bot
+docker rm -f tvh-bot || true
+docker run -d --name tvh-bot --restart always \
+  --env-file /home/ck/app/tvh-bot/.env \
+  -v /dev/dvb:/dev/dvb:ro \
+  --network host \
+  tvh-bot:local
+```
+
+公网短链接会按 `PUBLIC_BASE_URL` 拼接，例如：
+
+```text
+https://m3u.066671.xyz/m3u?a=user-pass_123
+https://m3u.066671.xyz/epg?a=user-pass_123
+```
+
 It supports the following inputs:
 
   * ATSC
