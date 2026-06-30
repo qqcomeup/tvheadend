@@ -644,7 +644,8 @@ http_send_reply_disposition(http_connection_t *hc, int rc, const char *content,
   uint8_t *data = NULL;
 
 #if ENABLE_ZLIB
-  if (http_encoding_valid(hc, "gzip") && encoding == NULL && size > 256) {
+  if (http_encoding_valid(hc, "gzip") && encoding == NULL && size > 256 &&
+      strcmp(content, "audio/x-mpegurl")) {
     uint8_t *data2 = (uint8_t *)htsbuf_to_string(&hc->hc_reply);
     data = tvh_gzip_deflate(data2, size, &size);
     free(data2);

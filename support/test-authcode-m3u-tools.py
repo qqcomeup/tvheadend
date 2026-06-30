@@ -71,6 +71,12 @@ def test_short_playlist_routes_exist():
             "short EPG route must pass mutable remain text to XMLTV parser")
 
 
+def test_m3u_replies_skip_gzip():
+    http = read("src/http.c")
+    require('strcmp(content, "audio/x-mpegurl")' in http,
+            "M3U replies must be excluded from gzip compression")
+
+
 def test_password_editor_copy_ui_is_chinese():
     acl = read("src/webui/static/app/acleditor.js")
     css = read("src/webui/static/app/ext.css")
@@ -104,6 +110,7 @@ if __name__ == "__main__":
         test_authcode_validation_guards,
         test_password_editor_can_copy_playlist_urls,
         test_short_playlist_routes_exist,
+        test_m3u_replies_skip_gzip,
         test_password_editor_copy_ui_is_chinese,
     ]
     for test in tests:
