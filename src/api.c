@@ -20,8 +20,12 @@
 #include "tvheadend.h"
 #include "api.h"
 #include "access.h"
+#include "clock.h"
 
 #include <string.h>
+#include <signal.h>
+
+extern void doexit(int x);
 
 typedef struct api_link {
   const api_hook_t   *hook;
@@ -111,9 +115,22 @@ api_serverinfo
   htsmsg_add_str(*resp, "sw_version",   tvheadend_version);
   htsmsg_add_u32(*resp, "api_version",  TVH_API_VERSION);
   htsmsg_add_str(*resp, "name",         "Tvheadend");
+  htsmsg_add_s64(*resp, "start_time",   tvheadend_start_time);
+  htsmsg_add_s64(*resp, "current_time", gclk());
+  htsmsg_add_s64(*resp, "uptime",       MAX(0, gclk() - tvheadend_start_time));
   if (tvheadend_webroot)
     htsmsg_add_str(*resp, "webroot",      tvheadend_webroot);
   htsmsg_add_msg(*resp, "capabilities", tvheadend_capabilities_list(1));
+  return 0;
+}
+
+static int
+api_server_restart
+  ( access_t *perm, void *opaque, const char *op, htsmsg_t *args, htsmsg_t **resp )
+{
+  *resp = htsmsg_create_map();
+  htsmsg_add_str(*resp, "restart", "requested");
+  doexit(SIGTERM);
   return 0;
 }
 
@@ -133,6 +150,7 @@ void api_init ( void )
 {
   static api_hook_t h[] = {
     { "serverinfo", ACCESS_ANONYMOUS, api_serverinfo, NULL },
+    { "server/restart", ACCESS_ADMIN, api_server_restart, NULL },
     { "pathlist", ACCESS_ANONYMOUS, api_pathlist, NULL },
     { NULL, 0, NULL, NULL }
   };

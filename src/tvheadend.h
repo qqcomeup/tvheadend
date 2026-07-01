@@ -54,6 +54,7 @@ typedef struct {
 } tvh_caps_t;
 
 extern int              tvheadend_running;
+extern time_t           tvheadend_start_time;
 extern const char      *tvheadend_version;
 extern const char      *tvheadend_cwd;
 extern const char      *tvheadend_webroot;

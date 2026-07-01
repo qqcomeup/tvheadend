@@ -145,6 +145,7 @@ static cmdline_opt_t* cmdline_opt_find
  * Globals
  */
 int              tvheadend_running; /* do not use directly: tvheadend_is_running() */
+time_t           tvheadend_start_time;
 int              tvheadend_mainloop;
 int              tvheadend_webui_port;
 int              tvheadend_webui_debug;
@@ -828,6 +829,7 @@ main(int argc, char **argv)
   tvheadend_htsp_port_extra = 0;
   __mdispatch_clock = getmonoclock();
   __gdispatch_clock = time(NULL);
+  tvheadend_start_time = __gdispatch_clock;
 
   /* Command line options */
   int         opt_help         = 0,
