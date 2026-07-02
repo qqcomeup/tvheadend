@@ -1924,6 +1924,7 @@ void config_done ( void )
   free(config.http_user_agent);
   free(config.webhook_url);
   free(config.webhook_token);
+  free(config.webhook_targets);
   free(config.server_name);
   free(config.language);
   free(config.language_ui);
@@ -2772,6 +2773,15 @@ const idclass_t config_class = {
       .desc   = N_("Optional token sent in the X-Tvh-Token HTTP header."),
       .off    = offsetof(config_t, webhook_token),
       .opts   = PO_EXPERT | PO_PASSWORD,
+      .group  = 8,
+    },
+    {
+      .type   = PT_STR,
+      .id     = "webhook_targets",
+      .name   = N_("Webhook targets"),
+      .desc   = N_("JSON array of Webhook targets. Each target may define name, url, token, headers, events, timeout, retry_count, retry_interval, ssl_verify and template."),
+      .off    = offsetof(config_t, webhook_targets),
+      .opts   = PO_EXPERT,
       .group  = 8,
     },
     {

@@ -25,7 +25,17 @@
 
 typedef struct tvh_webhook_item {
   TAILQ_ENTRY(tvh_webhook_item) link;
+  char *target_name;
+  char *url;
+  char *token;
+  char *event;
+  char *template;
   char *body;
+  htsmsg_t *headers;
+  int ssl_verify;
+  int timeout;
+  int retry_count;
+  int retry_interval;
 } tvh_webhook_item_t;
 
 static TAILQ_HEAD(, tvh_webhook_item) tvh_webhook_queue;
@@ -41,7 +51,165 @@ static int
 tvh_webhook_enabled(void)
 {
   return config.webhook_enabled &&
-         tvh_str_default(config.webhook_url, NULL) != NULL;
+         (tvh_str_default(config.webhook_url, NULL) != NULL ||
+          tvh_str_default(config.webhook_targets, NULL) != NULL);
+}
+
+static int
+tvh_webhook_event_match_one(const char *pattern, const char *event)
+{
+  size_t n;
+
+  if (!pattern || !event)
+    return 0;
+  if (!strcmp(pattern, "*") || !strcmp(pattern, event))
+    return 1;
+  n = strlen(pattern);
+  return n > 1 && pattern[n - 1] == '*' &&
+         !strncmp(pattern, event, n - 1);
+}
+
+static int
+tvh_webhook_target_accepts_event(htsmsg_t *target, const char *event)
+{
+  htsmsg_t *events;
+  htsmsg_field_t *f;
+  const char *pattern;
+
+  events = htsmsg_get_list(target, "events");
+  if (!events)
+    return 1;
+  HTSMSG_FOREACH(f, events) {
+    pattern = htsmsg_field_get_str(f);
+    if (tvh_webhook_event_match_one(pattern, event))
+      return 1;
+  }
+  return 0;
+}
+
+static char *
+tvh_webhook_replace_token(char *src, const char *token, const char *value)
+{
+  const char *p;
+  char *dst, *w;
+  size_t src_len, token_len, value_len, count = 0;
+
+  if (!src || !token || !value)
+    return src;
+  token_len = strlen(token);
+  value_len = strlen(value);
+  if (token_len == 0)
+    return src;
+  for (p = src; (p = strstr(p, token)) != NULL; p += token_len)
+    count++;
+  if (!count)
+    return src;
+  src_len = strlen(src);
+  if (value_len >= token_len)
+    dst = malloc(src_len + count * (value_len - token_len) + 1);
+  else
+    dst = malloc(src_len - count * (token_len - value_len) + 1);
+  if (!dst)
+    return src;
+  w = dst;
+  p = src;
+  while (1) {
+    const char *q = strstr(p, token);
+    if (!q)
+      break;
+    memcpy(w, p, q - p);
+    w += q - p;
+    memcpy(w, value, value_len);
+    w += value_len;
+    p = q + token_len;
+  }
+  strcpy(w, p);
+  free(src);
+  return dst;
+}
+
+static char *
+tvh_webhook_apply_template(const char *template, const char *body,
+                           const char *event, const char *target_name)
+{
+  char *out;
+
+  if (!tvh_str_default(template, NULL))
+    return strdup(body);
+  out = strdup(template);
+  if (!out)
+    return NULL;
+  out = tvh_webhook_replace_token(out, "{{body}}", body ?: "");
+  out = tvh_webhook_replace_token(out, "{{event}}", event ?: "");
+  out = tvh_webhook_replace_token(out, "{{target}}", target_name ?: "");
+  return out;
+}
+
+static void
+tvh_webhook_item_destroy(tvh_webhook_item_t *item)
+{
+  if (!item)
+    return;
+  free(item->target_name);
+  free(item->url);
+  free(item->token);
+  free(item->event);
+  free(item->template);
+  free(item->body);
+  if (item->headers)
+    htsmsg_destroy(item->headers);
+  free(item);
+}
+
+static int
+tvh_webhook_queue_item(tvh_webhook_item_t *item)
+{
+  tvh_mutex_lock(&tvh_webhook_mutex);
+  if (!tvh_webhook_running ||
+      tvh_webhook_queue_size >= TVH_WEBHOOK_MAX_QUEUE) {
+    tvh_mutex_unlock(&tvh_webhook_mutex);
+    tvh_webhook_item_destroy(item);
+    return ENOBUFS;
+  }
+  TAILQ_INSERT_TAIL(&tvh_webhook_queue, item, link);
+  tvh_webhook_queue_size++;
+  tvh_cond_signal(&tvh_webhook_cond, 0);
+  tvh_mutex_unlock(&tvh_webhook_mutex);
+
+  return 0;
+}
+
+static int
+tvh_webhook_enqueue_target(const char *event, const char *body,
+                           const char *name, const char *url,
+                           const char *token, htsmsg_t *headers,
+                           const char *template, int ssl_verify,
+                           int timeout, int retry_count,
+                           int retry_interval)
+{
+  tvh_webhook_item_t *item;
+
+  if (!tvh_str_default(url, NULL))
+    return EINVAL;
+  item = calloc(1, sizeof(*item));
+  if (!item)
+    return ENOMEM;
+  item->target_name = strdup(name ?: "default");
+  item->url = strdup(url);
+  item->token = tvh_str_default(token, NULL) ? strdup(token) : NULL;
+  item->event = strdup(event ?: "");
+  item->template = tvh_str_default(template, NULL) ? strdup(template) : NULL;
+  item->body = tvh_webhook_apply_template(template, body, event, name);
+  item->headers = headers ? htsmsg_copy(headers) : NULL;
+  item->ssl_verify = ssl_verify;
+  item->timeout = MAX(timeout, 1);
+  item->retry_count = MAX(retry_count, 0);
+  item->retry_interval = MAX(retry_interval, 1);
+  if (!item->target_name || !item->url || !item->event || !item->body) {
+    tvh_webhook_item_destroy(item);
+    return ENOMEM;
+  }
+  return tvh_webhook_queue_item(item);
 }
 
 static void
@@ -138,10 +306,14 @@ tvh_webhook_dvr_msg(const char *event, dvr_entry_t *de)
 }
 
 static int
-tvh_webhook_enqueue_msg(htsmsg_t *m)
+tvh_webhook_enqueue_msg(const char *event, htsmsg_t *m)
 {
-  tvh_webhook_item_t *item;
+  htsmsg_t *targets = NULL, *target, *headers;
+  htsmsg_field_t *f;
   char *body;
+  const char *name, *url, *token, *template;
+  int queued = 0, failed = 0, have_targets_config = 0;
+  int enabled, ssl_verify, timeout, retry_count, retry_interval;
 
   if (!tvh_webhook_enabled()) {
     htsmsg_destroy(m);
@@ -153,27 +325,53 @@ tvh_webhook_enqueue_msg(htsmsg_t *m)
   if (!body)
     return ENOMEM;
 
-  item = calloc(1, sizeof(*item));
-  if (!item) {
-    free(body);
-    return ENOMEM;
-  }
-  item->body = body;
+  if (tvh_str_default(config.webhook_targets, NULL))
+    targets = htsmsg_json_deserialize(config.webhook_targets);
 
-  tvh_mutex_lock(&tvh_webhook_mutex);
-  if (!tvh_webhook_running ||
-      tvh_webhook_queue_size >= TVH_WEBHOOK_MAX_QUEUE) {
-    tvh_mutex_unlock(&tvh_webhook_mutex);
-    free(item->body);
-    free(item);
-    return ENOBUFS;
+  if (targets && targets->hm_islist) {
+    have_targets_config = 1;
+    HTSMSG_FOREACH(f, targets) {
+      target = htsmsg_field_get_map(f);
+      if (!target)
+        continue;
+      enabled = htsmsg_get_bool_or_default(target, "enabled", 1);
+      if (!enabled || !tvh_webhook_target_accepts_event(target, event))
+        continue;
+      name = htsmsg_get_str(target, "name");
+      url = htsmsg_get_str(target, "url");
+      token = htsmsg_get_str(target, "token");
+      template = htsmsg_get_str(target, "template");
+      headers = htsmsg_get_map(target, "headers");
+      ssl_verify = htsmsg_get_bool_or_default(target, "ssl_verify", config.webhook_ssl_verify);
+      timeout = htsmsg_get_s32_or_default(target, "timeout", config.webhook_timeout);
+      retry_count = htsmsg_get_s32_or_default(target, "retry_count", 0);
+      retry_interval = htsmsg_get_s32_or_default(target, "retry_interval", 1);
+      if (tvh_webhook_enqueue_target(event, body, name, url, token, headers,
+                                     template, ssl_verify, timeout,
+                                     retry_count, retry_interval) == 0)
+        queued++;
+      else
+        failed++;
+    }
   }
-  TAILQ_INSERT_TAIL(&tvh_webhook_queue, item, link);
-  tvh_webhook_queue_size++;
-  tvh_cond_signal(&tvh_webhook_cond, 0);
-  tvh_mutex_unlock(&tvh_webhook_mutex);
 
-  return 0;
+  if (targets)
+    htsmsg_destroy(targets);
+
+  if (!queued && !have_targets_config && tvh_str_default(config.webhook_url, NULL)) {
+    if (tvh_webhook_enqueue_target(event, body, "default",
+                                   config.webhook_url, config.webhook_token,
+                                   NULL, NULL, config.webhook_ssl_verify,
+                                   config.webhook_timeout, 0, 1) == 0)
+      queued++;
+    else
+      failed++;
+  }
+
+  free(body);
+  if (queued)
+    return 0;
+  return failed ? ENOBUFS : EINVAL;
 }
 
 void
@@ -182,7 +380,7 @@ tvh_webhook_subscription_start(th_subscription_t *s)
   if (config.webhook_notify_playback &&
       tvh_webhook_enabled() &&
       (s->ths_username || s->ths_hostname || s->ths_client) &&
-      tvh_webhook_enqueue_msg(tvh_webhook_subscription_msg("playback.start", s)) == 0)
+      tvh_webhook_enqueue_msg("playback.start", tvh_webhook_subscription_msg("playback.start", s)) == 0)
     s->ths_webhook_started = 1;
 }
 
@@ -193,7 +391,7 @@ tvh_webhook_subscription_stop(th_subscription_t *s)
       tvh_webhook_enabled() &&
       s->ths_webhook_started &&
       (s->ths_username || s->ths_hostname || s->ths_client))
-    tvh_webhook_enqueue_msg(tvh_webhook_subscription_msg("playback.stop", s));
+    tvh_webhook_enqueue_msg("playback.stop", tvh_webhook_subscription_msg("playback.stop", s));
   s->ths_webhook_started = 0;
 }
 
@@ -217,7 +415,7 @@ tvh_webhook_dvr_event(dvr_entry_t *de, tvh_webhook_dvr_event_t event)
     name = "dvr.error";
     break;
   }
-  tvh_webhook_enqueue_msg(tvh_webhook_dvr_msg(name, de));
+  tvh_webhook_enqueue_msg(name, tvh_webhook_dvr_msg(name, de));
 }
 
 int
@@ -228,21 +426,23 @@ tvh_webhook_test(void)
   tvh_webhook_add_common(m, "system.webhooktest", "webhook-test");
   htsmsg_add_str(m, "title", "TVH Webhook test");
   htsmsg_add_str(m, "message", "Webhook test message from Tvheadend");
-  return tvh_webhook_enqueue_msg(m);
+  return tvh_webhook_enqueue_msg("system.webhooktest", m);
 }
 
 static int
-tvh_webhook_post(const char *body)
+tvh_webhook_post(tvh_webhook_item_t *item)
 {
   url_t url;
   http_client_t *hc = NULL;
   http_arg_list_t h;
+  htsmsg_field_t *f;
   int r, timeout, elapsed;
   char len[32];
+  const char *key, *val;
 
   urlinit(&url);
-  if (urlparse(config.webhook_url, &url)) {
-    tvherror(LS_HTTPC, "webhook: invalid url '%s'", config.webhook_url);
+  if (urlparse(item->url, &url)) {
+    tvherror(LS_HTTPC, "webhook: invalid url '%s'", item->url);
     return EINVAL;
   }
 
@@ -252,22 +452,30 @@ tvh_webhook_post(const char *body)
     urlreset(&url);
     return EIO;
   }
-  http_client_ssl_peer_verify(hc, config.webhook_ssl_verify);
+  http_client_ssl_peer_verify(hc, item->ssl_verify);
 
   http_arg_init(&h);
   http_client_basic_args(hc, &h, &url, 0);
   http_arg_set(&h, "Content-Type", "application/json");
-  snprintf(len, sizeof(len), "%zu", strlen(body));
+  snprintf(len, sizeof(len), "%zu", strlen(item->body));
   http_arg_set(&h, "Content-Length", len);
-  if (tvh_str_default(config.webhook_token, NULL))
-    http_arg_set(&h, "X-Tvh-Token", config.webhook_token);
+  if (tvh_str_default(item->token, NULL))
+    http_arg_set(&h, "X-Tvh-Token", item->token);
+  if (item->headers) {
+    HTSMSG_FOREACH(f, item->headers) {
+      key = htsmsg_field_name(f);
+      val = htsmsg_field_get_str(f);
+      if (tvh_str_default(key, NULL) && tvh_str_default(val, NULL))
+        http_arg_set(&h, key, val);
+    }
+  }
 
   tvh_mutex_lock(&hc->hc_mutex);
   r = http_client_send(hc, HTTP_CMD_POST, url.path, url.query,
-                       &h, (void *)body, strlen(body));
+                       &h, (void *)item->body, strlen(item->body));
   tvh_mutex_unlock(&hc->hc_mutex);
 
-  timeout = MAX(config.webhook_timeout, 1) * 20;
+  timeout = MAX(item->timeout, 1) * 20;
   elapsed = 0;
   while (r == HTTP_CON_RECEIVING || r == HTTP_CON_SENDING ||
          r == HTTP_CON_SENT || r == HTTP_CON_IDLE) {
@@ -280,16 +488,21 @@ tvh_webhook_post(const char *body)
   }
 
   if (hc->hc_code >= 200 && hc->hc_code < 300) {
-    tvhdebug(LS_HTTPC, "webhook: delivered event to %s", config.webhook_url);
+    tvhdebug(LS_HTTPC, "webhook: delivered event '%s' to target '%s'",
+             item->event, item->target_name);
     r = HTTP_CON_DONE;
   } else if (r == HTTP_CON_DONE) {
-    tvhwarn(LS_HTTPC, "webhook: endpoint returned HTTP %d", hc->hc_code);
+    tvhwarn(LS_HTTPC, "webhook: target '%s' returned HTTP %d",
+            item->target_name, hc->hc_code);
   } else if (r < 0) {
-    tvhwarn(LS_HTTPC, "webhook: delivery failed: %s", strerror(-r));
+    tvhwarn(LS_HTTPC, "webhook: target '%s' delivery failed: %s",
+            item->target_name, strerror(-r));
   } else if (r > 0) {
-    tvhwarn(LS_HTTPC, "webhook: delivery failed with client state %d", r);
+    tvhwarn(LS_HTTPC, "webhook: target '%s' delivery failed with client state %d",
+            item->target_name, r);
   }
 
+  http_arg_flush(&h);
   http_client_close(hc);
   urlreset(&url);
   return r == HTTP_CON_DONE ? 0 : EIO;
@@ -311,11 +524,21 @@ tvh_webhook_thread(void *aux)
     tvh_webhook_queue_size--;
     tvh_mutex_unlock(&tvh_webhook_mutex);
 
-    if (tvh_webhook_enabled())
-      tvh_webhook_post(item->body);
+    if (tvh_webhook_enabled()) {
+      int attempt, result = EIO;
+      for (attempt = 0; attempt <= item->retry_count; attempt++) {
+        result = tvh_webhook_post(item);
+        if (result == 0)
+          break;
+        if (attempt < item->retry_count)
+          tvh_safe_usleep((int64_t)item->retry_interval * 1000000);
+      }
+      if (result)
+        tvhwarn(LS_HTTPC, "webhook: target '%s' dropped event '%s' after %d attempt(s)",
+                item->target_name, item->event, item->retry_count + 1);
+    }
 
-    free(item->body);
-    free(item);
+    tvh_webhook_item_destroy(item);
     tvh_mutex_lock(&tvh_webhook_mutex);
   }
   tvh_mutex_unlock(&tvh_webhook_mutex);
@@ -347,8 +570,7 @@ tvh_webhook_done(void)
   tvh_mutex_lock(&tvh_webhook_mutex);
   while ((item = TAILQ_FIRST(&tvh_webhook_queue)) != NULL) {
     TAILQ_REMOVE(&tvh_webhook_queue, item, link);
-    free(item->body);
-    free(item);
+    tvh_webhook_item_destroy(item);
   }
   tvh_webhook_queue_size = 0;
   tvh_mutex_unlock(&tvh_webhook_mutex);

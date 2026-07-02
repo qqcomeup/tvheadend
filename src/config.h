@@ -47,6 +47,7 @@ typedef struct config {
   int webhook_enabled;
   char *webhook_url;
   char *webhook_token;
+  char *webhook_targets;
   int webhook_ssl_verify;
   int webhook_timeout;
   int webhook_notify_playback;
