@@ -56,6 +56,16 @@ tvh_webhook_enabled(void)
 }
 
 static int
+tvh_webhook_is_user_playback_subscription(th_subscription_t *s)
+{
+  if (!s)
+    return 0;
+  if (s->ths_title && !strncmp(s->ths_title, "DVR:", 4))
+    return 0;
+  return s->ths_username || s->ths_hostname || s->ths_client;
+}
+
+static int
 tvh_webhook_event_match_one(const char *pattern, const char *event)
 {
   size_t n;
@@ -379,7 +389,7 @@ tvh_webhook_subscription_start(th_subscription_t *s)
 {
   if (config.webhook_notify_playback &&
       tvh_webhook_enabled() &&
-      (s->ths_username || s->ths_hostname || s->ths_client) &&
+      tvh_webhook_is_user_playback_subscription(s) &&
       tvh_webhook_enqueue_msg("playback.start", tvh_webhook_subscription_msg("playback.start", s)) == 0)
     s->ths_webhook_started = 1;
 }
@@ -390,7 +400,7 @@ tvh_webhook_subscription_stop(th_subscription_t *s)
   if (config.webhook_notify_playback &&
       tvh_webhook_enabled() &&
       s->ths_webhook_started &&
-      (s->ths_username || s->ths_hostname || s->ths_client))
+      tvh_webhook_is_user_playback_subscription(s))
     tvh_webhook_enqueue_msg("playback.stop", tvh_webhook_subscription_msg("playback.stop", s));
   s->ths_webhook_started = 0;
 }
