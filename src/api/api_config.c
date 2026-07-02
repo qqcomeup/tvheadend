@@ -23,6 +23,7 @@
 #include "memoryinfo.h"
 #include "api.h"
 #include "config.h"
+#include "webhook.h"
 
 //Needed to get the current trace/debug states for each subsystem.
 //Look in tvhlog.c for more details.
@@ -36,6 +37,21 @@ api_config_capabilities(access_t *perm, void *opaque, const char *op,
 {
     *resp = tvheadend_capabilities_list(0);
     return 0;
+}
+
+static int
+api_webhook_test(access_t *perm, void *opaque, const char *op,
+                 htsmsg_t *args, htsmsg_t **resp)
+{
+  int r = tvh_webhook_test();
+
+  *resp = htsmsg_create_map();
+  htsmsg_add_bool(*resp, "success", r == 0);
+  if (r == 0)
+    htsmsg_add_str(*resp, "message", "Webhook test queued");
+  else
+    htsmsg_add_str(*resp, "message", strerror(r));
+  return 0;
 }
 
 static void
@@ -118,6 +134,7 @@ api_config_init ( void )
     { "config/capabilities",    ACCESS_OR|ACCESS_WEB_INTERFACE|ACCESS_HTSP_INTERFACE, api_config_capabilities, NULL },
     { "config/load",            ACCESS_ADMIN, api_idnode_load_simple, &config },
     { "config/save",            ACCESS_ADMIN, api_idnode_save_simple, &config },
+    { "webhook/test",           ACCESS_ADMIN, api_webhook_test, NULL },
     { "tvhlog/config/load",     ACCESS_ADMIN, api_idnode_load_simple, &tvhlog_conf },
     { "tvhlog/config/save",     ACCESS_ADMIN, api_idnode_save_simple, &tvhlog_conf },
     { "tvhlog/subsystem/grid",  ACCESS_ADMIN, api_subsystems_grid, NULL },

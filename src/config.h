@@ -44,6 +44,13 @@ typedef struct config {
   char *server_name;
   char *http_server_name;
   char *http_user_agent;
+  int webhook_enabled;
+  char *webhook_url;
+  char *webhook_token;
+  int webhook_ssl_verify;
+  int webhook_timeout;
+  int webhook_notify_playback;
+  int webhook_notify_dvr;
   char *language;
   char *info_area;
   int chname_num;
