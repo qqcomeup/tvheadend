@@ -205,7 +205,7 @@ tvheadend.webhookconf = function(panel, index) {
             title: _('Errors'),
             items: [
                 { value: 'dvb.*', label: _('DVB error') },
-                { value: 'service.error', label: _('Service error') }
+                { value: 'service.*', label: _('Service error') }
             ]
         }
     ];
@@ -306,7 +306,7 @@ tvheadend.webhookconf = function(panel, index) {
             enabled: true,
             name: 'moviepilot',
             url: '',
-            events: 'system.webhooktest,playback.*,dvr.*,dvb.*,service.error',
+            events: 'system.webhooktest,playback.*,dvr.*,dvb.*,service.*',
             token: '',
             hmac_secret: '',
             timeout: 10,
@@ -555,7 +555,7 @@ tvheadend.webhookconf = function(panel, index) {
             retryCountField.setValue(2);
             retryIntervalField.setValue(5);
             sslVerifyField.setValue(true);
-            applySelectedEvents(splitEvents('system.webhooktest,playback.*,dvr.*,dvb.*,service.error'), eventBoxes, groupBoxes);
+            applySelectedEvents(splitEvents('system.webhooktest,playback.*,dvr.*,dvb.*,service.*'), eventBoxes, groupBoxes);
         }
 
         var win = new Ext.Window({

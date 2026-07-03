@@ -78,6 +78,32 @@ api_webhook_events_to_csv(htsmsg_t *events)
   return htsbuf_to_string(&q);
 }
 
+static void
+api_webhook_normalize_events(htsmsg_t *target)
+{
+  htsmsg_t *events;
+  char *copy, *saveptr = NULL, *item;
+  const char *csv;
+
+  if (!target || htsmsg_get_list(target, "events"))
+    return;
+  csv = htsmsg_get_str(target, "events");
+  if (!tvh_str_default(csv, NULL))
+    return;
+
+  events = htsmsg_create_list();
+  copy = strdup(csv);
+  for (item = strtok_r(copy, ",", &saveptr); item; item = strtok_r(NULL, ",", &saveptr)) {
+    while (*item == ' ' || *item == '\t')
+      item++;
+    if (*item)
+      htsmsg_add_str(events, NULL, item);
+  }
+  free(copy);
+  htsmsg_delete_field(target, "events");
+  htsmsg_add_msg(target, "events", events);
+}
+
 static int
 api_webhook_targets_grid(access_t *perm, void *opaque, const char *op,
                          htsmsg_t *args, htsmsg_t **resp)
@@ -109,7 +135,7 @@ api_webhook_targets_grid(access_t *perm, void *opaque, const char *op,
       htsmsg_add_bool(row, "ssl_verify", htsmsg_get_bool_or_default(target, "ssl_verify", config.webhook_ssl_verify));
       htsmsg_add_str(row, "template", htsmsg_get_str(target, "template") ?: "");
       events = htsmsg_get_list(target, "events");
-      events_csv = api_webhook_events_to_csv(events);
+      events_csv = events ? api_webhook_events_to_csv(events) : strdup(htsmsg_get_str(target, "events") ?: "");
       htsmsg_add_str(row, "events", events_csv ?: "");
       free(events_csv);
       headers = htsmsg_get_map(target, "headers");
@@ -136,7 +162,8 @@ api_webhook_targets_save(access_t *perm, void *opaque, const char *op,
                          htsmsg_t *args, htsmsg_t **resp)
 {
   const char *json;
-  htsmsg_t *targets;
+  htsmsg_t *targets, *target;
+  htsmsg_field_t *f;
   char *normalized;
 
   *resp = htsmsg_create_map();
@@ -153,6 +180,11 @@ api_webhook_targets_save(access_t *perm, void *opaque, const char *op,
     htsmsg_add_bool(*resp, "success", 0);
     htsmsg_add_str(*resp, "message", "Targets must be a JSON array");
     return 0;
+  }
+  HTSMSG_FOREACH(f, targets) {
+    target = htsmsg_field_get_map(f);
+    if (target)
+      api_webhook_normalize_events(target);
   }
   normalized = htsmsg_json_serialize_to_str(targets, 0);
   htsmsg_destroy(targets);
