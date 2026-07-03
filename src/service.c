@@ -35,6 +35,7 @@
 #include "bouquet.h"
 #include "memoryinfo.h"
 #include "config.h"
+#include "webhook.h"
 
 static void service_data_timeout(void *aux);
 static void service_class_delete(struct idnode *self);
@@ -1031,6 +1032,9 @@ service_set_streaming_status_flags_(service_t *t, int set)
 	 set & TSS_TUNING         ? "[Tuning failed] " : "",
 	 set & TSS_GRACEPERIOD    ? "[Graceperiod expired] " : "",
 	 set & TSS_TIMEOUT        ? "[Data timeout] " : "");
+
+  if (service_tss_is_error(set))
+    tvh_webhook_service_error(t, set);
 
   service_send_streaming_status(t);
 }

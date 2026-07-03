@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <openssl/hmac.h>
 
 #include "tvheadend.h"
 #include "webhook.h"
@@ -17,6 +18,7 @@
 #include "channels.h"
 #include "service.h"
 #include "streaming.h"
+#include "input.h"
 #include "lang_str.h"
 #include "dvr/dvr.h"
 #include "subscriptions.h"
@@ -28,6 +30,8 @@ typedef struct tvh_webhook_item {
   char *target_name;
   char *url;
   char *token;
+  char *hmac_secret;
+  char *signature_input;
   char *event;
   char *template;
   char *body;
@@ -63,6 +67,38 @@ tvh_webhook_is_user_playback_subscription(th_subscription_t *s)
   if (s->ths_title && !strncmp(s->ths_title, "DVR:", 4))
     return 0;
   return s->ths_username || s->ths_hostname || s->ths_client;
+}
+
+static char *
+tvh_webhook_signature_input(htsmsg_t *m, const char *event)
+{
+  int64_t timestamp = 0;
+  const char *event_id;
+  char buf[512];
+
+  event_id = htsmsg_get_str(m, "event_id") ?: "";
+  htsmsg_get_s64(m, "timestamp", &timestamp);
+  snprintf(buf, sizeof(buf), "%s.%s.%lld",
+           event ?: "", event_id, (long long)timestamp);
+  return strdup(buf);
+}
+
+static int
+tvh_webhook_hmac_sha256_hex(const char *secret, const char *input,
+                            char *dst, size_t dstlen)
+{
+  unsigned char digest[EVP_MAX_MD_SIZE];
+  unsigned int digest_len = 0;
+
+  if (!tvh_str_default(secret, NULL) || !tvh_str_default(input, NULL) ||
+      dstlen < 65)
+    return EINVAL;
+  if (!HMAC(EVP_sha256(), secret, strlen(secret),
+            (const unsigned char *)input, strlen(input),
+            digest, &digest_len) || digest_len != 32)
+    return EIO;
+  bin2hex(dst, dstlen, digest, digest_len);
+  return 0;
 }
 
 static int
@@ -163,6 +199,8 @@ tvh_webhook_item_destroy(tvh_webhook_item_t *item)
   free(item->target_name);
   free(item->url);
   free(item->token);
+  free(item->hmac_secret);
+  free(item->signature_input);
   free(item->event);
   free(item->template);
   free(item->body);
@@ -192,7 +230,8 @@ tvh_webhook_queue_item(tvh_webhook_item_t *item)
 static int
 tvh_webhook_enqueue_target(const char *event, const char *body,
                            const char *name, const char *url,
-                           const char *token, htsmsg_t *headers,
+                           const char *token, const char *hmac_secret,
+                           const char *signature_input, htsmsg_t *headers,
                            const char *template, int ssl_verify,
                            int timeout, int retry_count,
                            int retry_interval)
@@ -207,6 +246,8 @@ tvh_webhook_enqueue_target(const char *event, const char *body,
   item->target_name = strdup(name ?: "default");
   item->url = strdup(url);
   item->token = tvh_str_default(token, NULL) ? strdup(token) : NULL;
+  item->hmac_secret = tvh_str_default(hmac_secret, NULL) ? strdup(hmac_secret) : NULL;
+  item->signature_input = tvh_str_default(signature_input, NULL) ? strdup(signature_input) : NULL;
   item->event = strdup(event ?: "");
   item->template = tvh_str_default(template, NULL) ? strdup(template) : NULL;
   item->body = tvh_webhook_apply_template(template, body, event, name);
@@ -215,7 +256,9 @@ tvh_webhook_enqueue_target(const char *event, const char *body,
   item->timeout = MAX(timeout, 1);
   item->retry_count = MAX(retry_count, 0);
   item->retry_interval = MAX(retry_interval, 1);
-  if (!item->target_name || !item->url || !item->event || !item->body) {
+  if (!item->target_name || !item->url || !item->event || !item->body ||
+      (tvh_str_default(hmac_secret, NULL) && !item->hmac_secret) ||
+      (tvh_str_default(signature_input, NULL) && !item->signature_input)) {
     tvh_webhook_item_destroy(item);
     return ENOMEM;
   }
@@ -315,13 +358,65 @@ tvh_webhook_dvr_msg(const char *event, dvr_entry_t *de)
   return m;
 }
 
+static htsmsg_t *
+tvh_webhook_service_error_msg(service_t *s, int flags)
+{
+  htsmsg_t *m = htsmsg_create_map();
+  char ubuf[UUID_HEX_SIZE];
+  char event_id[UUID_HEX_SIZE + 32];
+  char adapter[284];
+
+  idnode_uuid_as_str(&s->s_id, ubuf);
+  snprintf(event_id, sizeof(event_id), "service-%s-%x", ubuf, flags);
+  tvh_webhook_add_common(m, "service.error", event_id);
+
+  htsmsg_add_str(m, "service_uuid", ubuf);
+  htsmsg_add_s32(m, "status_flags", flags);
+  htsmsg_add_str(m, "status_text", service_tss2text(flags));
+  htsmsg_add_str(m, "service", service_nicename(s));
+  htsmsg_add_str(m, "adapter", service_adapter_nicename(s, adapter, sizeof(adapter)));
+
+  return m;
+}
+
+static htsmsg_t *
+tvh_webhook_dvb_error_msg(mpegts_input_t *mi, mpegts_mux_t *mm, int flags)
+{
+  htsmsg_t *m = htsmsg_create_map();
+  char input_uuid[UUID_HEX_SIZE], mux_uuid[UUID_HEX_SIZE];
+  char event_id[UUID_HEX_SIZE * 2 + 40];
+  char input_name[256], mux_name[256];
+
+  idnode_uuid_as_str(&mi->ti_id, input_uuid);
+  idnode_uuid_as_str(&mm->mm_id, mux_uuid);
+  snprintf(event_id, sizeof(event_id), "dvb-%s-%s-%x",
+           input_uuid, mux_uuid, flags);
+  tvh_webhook_add_common(m, "dvb.error", event_id);
+
+  input_name[0] = '\0';
+  mux_name[0] = '\0';
+  if (mi->mi_display_name)
+    mi->mi_display_name(mi, input_name, sizeof(input_name));
+  if (mm->mm_display_name)
+    mm->mm_display_name(mm, mux_name, sizeof(mux_name));
+
+  htsmsg_add_str(m, "input_uuid", input_uuid);
+  htsmsg_add_str(m, "mux_uuid", mux_uuid);
+  htsmsg_add_str(m, "input", input_name);
+  htsmsg_add_str(m, "mux", mux_name);
+  htsmsg_add_s32(m, "status_flags", flags);
+  htsmsg_add_str(m, "status_text", service_tss2text(flags));
+
+  return m;
+}
+
 static int
 tvh_webhook_enqueue_msg(const char *event, htsmsg_t *m)
 {
   htsmsg_t *targets = NULL, *target, *headers;
   htsmsg_field_t *f;
-  char *body;
-  const char *name, *url, *token, *template;
+  char *body, *signature_input;
+  const char *name, *url, *token, *hmac_secret, *template;
   int queued = 0, failed = 0, have_targets_config = 0;
   int enabled, ssl_verify, timeout, retry_count, retry_interval;
 
@@ -330,10 +425,14 @@ tvh_webhook_enqueue_msg(const char *event, htsmsg_t *m)
     return EINVAL;
   }
 
+  signature_input = tvh_webhook_signature_input(m, event);
   body = htsmsg_json_serialize_to_str(m, 0);
   htsmsg_destroy(m);
-  if (!body)
+  if (!body || !signature_input) {
+    free(body);
+    free(signature_input);
     return ENOMEM;
+  }
 
   if (tvh_str_default(config.webhook_targets, NULL))
     targets = htsmsg_json_deserialize(config.webhook_targets);
@@ -350,13 +449,15 @@ tvh_webhook_enqueue_msg(const char *event, htsmsg_t *m)
       name = htsmsg_get_str(target, "name");
       url = htsmsg_get_str(target, "url");
       token = htsmsg_get_str(target, "token");
+      hmac_secret = htsmsg_get_str(target, "hmac_secret");
       template = htsmsg_get_str(target, "template");
       headers = htsmsg_get_map(target, "headers");
       ssl_verify = htsmsg_get_bool_or_default(target, "ssl_verify", config.webhook_ssl_verify);
       timeout = htsmsg_get_s32_or_default(target, "timeout", config.webhook_timeout);
       retry_count = htsmsg_get_s32_or_default(target, "retry_count", 0);
       retry_interval = htsmsg_get_s32_or_default(target, "retry_interval", 1);
-      if (tvh_webhook_enqueue_target(event, body, name, url, token, headers,
+      if (tvh_webhook_enqueue_target(event, body, name, url, token,
+                                     hmac_secret, signature_input, headers,
                                      template, ssl_verify, timeout,
                                      retry_count, retry_interval) == 0)
         queued++;
@@ -371,7 +472,7 @@ tvh_webhook_enqueue_msg(const char *event, htsmsg_t *m)
   if (!queued && !have_targets_config && tvh_str_default(config.webhook_url, NULL)) {
     if (tvh_webhook_enqueue_target(event, body, "default",
                                    config.webhook_url, config.webhook_token,
-                                   NULL, NULL, config.webhook_ssl_verify,
+                                   NULL, signature_input, NULL, NULL, config.webhook_ssl_verify,
                                    config.webhook_timeout, 0, 1) == 0)
       queued++;
     else
@@ -379,6 +480,7 @@ tvh_webhook_enqueue_msg(const char *event, htsmsg_t *m)
   }
 
   free(body);
+  free(signature_input);
   if (queued)
     return 0;
   return failed ? ENOBUFS : EINVAL;
@@ -428,6 +530,26 @@ tvh_webhook_dvr_event(dvr_entry_t *de, tvh_webhook_dvr_event_t event)
   tvh_webhook_enqueue_msg(name, tvh_webhook_dvr_msg(name, de));
 }
 
+void
+tvh_webhook_service_error(service_t *s, int flags)
+{
+  if (!config.webhook_notify_errors || !tvh_webhook_enabled() || !s ||
+      !service_tss_is_error(flags))
+    return;
+  tvh_webhook_enqueue_msg("service.error",
+                          tvh_webhook_service_error_msg(s, flags));
+}
+
+void
+tvh_webhook_dvb_error(mpegts_input_t *mi, mpegts_mux_t *mm, int flags)
+{
+  if (!config.webhook_notify_errors || !tvh_webhook_enabled() || !mi || !mm ||
+      !service_tss_is_error(flags))
+    return;
+  tvh_webhook_enqueue_msg("dvb.error",
+                          tvh_webhook_dvb_error_msg(mi, mm, flags));
+}
+
 int
 tvh_webhook_test(void)
 {
@@ -448,6 +570,7 @@ tvh_webhook_post(tvh_webhook_item_t *item)
   htsmsg_field_t *f;
   int r, timeout, elapsed;
   char len[32];
+  char signature[80];
   const char *key, *val;
 
   urlinit(&url);
@@ -471,6 +594,17 @@ tvh_webhook_post(tvh_webhook_item_t *item)
   http_arg_set(&h, "Content-Length", len);
   if (tvh_str_default(item->token, NULL))
     http_arg_set(&h, "X-Tvh-Token", item->token);
+  if (tvh_str_default(item->hmac_secret, NULL) &&
+      tvh_str_default(item->signature_input, NULL) &&
+      tvh_webhook_hmac_sha256_hex(item->hmac_secret, item->signature_input,
+                                  signature + 7, sizeof(signature) - 7) == 0) {
+    const char *timestamp = strrchr(item->signature_input, '.');
+    memcpy(signature, "sha256=", 7);
+    http_arg_set(&h, "X-Tvh-Signature", signature);
+    http_arg_set(&h, "X-Tvh-Signature-Input", item->signature_input);
+    if (timestamp && timestamp[1])
+      http_arg_set(&h, "X-Tvh-Timestamp", timestamp + 1);
+  }
   if (item->headers) {
     HTSMSG_FOREACH(f, item->headers) {
       key = htsmsg_field_name(f);

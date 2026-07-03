@@ -1767,6 +1767,7 @@ config_boot
   config.webhook_timeout = 10;
   config.webhook_notify_playback = 1;
   config.webhook_notify_dvr = 1;
+  config.webhook_notify_errors = 1;
   config.proxy = 0;
   config.realm = strdup("tvheadend");
   config.info_area = strdup("login,storage,time");
@@ -2779,7 +2780,7 @@ const idclass_t config_class = {
       .type   = PT_STR,
       .id     = "webhook_targets",
       .name   = N_("Webhook targets"),
-      .desc   = N_("JSON array of Webhook targets. Each target may define name, url, token, headers, events, timeout, retry_count, retry_interval, ssl_verify and template."),
+      .desc   = N_("JSON array of Webhook targets. Each target may define name, url, token, hmac_secret, headers, events, timeout, retry_count, retry_interval, ssl_verify and template."),
       .off    = offsetof(config_t, webhook_targets),
       .opts   = PO_EXPERT,
       .group  = 8,
@@ -2821,6 +2822,16 @@ const idclass_t config_class = {
       .name   = N_("Webhook DVR notifications"),
       .desc   = N_("Send DVR recording start, completion and error notifications."),
       .off    = offsetof(config_t, webhook_notify_dvr),
+      .opts   = PO_EXPERT,
+      .def.i  = 1,
+      .group  = 8,
+    },
+    {
+      .type   = PT_BOOL,
+      .id     = "webhook_notify_errors",
+      .name   = N_("Webhook error notifications"),
+      .desc   = N_("Send DVB and service error notifications."),
+      .off    = offsetof(config_t, webhook_notify_errors),
       .opts   = PO_EXPERT,
       .def.i  = 1,
       .group  = 8,

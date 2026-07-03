@@ -52,6 +52,7 @@ typedef struct config {
   int webhook_timeout;
   int webhook_notify_playback;
   int webhook_notify_dvr;
+  int webhook_notify_errors;
   char *language;
   char *info_area;
   int chname_num;
