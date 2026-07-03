@@ -16,6 +16,8 @@
 #include "htsmsg_json.h"
 #include "url.h"
 #include "channels.h"
+#include "epg.h"
+#include "imagecache.h"
 #include "service.h"
 #include "streaming.h"
 #include "input.h"
@@ -282,6 +284,49 @@ tvh_webhook_add_common(htsmsg_t *m, const char *event, const char *event_id)
 }
 
 static void
+tvh_webhook_add_image(htsmsg_t *m, const char *key, const char *image)
+{
+  char buf[128];
+  const char *s;
+
+  if (strempty(image))
+    return;
+  s = imagecache_get_propstr(image, buf, sizeof(buf));
+  if (s)
+    htsmsg_add_str(m, key, s);
+}
+
+static void
+tvh_webhook_add_program_fields(htsmsg_t *m, channel_t *ch)
+{
+  epg_broadcast_t *eb;
+  const char *s;
+
+  if (!ch)
+    return;
+
+  htsmsg_add_uuid(m, "channel_uuid", &ch->ch_id.in_uuid);
+  tvh_webhook_add_image(m, "channel_icon", channel_get_icon(ch));
+
+  eb = ch->ch_epg_now;
+  if (!eb)
+    return;
+
+  htsmsg_add_u32(m, "program_event_id", eb->id);
+  htsmsg_add_s64(m, "program_start", eb->start);
+  htsmsg_add_s64(m, "program_stop", eb->stop);
+  if ((s = epg_broadcast_get_title(eb, NULL)))
+    htsmsg_add_str(m, "program_title", s);
+  if ((s = epg_broadcast_get_subtitle(eb, NULL)))
+    htsmsg_add_str(m, "program_subtitle", s);
+  if ((s = epg_broadcast_get_summary(eb, NULL)))
+    htsmsg_add_str(m, "program_summary", s);
+  if ((s = epg_broadcast_get_description(eb, NULL)))
+    htsmsg_add_str(m, "program_description", s);
+  tvh_webhook_add_image(m, "program_image", eb->image);
+}
+
+static void
 tvh_webhook_add_subscription_fields(htsmsg_t *m, th_subscription_t *s)
 {
   char buf[284];
@@ -300,9 +345,11 @@ tvh_webhook_add_subscription_fields(htsmsg_t *m, th_subscription_t *s)
     htsmsg_add_str(m, "client", s->ths_client);
   if (s->ths_title)
     htsmsg_add_str(m, "title", s->ths_title);
-  if (s->ths_channel)
+  if (s->ths_channel) {
     htsmsg_add_str(m, "channel",
                    channel_get_name(s->ths_channel, channel_blank_name));
+    tvh_webhook_add_program_fields(m, s->ths_channel);
+  }
   if (s->ths_service)
     htsmsg_add_str(m, "service",
                    service_adapter_nicename(s->ths_service, buf, sizeof(buf)));
