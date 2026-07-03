@@ -179,33 +179,35 @@ tvheadend.webhookconf = function(panel, index) {
 
     var EVENT_GROUPS = [
         {
-            title: _('System'),
+            title: '系统事件',
             items: [
-                { value: 'system.webhooktest', label: _('Test Webhook') }
+                { value: 'system.webhooktest', label: '测试 Webhook' }
             ]
         },
         {
-            title: _('Playback'),
+            title: '播放事件',
+            allLabel: '全部播放事件',
             wildcard: 'playback.*',
             items: [
-                { value: 'playback.start', label: _('Playback started') },
-                { value: 'playback.stop', label: _('Playback stopped') }
+                { value: 'playback.start', label: '播放开始' },
+                { value: 'playback.stop', label: '播放停止' }
             ]
         },
         {
-            title: _('DVR'),
+            title: '录制事件',
+            allLabel: '全部录制事件',
             wildcard: 'dvr.*',
             items: [
-                { value: 'dvr.start', label: _('Recording started') },
-                { value: 'dvr.complete', label: _('Recording completed') },
-                { value: 'dvr.error', label: _('Recording failed') }
+                { value: 'dvr.start', label: '录制开始' },
+                { value: 'dvr.complete', label: '录制完成' },
+                { value: 'dvr.error', label: '录制失败' }
             ]
         },
         {
-            title: _('Errors'),
+            title: '异常事件',
             items: [
-                { value: 'dvb.*', label: _('DVB error') },
-                { value: 'service.*', label: _('Service error') }
+                { value: 'dvb.*', label: 'DVB 异常' },
+                { value: 'service.*', label: '服务错误' }
             ]
         }
     ];
@@ -220,7 +222,7 @@ tvheadend.webhookconf = function(panel, index) {
     });
 
     var enabled = new Ext.ux.grid.CheckColumn({
-        header: _('Enabled'),
+        header: '启用',
         dataIndex: 'enabled',
         width: 70
     });
@@ -255,7 +257,7 @@ tvheadend.webhookconf = function(panel, index) {
         var label = value;
         Ext.each(EVENT_GROUPS, function(group) {
             if (group.wildcard == value)
-                label = group.title + ' *';
+                label = group.allLabel || (group.title + '全部');
             Ext.each(group.items, function(item) {
                 if (item.value == value)
                     label = item.label;
@@ -276,7 +278,7 @@ tvheadend.webhookconf = function(panel, index) {
     function recordToTarget(record) {
         var target = {
             enabled: record.get('enabled') ? true : false,
-            name: record.get('name') || 'moviepilot',
+            name: record.get('name') || 'MoviePilot',
             url: record.get('url') || '',
             events: splitEvents(record.get('events')),
             timeout: parseInt(record.get('timeout') || 10, 10),
@@ -294,7 +296,7 @@ tvheadend.webhookconf = function(panel, index) {
             try {
                 target.headers = Ext.decode(record.get('headers'));
             } catch (e) {
-                throw _('Headers must be valid JSON');
+                throw 'Headers 必须是合法 JSON';
             }
         }
         return target;
@@ -304,7 +306,7 @@ tvheadend.webhookconf = function(panel, index) {
         return Ext.apply({
             id: store.getCount() + 1,
             enabled: true,
-            name: 'moviepilot',
+            name: 'MoviePilot',
             url: '',
             events: 'system.webhooktest,playback.*,dvr.*,dvb.*,service.*',
             token: '',
@@ -330,7 +332,7 @@ tvheadend.webhookconf = function(panel, index) {
                     targets.push(recordToTarget(record));
             });
         } catch (e) {
-            Ext.MessageBox.alert(_('Error'), e);
+            Ext.MessageBox.alert('错误', e);
             return;
         }
         tvheadend.Ajax({
@@ -349,7 +351,7 @@ tvheadend.webhookconf = function(panel, index) {
         if (group.wildcard) {
             items.push({
                 xtype: 'checkbox',
-                boxLabel: _('All') + ' ' + group.title,
+                boxLabel: group.allLabel || (group.title + '全部'),
                 webhookEvent: group.wildcard,
                 listeners: {
                     check: function(field, checked) {
@@ -427,33 +429,33 @@ tvheadend.webhookconf = function(panel, index) {
         var eventBoxes = {};
         var groupBoxes = {};
         var enabledField = new Ext.form.Checkbox({
-            fieldLabel: _('Enabled'),
+            fieldLabel: '启用',
             checked: data.enabled !== false
         });
         var nameField = new Ext.form.TextField({
-            fieldLabel: _('Name'),
-            value: data.name || 'moviepilot',
+            fieldLabel: '名称',
+            value: data.name || 'MoviePilot',
             allowBlank: false,
             anchor: '100%'
         });
         var urlField = new Ext.form.TextField({
-            fieldLabel: _('URL'),
+            fieldLabel: 'URL',
             value: data.url || '',
             allowBlank: false,
             anchor: '100%'
         });
         var tokenField = new Ext.form.TextField({
-            fieldLabel: _('Token'),
+            fieldLabel: 'Token（可选）',
             value: data.token || '',
             anchor: '100%'
         });
         var hmacField = new Ext.form.TextField({
-            fieldLabel: _('HMAC Secret'),
+            fieldLabel: 'HMAC 密钥',
             value: data.hmac_secret || '',
             anchor: '100%'
         });
         var timeoutField = new Ext.form.NumberField({
-            fieldLabel: _('Timeout'),
+            fieldLabel: '超时秒数',
             value: data.timeout || 10,
             allowDecimals: false,
             minValue: 1,
@@ -461,7 +463,7 @@ tvheadend.webhookconf = function(panel, index) {
             anchor: '100%'
         });
         var retryCountField = new Ext.form.NumberField({
-            fieldLabel: _('Retries'),
+            fieldLabel: '重试次数',
             value: data.retry_count || 0,
             allowDecimals: false,
             minValue: 0,
@@ -469,7 +471,7 @@ tvheadend.webhookconf = function(panel, index) {
             anchor: '100%'
         });
         var retryIntervalField = new Ext.form.NumberField({
-            fieldLabel: _('Retry interval'),
+            fieldLabel: '重试间隔秒',
             value: data.retry_interval || 1,
             allowDecimals: false,
             minValue: 1,
@@ -477,17 +479,17 @@ tvheadend.webhookconf = function(panel, index) {
             anchor: '100%'
         });
         var sslVerifyField = new Ext.form.Checkbox({
-            fieldLabel: _('TLS verify'),
+            fieldLabel: 'TLS 证书校验',
             checked: data.ssl_verify !== false
         });
         var headersField = new Ext.form.TextArea({
-            fieldLabel: _('Headers JSON'),
+            fieldLabel: '请求头 JSON',
             value: data.headers || '',
             height: 60,
             anchor: '100%'
         });
         var templateField = new Ext.form.TextField({
-            fieldLabel: _('Template'),
+            fieldLabel: '模板',
             value: data.template || '',
             anchor: '100%'
         });
@@ -522,21 +524,21 @@ tvheadend.webhookconf = function(panel, index) {
                 enabledField,
                 nameField,
                 urlField,
-                tokenField,
                 hmacField,
                 {
                     xtype: 'fieldset',
-                    title: _('Events'),
+                    title: '通知事件',
                     autoHeight: true,
                     items: eventFieldsets
                 },
                 {
                     xtype: 'fieldset',
-                    title: _('Advanced'),
+                    title: '高级设置',
                     autoHeight: true,
                     checkboxToggle: true,
                     collapsed: true,
                     items: [
+                        tokenField,
                         timeoutField,
                         retryCountField,
                         retryIntervalField,
@@ -549,9 +551,9 @@ tvheadend.webhookconf = function(panel, index) {
         });
 
         function applyMoviePilotDefaults() {
-            nameField.setValue('moviepilot');
+            nameField.setValue('MoviePilot');
             if (!urlField.getValue())
-                urlField.setValue('https://<MoviePilot>/api/v1/plugin/tvhhelper/webhook?apikey=<API_TOKEN>');
+                urlField.setValue('https://hmp.066671.xyz/api/v1/plugin/tvhhelper/webhook?apikey=你的API_TOKEN');
             retryCountField.setValue(2);
             retryIntervalField.setValue(5);
             sslVerifyField.setValue(true);
@@ -559,7 +561,7 @@ tvheadend.webhookconf = function(panel, index) {
         }
 
         var win = new Ext.Window({
-            title: record ? _('Edit Webhook Target') : _('Add Webhook Target'),
+            title: record ? '编辑 Webhook 目标' : '新增 Webhook 目标',
             iconCls: record ? 'edit' : 'add',
             modal: true,
             layout: 'fit',
@@ -569,13 +571,13 @@ tvheadend.webhookconf = function(panel, index) {
             items: form,
             buttons: [
                 {
-                    text: _('MoviePilot recommended'),
+                    text: 'MoviePilot 推荐配置',
                     iconCls: 'add',
                     handler: applyMoviePilotDefaults
                 },
                 '->',
                 {
-                    text: _('OK'),
+                    text: '确定',
                     iconCls: 'save',
                     handler: function() {
                         var events = readSelectedEvents(eventBoxes, groupBoxes);
@@ -583,21 +585,21 @@ tvheadend.webhookconf = function(panel, index) {
                         if (!form.getForm().isValid())
                             return;
                         if (!events.length) {
-                            Ext.MessageBox.alert(_('Error'), _('Select at least one event'));
+                            Ext.MessageBox.alert('错误', '请至少选择一个通知事件');
                             return;
                         }
                         if (headers) {
                             try {
                                 Ext.decode(headers);
                             } catch (e) {
-                                Ext.MessageBox.alert(_('Error'), _('Headers must be valid JSON'));
+                                Ext.MessageBox.alert('错误', 'Headers 必须是合法 JSON');
                                 return;
                             }
                         }
                         var values = {
                             id: record ? record.get('id') : store.getCount() + 1,
                             enabled: enabledField.getValue() ? true : false,
-                            name: nameField.getValue() || 'moviepilot',
+                            name: nameField.getValue() || 'MoviePilot',
                             url: urlField.getValue(),
                             events: joinEvents(events),
                             token: tokenField.getValue(),
@@ -622,7 +624,7 @@ tvheadend.webhookconf = function(panel, index) {
                     }
                 },
                 {
-                    text: _('Cancel'),
+                    text: '取消',
                     handler: function() {
                         win.close();
                     }
@@ -641,7 +643,7 @@ tvheadend.webhookconf = function(panel, index) {
     var cm = new Ext.grid.ColumnModel([
         enabled,
         {
-            header: _('Name'),
+            header: '名称',
             dataIndex: 'name',
             width: 150
         },
@@ -653,41 +655,41 @@ tvheadend.webhookconf = function(panel, index) {
             renderer: Ext.util.Format.htmlEncode
         },
         {
-            header: _('Events'),
+            header: '事件',
             dataIndex: 'events',
             width: 300,
             renderer: eventsRenderer
         },
         {
-            header: _('Timeout'),
+            header: '超时',
             dataIndex: 'timeout',
             width: 70
         },
         {
-            header: _('Retries'),
+            header: '重试',
             dataIndex: 'retry_count',
             width: 70
         },
         {
-            header: _('HMAC'),
+            header: 'HMAC 签名',
             dataIndex: 'hmac_secret',
-            width: 60,
+            width: 80,
             renderer: function(value) {
-                return value ? _('Yes') : _('No');
+                return value ? '是' : '否';
             }
         },
         {
-            header: _('TLS'),
+            header: 'TLS 校验',
             dataIndex: 'ssl_verify',
-            width: 50,
+            width: 70,
             renderer: function(value) {
-                return value ? _('Yes') : _('No');
+                return value ? '是' : '否';
             }
         }
     ]);
 
     var grid = new Ext.grid.GridPanel({
-        title: _('Webhook Targets'),
+        title: 'Webhook 目标',
         iconCls: 'baseconf',
         tabIndex: index,
         store: store,
@@ -697,6 +699,10 @@ tvheadend.webhookconf = function(panel, index) {
         stripeRows: true,
         autoExpandColumn: 'url',
         autoScroll: true,
+        viewConfig: {
+            emptyText: '暂无 Webhook 目标，可点击“创建 MoviePilot Webhook”开始配置。',
+            deferEmptyText: false
+        },
         listeners: {
             rowdblclick: function(g, row) {
                 editTarget(store.getAt(row));
@@ -704,25 +710,25 @@ tvheadend.webhookconf = function(panel, index) {
         },
         tbar: [
             {
-                text: _('Add'),
+                text: '新增',
                 iconCls: 'add',
                 handler: function() {
                     addTarget();
                 }
             },
             {
-                text: _('Add MoviePilot'),
+                text: '创建 MoviePilot Webhook',
                 iconCls: 'add',
-                tooltip: _('Add a MoviePilot Webhook target template'),
+                tooltip: '按 MoviePilot 推荐配置创建一个 Webhook 目标',
                 handler: function() {
                     addTarget({
-                        name: 'moviepilot',
-                        url: 'https://<MoviePilot>/api/v1/plugin/tvhhelper/webhook?apikey=<API_TOKEN>'
+                        name: 'MoviePilot',
+                        url: 'https://hmp.066671.xyz/api/v1/plugin/tvhhelper/webhook?apikey=你的API_TOKEN'
                     });
                 }
             },
             {
-                text: _('Edit'),
+                text: '编辑',
                 iconCls: 'edit',
                 handler: function() {
                     var record = sm.getSelected();
@@ -731,7 +737,7 @@ tvheadend.webhookconf = function(panel, index) {
                 }
             },
             {
-                text: _('Delete'),
+                text: '删除',
                 iconCls: 'delete',
                 handler: function() {
                     var record = sm.getSelected();
@@ -741,14 +747,14 @@ tvheadend.webhookconf = function(panel, index) {
             },
             '-',
             {
-                text: _('Save'),
+                text: '保存',
                 iconCls: 'save',
                 handler: saveTargets
             },
             {
-                text: _('Test'),
+                text: '发送测试通知',
                 iconCls: 'play',
-                tooltip: _('Send a test Webhook using the saved configuration'),
+                tooltip: '使用已保存配置发送测试 Webhook',
                 handler: function() {
                     tvheadend.Ajax({
                         url: 'api/webhook/test'
