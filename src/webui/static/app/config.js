@@ -177,6 +177,39 @@ tvheadend.webhookconf = function(panel, index) {
         { name: 'template' }
     ]);
 
+    var EVENT_GROUPS = [
+        {
+            title: _('System'),
+            items: [
+                { value: 'system.webhooktest', label: _('Test Webhook') }
+            ]
+        },
+        {
+            title: _('Playback'),
+            wildcard: 'playback.*',
+            items: [
+                { value: 'playback.start', label: _('Playback started') },
+                { value: 'playback.stop', label: _('Playback stopped') }
+            ]
+        },
+        {
+            title: _('DVR'),
+            wildcard: 'dvr.*',
+            items: [
+                { value: 'dvr.start', label: _('Recording started') },
+                { value: 'dvr.complete', label: _('Recording completed') },
+                { value: 'dvr.error', label: _('Recording failed') }
+            ]
+        },
+        {
+            title: _('Errors'),
+            items: [
+                { value: 'dvb.*', label: _('DVB error') },
+                { value: 'service.error', label: _('Service error') }
+            ]
+        }
+    ];
+
     var store = new Ext.data.JsonStore({
         root: 'entries',
         totalProperty: 'totalCount',
@@ -191,12 +224,7 @@ tvheadend.webhookconf = function(panel, index) {
         dataIndex: 'enabled',
         width: 70
     });
-
-    var sslVerify = new Ext.ux.grid.CheckColumn({
-        header: _('TLS'),
-        dataIndex: 'ssl_verify',
-        width: 50
-    });
+    var updatingEvents = false;
 
     function splitEvents(value) {
         var out = [];
@@ -206,6 +234,43 @@ tvheadend.webhookconf = function(panel, index) {
                 out.push(item);
         });
         return out;
+    }
+
+    function joinEvents(events) {
+        return events.join(',');
+    }
+
+    function hasEvent(events, value) {
+        if (events.indexOf(value) !== -1)
+            return true;
+        if (value.indexOf('.') !== -1) {
+            var prefix = value.split('.')[0] + '.*';
+            if (events.indexOf(prefix) !== -1)
+                return true;
+        }
+        return false;
+    }
+
+    function eventLabel(value) {
+        var label = value;
+        Ext.each(EVENT_GROUPS, function(group) {
+            if (group.wildcard == value)
+                label = group.title + ' *';
+            Ext.each(group.items, function(item) {
+                if (item.value == value)
+                    label = item.label;
+            });
+        });
+        return label;
+    }
+
+    function eventsRenderer(value) {
+        var events = splitEvents(value);
+        var labels = [];
+        Ext.each(events, function(event) {
+            labels.push(eventLabel(event));
+        });
+        return Ext.util.Format.htmlEncode(labels.join(', '));
     }
 
     function recordToTarget(record) {
@@ -235,8 +300,8 @@ tvheadend.webhookconf = function(panel, index) {
         return target;
     }
 
-    function addTarget(data) {
-        var record = new Target(Ext.apply({
+    function defaultTarget(data) {
+        return Ext.apply({
             id: store.getCount() + 1,
             enabled: true,
             name: 'moviepilot',
@@ -250,10 +315,11 @@ tvheadend.webhookconf = function(panel, index) {
             ssl_verify: true,
             headers: '',
             template: ''
-        }, data || {}));
-        grid.stopEditing();
-        store.add(record);
-        grid.startEditing(store.getCount() - 1, 2);
+        }, data || {});
+    }
+
+    function addTarget(data) {
+        editTarget(null, defaultTarget(data));
     }
 
     function saveTargets() {
@@ -278,6 +344,296 @@ tvheadend.webhookconf = function(panel, index) {
         });
     }
 
+    function checkboxItemsForGroup(group, eventBoxes, groupBoxes) {
+        var items = [];
+        if (group.wildcard) {
+            items.push({
+                xtype: 'checkbox',
+                boxLabel: _('All') + ' ' + group.title,
+                webhookEvent: group.wildcard,
+                listeners: {
+                    check: function(field, checked) {
+                        if (updatingEvents)
+                            return;
+                        Ext.each(group.items, function(item) {
+                            if (eventBoxes[item.value])
+                                eventBoxes[item.value].setValue(checked);
+                        });
+                    }
+                }
+            });
+        }
+        Ext.each(group.items, function(item) {
+            items.push({
+                xtype: 'checkbox',
+                boxLabel: item.label,
+                style: group.wildcard ? 'margin-left:20px;' : '',
+                webhookEvent: item.value,
+                listeners: {
+                    check: function() {
+                        if (updatingEvents)
+                            return;
+                        if (!group.wildcard || !groupBoxes[group.wildcard])
+                            return;
+                        var allChecked = true;
+                        Ext.each(group.items, function(child) {
+                            if (!eventBoxes[child.value] || !eventBoxes[child.value].getValue())
+                                allChecked = false;
+                        });
+                        if (groupBoxes[group.wildcard].getValue() != allChecked)
+                            groupBoxes[group.wildcard].setValue(allChecked);
+                    }
+                }
+            });
+        });
+        return items;
+    }
+
+    function readSelectedEvents(eventBoxes, groupBoxes) {
+        var events = [];
+        Ext.each(EVENT_GROUPS, function(group) {
+            if (group.wildcard && groupBoxes[group.wildcard] && groupBoxes[group.wildcard].getValue()) {
+                events.push(group.wildcard);
+                return;
+            }
+            Ext.each(group.items, function(item) {
+                if (eventBoxes[item.value] && eventBoxes[item.value].getValue())
+                    events.push(item.value);
+            });
+        });
+        return events;
+    }
+
+    function applySelectedEvents(events, eventBoxes, groupBoxes) {
+        updatingEvents = true;
+        Ext.each(EVENT_GROUPS, function(group) {
+            var groupChecked = group.wildcard && events.indexOf(group.wildcard) !== -1;
+            var allChecked = true;
+            Ext.each(group.items, function(item) {
+                var checked = groupChecked || hasEvent(events, item.value);
+                if (eventBoxes[item.value])
+                    eventBoxes[item.value].setValue(checked);
+                if (!checked)
+                    allChecked = false;
+            });
+            if (group.wildcard && groupBoxes[group.wildcard])
+                groupBoxes[group.wildcard].setValue(groupChecked || allChecked);
+        });
+        updatingEvents = false;
+    }
+
+    function editTarget(record, defaults) {
+        var data = record ? record.data : defaults;
+        var eventBoxes = {};
+        var groupBoxes = {};
+        var enabledField = new Ext.form.Checkbox({
+            fieldLabel: _('Enabled'),
+            checked: data.enabled !== false
+        });
+        var nameField = new Ext.form.TextField({
+            fieldLabel: _('Name'),
+            value: data.name || 'moviepilot',
+            allowBlank: false,
+            anchor: '100%'
+        });
+        var urlField = new Ext.form.TextField({
+            fieldLabel: _('URL'),
+            value: data.url || '',
+            allowBlank: false,
+            anchor: '100%'
+        });
+        var tokenField = new Ext.form.TextField({
+            fieldLabel: _('Token'),
+            value: data.token || '',
+            anchor: '100%'
+        });
+        var hmacField = new Ext.form.TextField({
+            fieldLabel: _('HMAC Secret'),
+            value: data.hmac_secret || '',
+            anchor: '100%'
+        });
+        var timeoutField = new Ext.form.NumberField({
+            fieldLabel: _('Timeout'),
+            value: data.timeout || 10,
+            allowDecimals: false,
+            minValue: 1,
+            maxValue: 60,
+            anchor: '100%'
+        });
+        var retryCountField = new Ext.form.NumberField({
+            fieldLabel: _('Retries'),
+            value: data.retry_count || 0,
+            allowDecimals: false,
+            minValue: 0,
+            maxValue: 10,
+            anchor: '100%'
+        });
+        var retryIntervalField = new Ext.form.NumberField({
+            fieldLabel: _('Retry interval'),
+            value: data.retry_interval || 1,
+            allowDecimals: false,
+            minValue: 1,
+            maxValue: 3600,
+            anchor: '100%'
+        });
+        var sslVerifyField = new Ext.form.Checkbox({
+            fieldLabel: _('TLS verify'),
+            checked: data.ssl_verify !== false
+        });
+        var headersField = new Ext.form.TextArea({
+            fieldLabel: _('Headers JSON'),
+            value: data.headers || '',
+            height: 60,
+            anchor: '100%'
+        });
+        var templateField = new Ext.form.TextField({
+            fieldLabel: _('Template'),
+            value: data.template || '',
+            anchor: '100%'
+        });
+        var eventFieldsets = [];
+
+        Ext.each(EVENT_GROUPS, function(group) {
+            var items = checkboxItemsForGroup(group, eventBoxes, groupBoxes);
+            var fieldset = new Ext.form.FieldSet({
+                title: group.title,
+                autoHeight: true,
+                defaultType: 'checkbox',
+                items: items
+            });
+            Ext.each(fieldset.items.items, function(box) {
+                if (box.webhookEvent) {
+                    if (box.webhookEvent == group.wildcard)
+                        groupBoxes[box.webhookEvent] = box;
+                    else
+                        eventBoxes[box.webhookEvent] = box;
+                }
+            });
+            eventFieldsets.push(fieldset);
+        });
+
+        var form = new Ext.FormPanel({
+            frame: true,
+            border: false,
+            labelWidth: 110,
+            bodyStyle: 'padding:8px;',
+            autoScroll: true,
+            items: [
+                enabledField,
+                nameField,
+                urlField,
+                tokenField,
+                hmacField,
+                {
+                    xtype: 'fieldset',
+                    title: _('Events'),
+                    autoHeight: true,
+                    items: eventFieldsets
+                },
+                {
+                    xtype: 'fieldset',
+                    title: _('Advanced'),
+                    autoHeight: true,
+                    checkboxToggle: true,
+                    collapsed: true,
+                    items: [
+                        timeoutField,
+                        retryCountField,
+                        retryIntervalField,
+                        sslVerifyField,
+                        headersField,
+                        templateField
+                    ]
+                }
+            ]
+        });
+
+        function applyMoviePilotDefaults() {
+            nameField.setValue('moviepilot');
+            if (!urlField.getValue())
+                urlField.setValue('https://<MoviePilot>/api/v1/plugin/tvhhelper/webhook?apikey=<API_TOKEN>');
+            retryCountField.setValue(2);
+            retryIntervalField.setValue(5);
+            sslVerifyField.setValue(true);
+            applySelectedEvents(splitEvents('system.webhooktest,playback.*,dvr.*,dvb.*,service.error'), eventBoxes, groupBoxes);
+        }
+
+        var win = new Ext.Window({
+            title: record ? _('Edit Webhook Target') : _('Add Webhook Target'),
+            iconCls: record ? 'edit' : 'add',
+            modal: true,
+            layout: 'fit',
+            width: 760,
+            height: 620,
+            plain: true,
+            items: form,
+            buttons: [
+                {
+                    text: _('MoviePilot recommended'),
+                    iconCls: 'add',
+                    handler: applyMoviePilotDefaults
+                },
+                '->',
+                {
+                    text: _('OK'),
+                    iconCls: 'save',
+                    handler: function() {
+                        var events = readSelectedEvents(eventBoxes, groupBoxes);
+                        var headers = headersField.getValue();
+                        if (!form.getForm().isValid())
+                            return;
+                        if (!events.length) {
+                            Ext.MessageBox.alert(_('Error'), _('Select at least one event'));
+                            return;
+                        }
+                        if (headers) {
+                            try {
+                                Ext.decode(headers);
+                            } catch (e) {
+                                Ext.MessageBox.alert(_('Error'), _('Headers must be valid JSON'));
+                                return;
+                            }
+                        }
+                        var values = {
+                            id: record ? record.get('id') : store.getCount() + 1,
+                            enabled: enabledField.getValue() ? true : false,
+                            name: nameField.getValue() || 'moviepilot',
+                            url: urlField.getValue(),
+                            events: joinEvents(events),
+                            token: tokenField.getValue(),
+                            hmac_secret: hmacField.getValue(),
+                            timeout: parseInt(timeoutField.getValue() || 10, 10),
+                            retry_count: parseInt(retryCountField.getValue() || 0, 10),
+                            retry_interval: parseInt(retryIntervalField.getValue() || 1, 10),
+                            ssl_verify: sslVerifyField.getValue() ? true : false,
+                            headers: headers,
+                            template: templateField.getValue()
+                        };
+                        if (record) {
+                            record.beginEdit();
+                            Ext.iterate(values, function(key, value) {
+                                record.set(key, value);
+                            });
+                            record.endEdit();
+                        } else {
+                            store.add(new Target(values));
+                        }
+                        win.close();
+                    }
+                },
+                {
+                    text: _('Cancel'),
+                    handler: function() {
+                        win.close();
+                    }
+                }
+            ]
+        });
+
+        win.show();
+        applySelectedEvents(splitEvents(data.events), eventBoxes, groupBoxes);
+    }
+
     var sm = new Ext.grid.RowSelectionModel({
         singleSelect: true
     });
@@ -287,79 +643,65 @@ tvheadend.webhookconf = function(panel, index) {
         {
             header: _('Name'),
             dataIndex: 'name',
-            width: 120,
-            editor: new Ext.form.TextField()
+            width: 150
         },
         {
             id: 'url',
             header: _('URL'),
             dataIndex: 'url',
-            width: 360,
-            editor: new Ext.form.TextField()
+            width: 420,
+            renderer: Ext.util.Format.htmlEncode
         },
         {
             header: _('Events'),
             dataIndex: 'events',
-            width: 260,
-            editor: new Ext.form.TextField()
-        },
-        {
-            header: _('Token'),
-            dataIndex: 'token',
-            width: 150,
-            editor: new Ext.form.TextField()
-        },
-        {
-            header: _('HMAC Secret'),
-            dataIndex: 'hmac_secret',
-            width: 150,
-            editor: new Ext.form.TextField()
+            width: 300,
+            renderer: eventsRenderer
         },
         {
             header: _('Timeout'),
             dataIndex: 'timeout',
-            width: 70,
-            editor: new Ext.form.NumberField({ allowDecimals: false, minValue: 1, maxValue: 60 })
+            width: 70
         },
         {
             header: _('Retries'),
             dataIndex: 'retry_count',
-            width: 70,
-            editor: new Ext.form.NumberField({ allowDecimals: false, minValue: 0, maxValue: 10 })
+            width: 70
         },
         {
-            header: _('Retry interval'),
-            dataIndex: 'retry_interval',
-            width: 95,
-            editor: new Ext.form.NumberField({ allowDecimals: false, minValue: 1, maxValue: 3600 })
-        },
-        sslVerify,
-        {
-            header: _('Headers JSON'),
-            dataIndex: 'headers',
-            width: 220,
-            editor: new Ext.form.TextField()
+            header: _('HMAC'),
+            dataIndex: 'hmac_secret',
+            width: 60,
+            renderer: function(value) {
+                return value ? _('Yes') : _('No');
+            }
         },
         {
-            header: _('Template'),
-            dataIndex: 'template',
-            width: 220,
-            editor: new Ext.form.TextField()
+            header: _('TLS'),
+            dataIndex: 'ssl_verify',
+            width: 50,
+            renderer: function(value) {
+                return value ? _('Yes') : _('No');
+            }
         }
     ]);
 
-    var grid = new Ext.grid.EditorGridPanel({
+    var grid = new Ext.grid.GridPanel({
         title: _('Webhook Targets'),
         iconCls: 'baseconf',
         tabIndex: index,
         store: store,
         cm: cm,
         sm: sm,
-        plugins: [enabled, sslVerify],
-        clicksToEdit: 1,
+        plugins: [enabled],
         stripeRows: true,
         autoExpandColumn: 'url',
         autoScroll: true,
+        listeners: {
+            rowdblclick: function(g, row) {
+                editTarget(store.getAt(row));
+            }
+        },
         tbar: [
             {
                 text: _('Add'),
@@ -377,6 +719,15 @@ tvheadend.webhookconf = function(panel, index) {
                         name: 'moviepilot',
                         url: 'https://<MoviePilot>/api/v1/plugin/tvhhelper/webhook?apikey=<API_TOKEN>'
                     });
+                }
+            },
+            {
+                text: _('Edit'),
+                iconCls: 'edit',
+                handler: function() {
+                    var record = sm.getSelected();
+                    if (record)
+                        editTarget(record);
                 }
             },
             {
