@@ -124,6 +124,7 @@ typedef struct th_subscription {
   char *ths_username;
   char *ths_client;
   char *ths_dvrfile;
+  int ths_webhook_started;
 
   /**
    * This is the list of service candidates we have

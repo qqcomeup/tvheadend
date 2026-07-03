@@ -29,6 +29,7 @@
 #include "imagecache.h"
 #include "access.h"
 #include "notify.h"
+#include "webhook.h"
 #include "compat.h"
 #include "string_list.h"
 #include "epggrab.h" //Needed to get the epggrab_conf.epgdb_processparentallabels flag.
@@ -216,6 +217,8 @@ dvr_entry_set_state(dvr_entry_t *de, dvr_entry_sched_state_t state,
                     dvr_rs_state_t rec_state, int error_code)
 {
   char id[16];
+  dvr_entry_sched_state_t old_state = de->de_sched_state;
+  dvr_rs_state_t old_rec_state = de->de_rec_state;
   if (de->de_sched_state != state ||
       de->de_rec_state != rec_state ||
       de->de_last_error != error_code) {
@@ -232,6 +235,14 @@ dvr_entry_set_state(dvr_entry_t *de, dvr_entry_sched_state_t state,
     de->de_last_error = error_code;
     idnode_notify_changed(&de->de_id);
     htsp_dvr_entry_update(de);
+    if ((state == DVR_MISSED_TIME && old_state != DVR_MISSED_TIME) ||
+        (rec_state == DVR_RS_ERROR && old_rec_state != DVR_RS_ERROR) ||
+        error_code != SM_CODE_OK)
+      tvh_webhook_dvr_event(de, TVH_WEBHOOK_DVR_ERROR);
+    else if (state == DVR_RECORDING && old_state != DVR_RECORDING)
+      tvh_webhook_dvr_event(de, TVH_WEBHOOK_DVR_START);
+    else if (state == DVR_COMPLETED && old_state != DVR_COMPLETED)
+      tvh_webhook_dvr_event(de, TVH_WEBHOOK_DVR_COMPLETE);
     return 1;
   }
   return 0;

@@ -1763,6 +1763,11 @@ config_boot
   config.ui_quicktips = 1;
   config.http_auth = HTTP_AUTH_DIGEST;
   config.http_auth_algo = HTTP_AUTH_ALGO_MD5;
+  config.webhook_ssl_verify = 1;
+  config.webhook_timeout = 10;
+  config.webhook_notify_playback = 1;
+  config.webhook_notify_dvr = 1;
+  config.webhook_notify_errors = 1;
   config.proxy = 0;
   config.realm = strdup("tvheadend");
   config.info_area = strdup("login,storage,time");
@@ -1918,6 +1923,9 @@ void config_done ( void )
   free(config.full_version);
   free(config.http_server_name);
   free(config.http_user_agent);
+  free(config.webhook_url);
+  free(config.webhook_token);
+  free(config.webhook_targets);
   free(config.server_name);
   free(config.language);
   free(config.language_ui);
@@ -2739,6 +2747,93 @@ const idclass_t config_class = {
       .desc   = N_("The user agent string for the build-in HTTP client."),
       .off    = offsetof(config_t, http_user_agent),
       .opts   = PO_HIDDEN | PO_EXPERT,
+      .group  = 8,
+    },
+    {
+      .type   = PT_BOOL,
+      .id     = "webhook_enabled",
+      .name   = N_("Enable Webhook notifications"),
+      .desc   = N_("Send selected playback and DVR events to an external Webhook endpoint."),
+      .off    = offsetof(config_t, webhook_enabled),
+      .opts   = PO_EXPERT,
+      .group  = 8,
+    },
+    {
+      .type   = PT_STR,
+      .id     = "webhook_url",
+      .name   = N_("Webhook URL"),
+      .desc   = N_("HTTP or HTTPS endpoint used for Webhook notifications."),
+      .off    = offsetof(config_t, webhook_url),
+      .opts   = PO_EXPERT,
+      .group  = 8,
+    },
+    {
+      .type   = PT_STR,
+      .id     = "webhook_token",
+      .name   = N_("Webhook token"),
+      .desc   = N_("Optional token sent in the X-Tvh-Token HTTP header."),
+      .off    = offsetof(config_t, webhook_token),
+      .opts   = PO_EXPERT | PO_PASSWORD,
+      .group  = 8,
+    },
+    {
+      .type   = PT_STR,
+      .id     = "webhook_targets",
+      .name   = N_("Webhook targets"),
+      .desc   = N_("JSON array of Webhook targets. Each target may define name, url, token, hmac_secret, headers, events, timeout, retry_count, retry_interval, ssl_verify and template."),
+      .off    = offsetof(config_t, webhook_targets),
+      .opts   = PO_EXPERT,
+      .group  = 8,
+    },
+    {
+      .type   = PT_BOOL,
+      .id     = "webhook_ssl_verify",
+      .name   = N_("Verify Webhook TLS certificate"),
+      .desc   = N_("Verify the HTTPS endpoint certificate before sending Webhook notifications."),
+      .off    = offsetof(config_t, webhook_ssl_verify),
+      .opts   = PO_EXPERT,
+      .def.i  = 1,
+      .group  = 8,
+    },
+    {
+      .type   = PT_INT,
+      .intextra = INTEXTRA_RANGE(1, 60, 1),
+      .id     = "webhook_timeout",
+      .name   = N_("Webhook timeout"),
+      .desc   = N_("Maximum number of seconds to wait for a Webhook endpoint response."),
+      .off    = offsetof(config_t, webhook_timeout),
+      .opts   = PO_EXPERT,
+      .def.i  = 10,
+      .group  = 8,
+    },
+    {
+      .type   = PT_BOOL,
+      .id     = "webhook_notify_playback",
+      .name   = N_("Webhook playback notifications"),
+      .desc   = N_("Send playback start and stop notifications."),
+      .off    = offsetof(config_t, webhook_notify_playback),
+      .opts   = PO_EXPERT,
+      .def.i  = 1,
+      .group  = 8,
+    },
+    {
+      .type   = PT_BOOL,
+      .id     = "webhook_notify_dvr",
+      .name   = N_("Webhook DVR notifications"),
+      .desc   = N_("Send DVR recording start, completion and error notifications."),
+      .off    = offsetof(config_t, webhook_notify_dvr),
+      .opts   = PO_EXPERT,
+      .def.i  = 1,
+      .group  = 8,
+    },
+    {
+      .type   = PT_BOOL,
+      .id     = "webhook_notify_errors",
+      .name   = N_("Webhook error notifications"),
+      .desc   = N_("Send DVB and service error notifications."),
+      .off    = offsetof(config_t, webhook_notify_errors),
+      .opts   = PO_EXPERT,
+      .def.i  = 1,
       .group  = 8,
     },
     {

@@ -232,6 +232,7 @@ SRCS-1 = \
 	src/url.c \
 	src/http.c \
 	src/notify.c \
+	src/webhook.c \
 	src/file.c \
 	src/epg.c \
 	src/epgdb.c\

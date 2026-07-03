@@ -23,6 +23,7 @@
 #include "notify.h"
 #include "dbus.h"
 #include "memoryinfo.h"
+#include "webhook.h"
 
 memoryinfo_t mpegts_input_queue_memoryinfo = { .my_name = "MPEG-TS input queue" };
 memoryinfo_t mpegts_input_table_memoryinfo = { .my_name = "MPEG-TS table queue" };
@@ -1059,6 +1060,9 @@ static void
 mpegts_input_error ( mpegts_input_t *mi, mpegts_mux_t *mm, int tss_flags )
 {
   service_t *t, *t_next;
+
+  tvh_webhook_dvb_error(mi, mm, tss_flags);
+
   tvh_mutex_lock(&mi->mi_output_lock);
   for (t = LIST_FIRST(&mm->mm_transports); t; t = t_next) {
     t_next = LIST_NEXT(t, s_active_link);

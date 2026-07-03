@@ -12,6 +12,11 @@ on:
       - 'README.*.md'
       - 'docs/**'
   workflow_dispatch:
+    inputs:
+      platforms:
+        description: Docker platforms to build
+        required: false
+        default: linux/amd64
 
 env:
   REGISTRY: ghcr.io
@@ -31,7 +36,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up QEMU
-        if: github.ref != 'refs/heads/bata'
+        if: github.ref != 'refs/heads/bata' && (github.event_name != 'workflow_dispatch' || inputs.platforms != 'linux/amd64')
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
@@ -62,7 +67,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          platforms: ${{ github.ref == 'refs/heads/bata' && 'linux/amd64' || 'linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6' }}
+          platforms: ${{ github.event_name == 'workflow_dispatch' && inputs.platforms || (github.ref == 'refs/heads/bata' && 'linux/amd64' || 'linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6') }}
           context: .
           file: Containerfile.alpine
           push: true

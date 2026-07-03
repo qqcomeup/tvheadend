@@ -1122,6 +1122,7 @@ function accessUpdate(o) {
         tvheadend.baseconf(general);
         tvheadend.imgcacheconf(general);
         tvheadend.satipsrvconf(general);
+        tvheadend.webhookconf(general);
 
         cp.add(general);
 

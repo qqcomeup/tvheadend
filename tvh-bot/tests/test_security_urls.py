@@ -8,9 +8,9 @@ def test_is_admin_matches_integer_chat_id():
 
 
 def test_short_urls_are_built_from_public_base():
-    assert build_m3u_url("https://m3u.066671.xyz", "user-pass_123") == (
-        "https://m3u.066671.xyz/m3u?a=user-pass_123"
+    assert build_m3u_url("https://tvh.example.com", "user-pass_123") == (
+        "https://tvh.example.com/m3u?a=user-pass_123"
     )
-    assert build_epg_url("https://m3u.066671.xyz/", "user-pass_123") == (
-        "https://m3u.066671.xyz/epg?a=user-pass_123"
+    assert build_epg_url("https://tvh.example.com/", "user-pass_123") == (
+        "https://tvh.example.com/epg?a=user-pass_123"
     )

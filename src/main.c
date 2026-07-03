@@ -78,6 +78,7 @@
 #include "memoryinfo.h"
 #include "watchdog.h"
 #include "tprofile.h"
+#include "webhook.h"
 #if CONFIG_LINUXDVB_CA
 #include "input/mpegts/en50221/en50221.h"
 #endif
@@ -1307,6 +1308,7 @@ main(int argc, char **argv)
   tvhftrace(LS_MAIN, profile_init);
   tvhftrace(LS_MAIN, imagecache_init);
   tvhftrace(LS_MAIN, http_client_init);
+  tvhftrace(LS_MAIN, tvh_webhook_init);
   tvhftrace(LS_MAIN, esfilter_init);
   tvhftrace(LS_MAIN, bouquet_init);
   tvhftrace(LS_MAIN, ratinglabel_init);
@@ -1400,6 +1402,7 @@ main(int argc, char **argv)
   tvhftrace(LS_MAIN, http_server_done);
   tvhftrace(LS_MAIN, webui_done);
   tvhftrace(LS_MAIN, fsmonitor_done);
+  tvhftrace(LS_MAIN, tvh_webhook_done);
   tvhftrace(LS_MAIN, http_client_done);
   tvhftrace(LS_MAIN, tcp_server_done);
 

@@ -25,6 +25,7 @@
 #include "profile.h"
 #include "htsmsg.h"
 #include "notify.h"
+#include "webhook.h"
 #include "atomic.h"
 #include "input.h"
 #include "intlconv.h"
@@ -745,6 +746,8 @@ subscription_unsubscribe(th_subscription_t *s, int flags)
     s->ths_parser = NULL;
   }
 
+  tvh_webhook_subscription_stop(s);
+
   if ((flags & UNSUBSCRIBE_FINAL) != 0 ||
       (s->ths_flags & SUBSCRIPTION_ONESHOT) != 0)
     subscription_destroy(s);
@@ -887,6 +890,7 @@ subscription_create_from_channel_or_service(profile_chain_t *prch,
   } else {
     subscription_delayed_reschedule(0);
   }
+  tvh_webhook_subscription_start(s);
   return s;
 }
 
