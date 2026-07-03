@@ -13,8 +13,8 @@ def test_format_status_message_contains_service_and_dvb_info():
 def test_format_user_message_contains_short_urls():
     user = TvhUser(username="test", token="test-test_123456")
 
-    message = format_user_message("https://m3u.066671.xyz", user)
+    message = format_user_message("https://tvh.example.com", user)
 
     assert "用户: test" in message
-    assert "https://m3u.066671.xyz/m3u?a=test-test_123456" in message
-    assert "https://m3u.066671.xyz/epg?a=test-test_123456" in message
+    assert "https://tvh.example.com/m3u?a=test-test_123456" in message
+    assert "https://tvh.example.com/epg?a=test-test_123456" in message

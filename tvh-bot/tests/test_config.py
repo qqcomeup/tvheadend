@@ -11,7 +11,7 @@ def make_settings(**overrides):
         "tvh_url": "http://127.0.0.1:9981",
         "tvh_user": "ck",
         "tvh_pass": "secret",
-        "public_base_url": "https://m3u.066671.xyz",
+        "public_base_url": "https://tvh.example.com",
     }
     values.update(overrides)
     return Settings(**values)
@@ -26,11 +26,11 @@ def test_settings_parses_admin_chat_ids_from_comma_list():
 def test_public_base_url_strips_trailing_slash():
     settings = make_settings(
         tvh_url="http://127.0.0.1:9981/",
-        public_base_url="https://m3u.066671.xyz/",
+        public_base_url="https://tvh.example.com/",
     )
 
     assert settings.tvh_url == "http://127.0.0.1:9981"
-    assert settings.public_base_url == "https://m3u.066671.xyz"
+    assert settings.public_base_url == "https://tvh.example.com"
 
 
 def test_expected_dvb_count_must_be_non_negative():

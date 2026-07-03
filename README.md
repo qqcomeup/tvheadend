@@ -109,8 +109,8 @@ docker run -d --name tvh-bot --restart always \
 公网短链接会按 `PUBLIC_BASE_URL` 拼接，例如：
 
 ```text
-https://m3u.066671.xyz/m3u?a=user-pass_123
-https://m3u.066671.xyz/epg?a=user-pass_123
+https://tvh.example.com/m3u?a=user-pass_123
+https://tvh.example.com/epg?a=user-pass_123
 ```
 
 It supports the following inputs:
@@ -246,7 +246,7 @@ https://m3u.example.com/epg?a=user-pass_123
 
 其中 `/m3u?a=token` 等价于下载频道播放列表，`/epg?a=token` 等价于 XMLTV
 节目指南；复制按钮会按当前浏览器访问域名自动生成，例如 Lucky 反代域名
-`https://m3u.066671.xyz`。
+`https://tvh.example.com`。
 
 旧长地址仍兼容：
 

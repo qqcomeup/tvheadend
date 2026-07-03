@@ -553,7 +553,7 @@ tvheadend.webhookconf = function(panel, index) {
         function applyMoviePilotDefaults() {
             nameField.setValue('MoviePilot');
             if (!urlField.getValue())
-                urlField.setValue('https://hmp.066671.xyz/api/v1/plugin/tvhhelper/webhook?apikey=你的API_TOKEN');
+                urlField.setValue('https://moviepilot.example.com/api/v1/plugin/tvhhelper/webhook?apikey=你的API_TOKEN');
             retryCountField.setValue(2);
             retryIntervalField.setValue(5);
             sslVerifyField.setValue(true);
@@ -723,7 +723,7 @@ tvheadend.webhookconf = function(panel, index) {
                 handler: function() {
                     addTarget({
                         name: 'MoviePilot',
-                        url: 'https://hmp.066671.xyz/api/v1/plugin/tvhhelper/webhook?apikey=你的API_TOKEN'
+                        url: 'https://moviepilot.example.com/api/v1/plugin/tvhhelper/webhook?apikey=你的API_TOKEN'
                     });
                 }
             },

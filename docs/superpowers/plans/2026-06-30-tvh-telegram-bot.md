@@ -50,7 +50,7 @@ def test_settings_parses_admin_chat_ids_from_comma_list():
         tvh_url="http://127.0.0.1:9981",
         tvh_user="ck",
         tvh_pass="secret",
-        public_base_url="https://m3u.066671.xyz",
+        public_base_url="https://tvh.example.com",
     )
 
     assert settings.admin_ids == {6907590840, 123}
@@ -63,11 +63,11 @@ def test_public_base_url_strips_trailing_slash():
         tvh_url="http://127.0.0.1:9981/",
         tvh_user="ck",
         tvh_pass="secret",
-        public_base_url="https://m3u.066671.xyz/",
+        public_base_url="https://tvh.example.com/",
     )
 
     assert settings.tvh_url == "http://127.0.0.1:9981"
-    assert settings.public_base_url == "https://m3u.066671.xyz"
+    assert settings.public_base_url == "https://tvh.example.com"
 
 
 def test_expected_dvb_count_must_be_non_negative():
@@ -78,7 +78,7 @@ def test_expected_dvb_count_must_be_non_negative():
             tvh_url="http://127.0.0.1:9981",
             tvh_user="ck",
             tvh_pass="secret",
-            public_base_url="https://m3u.066671.xyz",
+            public_base_url="https://tvh.example.com",
             expected_dvb_count=-1,
         )
 ```
@@ -119,11 +119,11 @@ def test_is_admin_matches_integer_chat_id():
 
 
 def test_short_urls_are_built_from_public_base():
-    assert build_m3u_url("https://m3u.066671.xyz", "user-pass_123") == (
-        "https://m3u.066671.xyz/m3u?a=user-pass_123"
+    assert build_m3u_url("https://tvh.example.com", "user-pass_123") == (
+        "https://tvh.example.com/m3u?a=user-pass_123"
     )
-    assert build_epg_url("https://m3u.066671.xyz/", "user-pass_123") == (
-        "https://m3u.066671.xyz/epg?a=user-pass_123"
+    assert build_epg_url("https://tvh.example.com/", "user-pass_123") == (
+        "https://tvh.example.com/epg?a=user-pass_123"
     )
 ```
 
@@ -265,11 +265,11 @@ def test_format_status_message_contains_service_and_dvb_info():
 def test_format_user_message_contains_short_urls():
     user = TvhUser(username="test", token="test-test_123456")
 
-    message = format_user_message("https://m3u.066671.xyz", user)
+    message = format_user_message("https://tvh.example.com", user)
 
     assert "用户: test" in message
-    assert "https://m3u.066671.xyz/m3u?a=test-test_123456" in message
-    assert "https://m3u.066671.xyz/epg?a=test-test_123456" in message
+    assert "https://tvh.example.com/m3u?a=test-test_123456" in message
+    assert "https://tvh.example.com/epg?a=test-test_123456" in message
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
