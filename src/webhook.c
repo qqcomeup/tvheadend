@@ -26,6 +26,7 @@
 #include "subscriptions.h"
 
 #define TVH_WEBHOOK_MAX_QUEUE 100
+#define TVH_WEBHOOK_EPG_LANGS "zh,chi,zho,eng"
 
 typedef struct tvh_webhook_item {
   TAILQ_ENTRY(tvh_webhook_item) link;
@@ -315,13 +316,13 @@ tvh_webhook_add_program_fields(htsmsg_t *m, channel_t *ch)
   htsmsg_add_u32(m, "program_event_id", eb->id);
   htsmsg_add_s64(m, "program_start", eb->start);
   htsmsg_add_s64(m, "program_stop", eb->stop);
-  if ((s = epg_broadcast_get_title(eb, NULL)))
+  if ((s = epg_broadcast_get_title(eb, TVH_WEBHOOK_EPG_LANGS)))
     htsmsg_add_str(m, "program_title", s);
-  if ((s = epg_broadcast_get_subtitle(eb, NULL)))
+  if ((s = epg_broadcast_get_subtitle(eb, TVH_WEBHOOK_EPG_LANGS)))
     htsmsg_add_str(m, "program_subtitle", s);
-  if ((s = epg_broadcast_get_summary(eb, NULL)))
+  if ((s = epg_broadcast_get_summary(eb, TVH_WEBHOOK_EPG_LANGS)))
     htsmsg_add_str(m, "program_summary", s);
-  if ((s = epg_broadcast_get_description(eb, NULL)))
+  if ((s = epg_broadcast_get_description(eb, TVH_WEBHOOK_EPG_LANGS)))
     htsmsg_add_str(m, "program_description", s);
   tvh_webhook_add_image(m, "program_image", eb->image);
 }
