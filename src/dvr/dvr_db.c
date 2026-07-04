@@ -5267,7 +5267,7 @@ dvr_get_files_details(dvr_entry_t *de, time_t *files_start, time_t *files_stop, 
 int
 dvr_entry_delete(dvr_entry_t *de)
 {
-  dvr_config_t *cfg = de->de_config;
+  dvr_config_t *cfg;
   htsmsg_t *m;
   htsmsg_field_t *f;
   time_t t;
@@ -5277,13 +5277,17 @@ dvr_entry_delete(dvr_entry_t *de)
   char tbuf[64], ubuf[UUID_HEX_SIZE], *rdir, *cmd;
   int r, ret = 0;
 
+  if (de == NULL)
+    return 0;
+
+  cfg = de->de_config;
   t = dvr_entry_get_start_time(de, 1);
   localtime_r(&t, &tm);
   if (strftime(tbuf, sizeof(tbuf), "%F %T", &tm) <= 0)
     *tbuf = 0;
 
-  str1 = dvr_entry_get_retention_string(de);
-  str2 = dvr_entry_get_removal_string(de);
+  str1 = cfg ? dvr_entry_get_retention_string(de) : strdup("unknown");
+  str2 = cfg ? dvr_entry_get_removal_string(de) : strdup("unknown");
   tvhinfo(LS_DVR, "delete entry %s \"%s\" on \"%s\" start time %s, "
 	  "scheduled for recording by \"%s\", retention \"%s\" removal \"%s\"",
           idnode_uuid_as_str(&de->de_id, ubuf),
@@ -5297,7 +5301,7 @@ dvr_entry_delete(dvr_entry_t *de)
     dvr_inotify_del(de);
 #endif
     rdir = NULL;
-    if(cfg->dvr_title_dir || cfg->dvr_channel_dir || cfg->dvr_dir_per_day || de->de_directory)
+    if(cfg && (cfg->dvr_title_dir || cfg->dvr_channel_dir || cfg->dvr_dir_per_day || de->de_directory))
       rdir = cfg->dvr_storage;
 
     dvr_vfs_remove_entry(de);
@@ -5311,7 +5315,7 @@ dvr_entry_delete(dvr_entry_t *de)
         tvhwarn(LS_DVR, "Unable to remove file '%s' from disk -- %s",
   	        filename, strerror(errno));
 
-      cmd = de->de_config->dvr_postremove;
+      cmd = cfg ? cfg->dvr_postremove : NULL;
       if (cmd && cmd[0])
         dvr_spawn_cmd(de, cmd, filename, 0);
       htsmsg_delete_field(m, "filename");
