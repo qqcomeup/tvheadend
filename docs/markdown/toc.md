@@ -31,5 +31,6 @@ Appendices
   - [Appendix 3 - Command-line Options](cmdline_options)
   - [Appendix 4 - Updating this documentation](doc_update)
   - [Appendix 5 - Markdown Cribsheet](markdown_cribsheet)
+  - [Appendix 6 - TVH Bot Integration APIs](tvh_bot_integration_apis)
 
 [About](doc_about)
