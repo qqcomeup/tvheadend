@@ -1,9 +1,15 @@
-# TVH Bot Integration APIs
+# TVH MoviePilot Plugin Integration APIs
 
-Chinese version: [TVH Bot Integration APIs (Chinese)](tvh_bot_integration_apis_zh)
+Chinese version: [TVH MoviePilot Plugin Integration APIs (Chinese)](tvh_bot_integration_apis_zh)
 
 This page records the `bata` branch API additions and webhook payload changes
-that are useful for MoviePilot, Telegram bots, and other automation clients.
+that are useful for the MoviePilot TVH Helper plugin, its Telegram interaction
+entry, and other automation clients.
+
+In this document, "bot" means the interaction layer implemented inside the
+MoviePilot TVH Helper plugin. It is not a separate standalone bot service.
+Telegram commands, buttons, and notifications are handled by the MoviePilot
+plugin, while TVH only exposes APIs and webhook events.
 
 All examples are intentionally sanitized. Replace `<tvh-host>`, `<user>`,
 `<password>`, `<token>`, and `<moviepilot-webhook-url>` with deployment-specific
@@ -12,7 +18,7 @@ or callback secrets to this document.
 
 ## Scope
 
-The APIs below are grouped by how a bot is expected to use them:
+The APIs below are grouped by how the MoviePilot plugin is expected to use them:
 
 * dashboard status
 * webhook target management and tests
@@ -21,8 +27,8 @@ The APIs below are grouped by how a bot is expected to use them:
 * EPG lookup for interactive recording
 
 Some endpoints are original Tvheadend APIs. They are listed only when the recent
-`bata` work made them more useful for bot workflows or when the bot should use
-them together with the new webhook features.
+`bata` work made them more useful for MoviePilot plugin workflows or when the
+plugin should use them together with the new webhook features.
 
 ## Server Status and Health
 
@@ -393,10 +399,10 @@ Bot integrations should follow these rules:
   `server/restart`, `connections/cancel`, `dvr/entry/cancel`,
   `dvr/entry/stop`, and `dvr/entry/remove`.
 
-## Quick Bot Feature Map
+## Quick MoviePilot Plugin Feature Map
 
-| Bot feature | Primary TVH API |
-| ----------- | --------------- |
+| Plugin feature | Primary TVH API |
+| -------------- | --------------- |
 | `/tvh` dashboard | `serverinfo`, `status/inputs`, `status/subscriptions`, `status/connections` |
 | Webhook health check | `webhook/test`, `webhook/targets/grid` |
 | Configure MoviePilot target | `webhook/targets/grid`, `webhook/targets/save` |

@@ -1,9 +1,14 @@
-# TVH 机器人对接接口
+# TVH MoviePilot 插件对接接口
 
-English version: [TVH Bot Integration APIs](tvh_bot_integration_apis)
+English version: [TVH MoviePilot Plugin Integration APIs](tvh_bot_integration_apis)
 
-本文记录 `bata` 分支里最近新增或增强、适合 MoviePilot、Telegram
-机器人和其他自动化客户端对接的 TVH API 与 Webhook 负载字段。
+本文记录 `bata` 分支里最近新增或增强、适合 MoviePilot TVH Helper 插件、
+插件里的 Telegram 交互入口，以及其他自动化客户端对接的 TVH API 与 Webhook
+负载字段。
+
+本文里的“机器人”不是一个单独部署的 Bot 服务，而是 MoviePilot TVH Helper
+插件内提供的交互层。Telegram 命令、按钮和通知由 MoviePilot 插件处理，TVH
+只负责暴露 API 和 Webhook 事件。
 
 本文示例均已脱敏。请把 `<tvh-host>`、`<user>`、`<password>`、`<token>`、
 `<moviepilot-webhook-url>` 替换为实际部署值。不要把真实账号、密码、公开域名、
@@ -11,7 +16,7 @@ English version: [TVH Bot Integration APIs](tvh_bot_integration_apis)
 
 ## 范围
 
-下面的接口按机器人常见使用方式整理：
+下面的接口按 MoviePilot 插件常见使用方式整理：
 
 * 首页状态面板
 * Webhook 目标管理与测试
@@ -19,8 +24,8 @@ English version: [TVH Bot Integration APIs](tvh_bot_integration_apis)
 * DVR 录制任务管理
 * EPG 节目指南查询和交互式预约录制
 
-部分接口是 Tvheadend 原有接口。本文只在它们和最近 `bata` 机器人/Webhook
-改动有关，或建议机器人配合新能力一起使用时列出。
+部分接口是 Tvheadend 原有接口。本文只在它们和最近 `bata` MoviePilot
+插件/Webhook 改动有关，或建议插件配合新能力一起使用时列出。
 
 ## 服务状态与健康信息
 
@@ -382,10 +387,10 @@ DVR 负载新增字段：
   `server/restart`、`connections/cancel`、`dvr/entry/cancel`、
   `dvr/entry/stop`、`dvr/entry/remove`。
 
-## 机器人功能速查
+## MoviePilot 插件功能速查
 
-| 机器人功能 | 主要 TVH API |
-| ---------- | ------------ |
+| 插件功能 | 主要 TVH API |
+| -------- | ------------ |
 | `/tvh` 首页 | `serverinfo`, `status/inputs`, `status/subscriptions`, `status/connections` |
 | Webhook 健康检查 | `webhook/test`, `webhook/targets/grid` |
 | 配置 MoviePilot 目标 | `webhook/targets/grid`, `webhook/targets/save` |
