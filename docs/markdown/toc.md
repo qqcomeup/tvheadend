@@ -31,7 +31,7 @@ Appendices
   - [Appendix 3 - Command-line Options](cmdline_options)
   - [Appendix 4 - Updating this documentation](doc_update)
   - [Appendix 5 - Markdown Cribsheet](markdown_cribsheet)
-  - [Appendix 6 - TVH MoviePilot Plugin Integration APIs](tvh_bot_integration_apis)
-  - [Appendix 6 中文 - TVH MoviePilot 插件对接接口](tvh_bot_integration_apis_zh)
+  - [Appendix 6 - TVH MoviePilot Plugin Integration APIs](tvh_moviepilot_plugin_integration_apis)
+  - [Appendix 6 中文 - TVH MoviePilot 插件对接接口](tvh_moviepilot_plugin_integration_apis_zh)
 
 [About](doc_about)

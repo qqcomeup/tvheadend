@@ -1,6 +1,6 @@
 # TVH MoviePilot Plugin Integration APIs
 
-Chinese version: [TVH MoviePilot Plugin Integration APIs (Chinese)](tvh_bot_integration_apis_zh)
+Chinese version: [TVH MoviePilot Plugin Integration APIs (Chinese)](tvh_moviepilot_plugin_integration_apis_zh)
 
 This page records the `bata` branch API additions and webhook payload changes
 that are useful for the MoviePilot TVH Helper plugin, its Telegram interaction

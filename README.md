@@ -98,11 +98,11 @@ MoviePilot 的 TVH Helper 插件。TVH 侧只负责提供 API、Webhook 目标�
 
 TVH `bata` 分支新增或增强的对接接口见：
 
-  * 中文文档：`docs/markdown/tvh_bot_integration_apis_zh.md`
-  * English docs: `docs/markdown/tvh_bot_integration_apis.md`
+  * 中文文档：`docs/markdown/tvh_moviepilot_plugin_integration_apis_zh.md`
+  * English docs: `docs/markdown/tvh_moviepilot_plugin_integration_apis.md`
 
-仓库中如仍保留 `tvh-bot/` 目录，它只代表早期实验原型，不是当前推荐部署方式，也不是
-TVH 主程序内置能力。后续维护和二次开发应优先参考 MoviePilot TVH Helper 插件。
+早期独立 `tvh-bot/` 原型已移除；它不是当前推荐部署方式，也不是 TVH 主程序内置能力。
+后续维护和二次开发应优先参考 MoviePilot TVH Helper 插件。
 
 It supports the following inputs:
 

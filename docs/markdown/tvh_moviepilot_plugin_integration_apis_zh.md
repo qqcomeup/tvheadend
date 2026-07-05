@@ -1,6 +1,6 @@
 # TVH MoviePilot 插件对接接口
 
-English version: [TVH MoviePilot Plugin Integration APIs](tvh_bot_integration_apis)
+English version: [TVH MoviePilot Plugin Integration APIs](tvh_moviepilot_plugin_integration_apis)
 
 本文记录 `bata` 分支里最近新增或增强、适合 MoviePilot TVH Helper 插件、
 插件里的 Telegram 交互入口，以及其他自动化客户端对接的 TVH API 与 Webhook
