@@ -10,6 +10,18 @@ English version: [TVH MoviePilot Plugin Integration APIs](tvh_bot_integration_ap
 插件内提供的交互层。Telegram 命令、按钮和通知由 MoviePilot 插件处理，TVH
 只负责暴露 API 和 Webhook 事件。
 
+参考实现：
+
+* MoviePilot 插件仓库：
+  `https://github.com/qqcomeup/MoviePilot-Plugins`
+* TVH Helper 插件目录：
+  `https://github.com/qqcomeup/MoviePilot-Plugins/tree/main/plugins.v2/tvhhelper`
+* TVH Helper 插件 README：
+  `https://github.com/qqcomeup/MoviePilot-Plugins/blob/main/plugins.v2/tvhhelper/README.md`
+
+TVH 不内置、不硬编码这个插件。这里贴出插件地址，只是作为 MoviePilot 侧后续维护和
+二次开发的参考实现。
+
 本文示例均已脱敏。请把 `<tvh-host>`、`<user>`、`<password>`、`<token>`、
 `<moviepilot-webhook-url>` 替换为实际部署值。不要把真实账号、密码、公开域名、
 内网 IP、回调密钥或 API 密钥提交到文档。

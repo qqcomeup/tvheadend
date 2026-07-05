@@ -11,6 +11,18 @@ MoviePilot TVH Helper plugin. It is not a separate standalone bot service.
 Telegram commands, buttons, and notifications are handled by the MoviePilot
 plugin, while TVH only exposes APIs and webhook events.
 
+Reference implementation:
+
+* MoviePilot plugin repository:
+  `https://github.com/qqcomeup/MoviePilot-Plugins`
+* TVH Helper plugin directory:
+  `https://github.com/qqcomeup/MoviePilot-Plugins/tree/main/plugins.v2/tvhhelper`
+* TVH Helper plugin README:
+  `https://github.com/qqcomeup/MoviePilot-Plugins/blob/main/plugins.v2/tvhhelper/README.md`
+
+TVH does not vendor or hard-code this plugin. The plugin is listed here only as
+the maintained MoviePilot-side reference implementation for future development.
+
 All examples are intentionally sanitized. Replace `<tvh-host>`, `<user>`,
 `<password>`, `<token>`, and `<moviepilot-webhook-url>` with deployment-specific
 values. Do not commit real credentials, public hostnames, private IP addresses,
