@@ -79,39 +79,30 @@ Lucky / 反代兼容修复：
 
 ![Tvheadend Simplified Chinese web interface](docs/images/tvheadend-zh-hans.png)
 
-Telegram 管理机器人
--------------------
+MoviePilot TVH Helper 插件对接
+------------------------------
 
-`tvh-bot/` 是独立的第一阶段 Telegram 管理机器人，不嵌入 TVH 主程序。它只允许配置的管理员 Telegram ID 使用，适合在 VPS 上查看 TVH/DVB 状态、列出 TVH 用户，并复制用户短 M3U/EPG 地址。
+当前推荐的 Telegram 交互和通知入口不是独立运行的 TVH 机器人容器，而是
+MoviePilot 的 TVH Helper 插件。TVH 侧只负责提供 API、Webhook 目标管理和
+播放/录制/异常事件；Telegram 命令、按钮、播放通知、预约录制、录制任务管理等交互
+由 MoviePilot 插件实现。
 
-主要功能：
+参考实现：
 
-  * `/status` 查看 TVH 连接状态、版本和 DVB 数量
-  * `/dvb` 查看当前 DVB adapter
-  * `/users` 选择用户后显示 token、`/m3u?a=token` 和 `/epg?a=token`
-  * DVB 数量低于 `EXPECTED_DVB_COUNT` 时通知管理员，恢复时再通知一次
+  * MoviePilot 插件仓库：
+    `https://github.com/qqcomeup/MoviePilot-Plugins`
+  * TVH Helper 插件目录：
+    `https://github.com/qqcomeup/MoviePilot-Plugins/tree/main/plugins.v2/tvhhelper`
+  * TVH Helper 插件 README：
+    `https://github.com/qqcomeup/MoviePilot-Plugins/blob/main/plugins.v2/tvhhelper/README.md`
 
-运行配置示例见 `tvh-bot/.env.example`。真实 `BOT_TOKEN`、TVH 管理员密码只放 VPS 的 `.env`，不要提交到 Git。
+TVH `bata` 分支新增或增强的对接接口见：
 
-VPS Docker 运行示例：
+  * 中文文档：`docs/markdown/tvh_bot_integration_apis_zh.md`
+  * English docs: `docs/markdown/tvh_bot_integration_apis.md`
 
-```bash
-docker build -t tvh-bot:local tvh-bot
-docker rm -f tvh-bot || true
-docker run -d --name tvh-bot --restart always \
-  --env-file /home/ck/app/tvh-bot/.env \
-  -v /dev/dvb:/dev/dvb:ro \
-  -v /home/ck/app/tvh/config/passwd:/tvh-passwd:ro \
-  --network host \
-  tvh-bot:local
-```
-
-公网短链接会按 `PUBLIC_BASE_URL` 拼接，例如：
-
-```text
-https://tvh.example.com/m3u?a=user-pass_123
-https://tvh.example.com/epg?a=user-pass_123
-```
+仓库中如仍保留 `tvh-bot/` 目录，它只代表早期实验原型，不是当前推荐部署方式，也不是
+TVH 主程序内置能力。后续维护和二次开发应优先参考 MoviePilot TVH Helper 插件。
 
 It supports the following inputs:
 
