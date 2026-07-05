@@ -1,5 +1,7 @@
 # TVH Bot Integration APIs
 
+Chinese version: [TVH Bot Integration APIs (Chinese)](tvh_bot_integration_apis_zh)
+
 This page records the `bata` branch API additions and webhook payload changes
 that are useful for MoviePilot, Telegram bots, and other automation clients.
 

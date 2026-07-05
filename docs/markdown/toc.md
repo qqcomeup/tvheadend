@@ -32,5 +32,6 @@ Appendices
   - [Appendix 4 - Updating this documentation](doc_update)
   - [Appendix 5 - Markdown Cribsheet](markdown_cribsheet)
   - [Appendix 6 - TVH Bot Integration APIs](tvh_bot_integration_apis)
+  - [Appendix 6 中文 - TVH 机器人对接接口](tvh_bot_integration_apis_zh)
 
 [About](doc_about)
